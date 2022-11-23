@@ -1,31 +1,9 @@
-.App {
-  text-align: center;
-}
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Baloo+2:wght@500&family=Judson&family=Kaisei+Decol&family=Luxurious+Roman&family=Playfair+Display&family=Praise&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ruda&family=Shojumaru&family=Vampiro+One&display=swap');:root {
+  --primary-color: #47B5FF;
+  --secondary-color: #DFF6FF;
+  --third-color: #256D85;
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
+  --content-width: 88%;
 }
 
 @keyframes App-logo-spin {
@@ -35,4 +13,65 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.logo {
+  color: var(--primary-color);
+}
+
+.ant-table .ant-table-container .ant-table-content table thead.ant-table-thead .ant-table-cell { background-color: var(--secondary-color); }
+
+.ant-layout .ant-layout-header {
+  background: var(--primary-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  padding-inline: 0;
+  width: 100%;
+  justify-content: center;
+}
+
+.custom-header .user {
+  width: var(--content-width);
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-right: -80px;
+}
+
+.page-content {
+  width: var(--content-width);
+  margin-top: 40px;
+}
+
+/* .custom-table table {
+  width: auto;
+  min-width: unset !important;
+} */
+
+.actions-column {
+  width: fit-content;
+}
+
+.login {
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.login .left-side {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login .right-side {
+  background-color: var(--primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
