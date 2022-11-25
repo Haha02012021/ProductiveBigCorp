@@ -1,15 +1,20 @@
 import { Button, Divider, Space } from "antd";
+import styled from 'styled-components';
 
 export default function ActionsCell() {
   return (
     <Space split={<Divider type="vertical" />} size>
-      <Button type="primary">Xem</Button>
-      <Button type="primary" style={{ background: "#256D85" }}>
+      <StyledButton type="primary">Xem</StyledButton>
+      <StyledButton type="primary" style={{ background: "#256D85" }}>
         Sửa
-      </Button>
-      <Button type="primary" danger>
+      </StyledButton>
+      <StyledButton type="primary" danger>
         Xóa
-      </Button>
+      </StyledButton>
     </Space>
   );
 }
+
+const StyledButton = styled(Button)`
+  border-radius: 2px
+`;
