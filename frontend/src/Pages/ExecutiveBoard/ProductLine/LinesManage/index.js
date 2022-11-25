@@ -29,7 +29,7 @@ const dataSource = [
     key: 1,
     index: 1,
     productLine: "Product Line",
-    actions: <ActionsCell />,
+    actions: <ActionsCell hasView={false} />,
   },
 ];
 
