@@ -3,7 +3,6 @@ import Search from "antd/es/input/Search";
 import PageHeader from "../Components/PageHeader";
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 const { Header, Sider, Content } = Layout;
 
@@ -37,11 +36,10 @@ export default function AuthLayout({
 
   const handleClickMenuOption = (selectedItem) => {
     let { keyPath } = selectedItem;
-
     keyPath.reverse();
-
     navigate("/" + keyPath.join("/"));
   };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider style={{ height: "100vh" }} width={256}>
