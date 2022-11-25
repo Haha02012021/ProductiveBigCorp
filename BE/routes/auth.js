@@ -5,13 +5,31 @@ var jwt = require('jsonwebtoken');
 const { Op } = require("sequelize");
 const {db, Manager} = require('../models'); 
 
+function authenToken(req, res, next) {
+  const bearer = req.headers['authorization'];
+  if(!bearer) {
+    res.sendStatus(401);
+  }
+  const token = bearer.split(" ")[1];
+  if(!token) {
+    res.sendStatus(401);
+  }
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
+    console.log(err, data);
+    if(err) {
+      res.sendStatus(403);
+    }
+    next();
+  });
+}
+
 router.post("/login", async (req, res) => {
   //res.json({'hello': 'hello'});
   try {
     const manager = await Manager.findOne({where: {account: req.body.account}});
     if(manager) {
       if(req.body.password === manager.password) {
-          const accessToken = jwt.sign(manager.account, process.env.ACCESS_TOKEN_SECRET)
+          const accessToken = jwt.sign(manager.dataValues, process.env.ACCESS_TOKEN_SECRET)
           res.status(200).cookie('jwt', accessToken, {
               httpOnly: true,
               secure: process.env.NODE_ENV === 'production' ? true : false,
@@ -32,7 +50,7 @@ router.post("/login", async (req, res) => {
   }
 })
 
-router.delete('/logout',async (req, res) => {
+router.delete('/logout', async (req, res) => {
     try {
         // Reset cookie
         res.cookie('jwt', '', {
@@ -52,23 +70,5 @@ router.delete('/logout',async (req, res) => {
         });
     }
 })
-
-function authenToken(req, res, next) {
-  const bearer = req.headers['authorization'];
-  if(!bearer) {
-    res.sendStatus(401);
-  }
-  const token = bearer.split(" ")[1];
-  if(!token) {
-    res.sendStatus(401);
-  }
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
-    console.log(err, data);
-    if(err) {
-      res.sendStatus(403);
-    }
-    next();
-  });
-}
 
 module.exports = router;
