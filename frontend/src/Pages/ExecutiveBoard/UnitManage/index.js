@@ -1,7 +1,7 @@
 import ExecutiveBoardLayout from "../../../Layouts/ExecutiveBoardLayout";
-import ActionsCell from "../../../Components/ActionsCell";
-import CustomTable from "../../../Components/CustomTable";
-import { Tabs } from 'antd';
+import ActionsCell from "../../../Components/Table/ActionsCell";
+import CustomTable from "../../../Components/Table/CustomTable";
+import { Tabs } from "antd";
 
 const columns = [
   {
@@ -12,9 +12,19 @@ const columns = [
     width: 64,
   },
   {
-    title: "Dòng sản phẩm",
-    dataIndex: "productLine",
-    key: "productLine",
+    title: "Tên",
+    dataIndex: "name",
+    key: "name",
+  },
+  {
+    title: "Tài khoản",
+    dataIndex: "username",
+    key: "username",
+  },
+  {
+    title: "Mật khẩu",
+    dataIndex: "password",
+    key: "password",
   },
   {
     title: "Thao tác",
@@ -25,43 +35,65 @@ const columns = [
   },
 ];
 
-const dataSource = [
+const factoryDataSource = [
   {
     key: 1,
     index: 1,
-    productLine: "Product Line",
+    name: "Factory 1",
+    username: "factory1",
+    password: "factory1",
     actions: <ActionsCell />,
   },
 ];
 
-const tabItems= [
-      {
-        label: `Cơ sở sản xuất`,
-        key: '1',
-        children: <CustomTable dataSource={dataSource} columns={columns} />,
-      },
-      {
-        label: `Đại lý phân phối`,
-            key: '2',
-          children: `Content of Tab Pane 2`,
-      },
-      {
-        label: `Trung tâm bảo hành`,
-            key: '3',
-          children: `Content of Tab Pane 3`,
-      },
-]
+const storeDataSource = [
+  {
+    key: 1,
+    index: 1,
+    name: "Store 1",
+    username: "store1",
+    password: "store1",
+    actions: <ActionsCell />,
+  },
+];
+
+const maintainCenterDataSource = [
+  {
+    key: 1,
+    index: 1,
+    name: "Center 1",
+    username: "center1",
+    password: "center1",
+  },
+];
+const tabItems = [
+  {
+    label: `Cơ sở sản xuất`,
+    key: "1",
+    children: <CustomTable dataSource={factoryDataSource} columns={columns} />,
+  },
+  {
+    label: `Đại lý phân phối`,
+    key: "2",
+    children: <CustomTable dataSource={storeDataSource} columns={columns} />,
+  },
+  {
+    label: `Trung tâm bảo hành`,
+    key: "3",
+    children: (
+      <CustomTable dataSource={maintainCenterDataSource} columns={columns} />
+    ),
+  },
+];
 
 const onChange = (key) => {
   console.log(key);
-}
+};
 
 export default function UnitManage() {
-  return <ExecutiveBoardLayout pageHeaderProps={{ title: "Quản lý đơn vị" }}>
-    <Tabs
-        defaultActiveKey="1"
-        onChange={onChange}
-        items={tabItems}
-    />
-  </ExecutiveBoardLayout>;
+  return (
+    <ExecutiveBoardLayout pageHeaderProps={{ title: "Quản lý đơn vị" }}>
+      <Tabs defaultActiveKey="1" onChange={onChange} items={tabItems} />
+    </ExecutiveBoardLayout>
+  );
 }

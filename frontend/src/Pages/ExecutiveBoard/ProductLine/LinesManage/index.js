@@ -1,5 +1,5 @@
-import ActionsCell from "../../../../Components/ActionsCell";
-import CustomTable from "../../../../Components/CustomTable";
+import ActionsCell from "../../../../Components/Table/ActionsCell";
+import CustomTable from "../../../../Components/Table/CustomTable";
 import ExecutiveBoardLayout from "../../../../Layouts/ExecutiveBoardLayout";
 
 const columns = [
@@ -21,6 +21,7 @@ const columns = [
     key: "actions",
     fixed: "center",
     width: 236,
+    render: () => <ActionsCell />,
   },
 ];
 
@@ -29,7 +30,6 @@ const dataSource = [
     key: 1,
     index: 1,
     productLine: "Product Line",
-    actions: <ActionsCell hasView={false} />,
   },
 ];
 
