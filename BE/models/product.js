@@ -48,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
     status_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 1,
     }
   }, {
     sequelize,
