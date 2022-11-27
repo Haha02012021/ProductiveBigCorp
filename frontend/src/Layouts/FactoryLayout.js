@@ -1,43 +1,69 @@
 import AuthLayout from "./AuthLayout";
 import { SettingOutlined } from "@ant-design/icons";
-
-const menuItems = [
-  {
-    key: "product-line",
-    icon: <SettingOutlined />,
-    children: [
-      {
-        key: "lines-manage",
-        icon: null,
-        children: null,
-        label: "Quản lý dòng sản phẩm",
-      },
-      {
-        key: "version-manage",
-        icon: null,
-        children: null,
-        label: "Quản lý phiên bản",
-      },
-    ],
-    label: "Dòng sản phẩm",
-  },
-  {
-    key: "product",
-    icon: <SettingOutlined />,
-    children: null,
-    label: "Sản phẩm",
-  },
-  {
-    key: "units-manage",
-    icon: <SettingOutlined />,
-    children: null,
-    label: "Quản lý đơn vị",
-  },
-];
+import { useMemo } from "react";
 
 export default function FactoryLayout({ children, pageHeaderProps }) {
+  const menuItems = useMemo(
+    () => [
+      {
+        key: "product-lot",
+        icon: <SettingOutlined />,
+        label: "Lô sản phẩm",
+      },
+      {
+        key: "product-in-out",
+        icon: <SettingOutlined />,
+        label: "Xuất/Nhận sản phẩm",
+        children: [
+          {
+            key: "export-to-store",
+            icon: null,
+            children: null,
+            label: "Xuất cho đại lý",
+          },
+          {
+            key: "receive-from-maitainence",
+            icon: null,
+            children: null,
+            label: "Nhận từ trung tâm bảo hành",
+          },
+        ],
+      },
+      {
+        key: "statistical",
+        icon: <SettingOutlined />,
+        label: "Quản lý đơn vị",
+        children: [
+          {
+            key: "report",
+            icon: null,
+            children: null,
+            label: "Báo cáo số liệu",
+          },
+          {
+            key: "analysis",
+            icon: null,
+            children: null,
+            label: "Phân tích số lượng tiêu thụ",
+          },
+          {
+            key: "error-rate",
+            icon: null,
+            children: null,
+            label: "Tỉ lệ sản phẩm lỗi",
+          },
+        ],
+      },
+    ],
+    []
+  );
   return (
-    <AuthLayout menuItems={menuItems} pageHeaderProps={pageHeaderProps}>
+    <AuthLayout
+      menuProps={{
+        items: menuItems,
+      }}
+      pageHeaderProps={pageHeaderProps}
+    >
       {children}
     </AuthLayout>
   );
