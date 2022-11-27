@@ -2,7 +2,11 @@ import { Button, Space } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
-export default function PageHeader({ title = "Title", hasAction = true }) {
+export default function PageHeader({
+  title = "Title",
+  hasAction = true,
+  onAdd,
+}) {
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1);
@@ -36,7 +40,11 @@ export default function PageHeader({ title = "Title", hasAction = true }) {
           <ArrowLeftOutlined size={16} onClick={handleBack} />
           <p style={{ fontSize: 20, fontWeight: 600 }}>{title}</p>
         </Space>
-        {hasAction && <Button type="primary">Thêm</Button>}
+        {hasAction && (
+          <Button type="primary" onClick={onAdd}>
+            Thêm
+          </Button>
+        )}
       </div>
     </div>
   );

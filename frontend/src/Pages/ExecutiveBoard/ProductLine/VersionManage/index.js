@@ -1,6 +1,10 @@
+import { Form } from "antd";
+import { useState } from "react";
+import CustomModal from "../../../../Components/CustomModal";
 import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
 import ExecutiveBoardLayout from "../../../../Layouts/ExecutiveBoardLayout";
+import VersionForm from "./VersionForm";
 
 const columns = [
   {
@@ -31,9 +35,31 @@ const columns = [
 ];
 
 export default function VersionManage() {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [form] = Form.useForm();
+
+  const handleAddVer = () => {
+    setModalVisible(true);
+  };
+  const handleSave = () => {
+    console.log(form.getFieldsValue());
+  };
   return (
-    <ExecutiveBoardLayout pageHeaderProps={{ title: "Quản lý phiên bản" }}>
+    <ExecutiveBoardLayout
+      pageHeaderProps={{
+        title: "Quản lý phiên bản",
+        onAdd: () => handleAddVer(),
+      }}
+    >
       <CustomTable columns={columns} />
+      <CustomModal
+        open={modalVisible}
+        onOk={handleSave}
+        onCancel={() => setModalVisible(false)}
+        title="Thêm phiên bản"
+      >
+        <VersionForm form={form} />
+      </CustomModal>
     </ExecutiveBoardLayout>
   );
 }

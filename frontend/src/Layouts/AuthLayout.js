@@ -86,6 +86,7 @@ export default function AuthLayout({
               <PageHeader
                 title={pageHeaderProps.title}
                 hasAction={pageHeaderProps.hasAction}
+                onAdd={pageHeaderProps.onAdd}
               />
               {pageTabs && (
                 <Tabs
