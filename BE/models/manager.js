@@ -41,6 +41,6 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'managers',
     modelName: 'Manager',
   });
-  //1 for master, 2 for factory, 3 for maintainer, 4 for seller
+  //1 for master, 2 for factory, 3 for maintainer, 4 for store
   return Manager;
 };

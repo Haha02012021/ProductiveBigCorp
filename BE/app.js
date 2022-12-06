@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 dotenv.config();
 var authRouter = require('./routes/auth');
 var factoryRouter = require('./routes/factory');
+var coporationRouter = require('./routes/coporation');
 
 var app = express();
 
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
   res.json({"hello": 'hello'});
 })
 app.use('/auth', authRouter);
-app.use('/products', factoryRouter);
+app.use('/factory', factoryRouter);
+app.use('/coporation', coporationRouter);
 
 module.exports = app;

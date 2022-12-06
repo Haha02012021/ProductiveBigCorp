@@ -27,45 +27,53 @@ function validateFactory(req, res, next) {
 }
 
 router.post('/newProducts', validateFactory, async (req, res) => {
+  try {
     const batch = await Batch.create({
       factory_id: req.body.factory_id,
       color_id: req.body.color_id,
       model_id: req.body.model_id,
       version_id: req.body.version_id,
-      amount: req.amount
+      amount: req.body.amount
     })
 
-    const products = await Product.bulkCreate([
-      {
+    const products = await Product.bulkCreate(Array(req.body.amount).fill({
         color_id: req.body.color_id,
         model_id: req.body.model_id,
         version_id: req.body.version_id,
         batch_id: batch.id,
         status_id: 1
-      }
-    ])
+      })     
+    );
 
-    const historyLog = products.forEach(element => {
-      return {
-        product_id: element.id,
-        status_id: 1,
-      }
-    });
-
-    const history = await History.bulkCreate(historyLog)
+    const history = await History.bulkCreate(
+      products.map(element => {
+        return {
+          product_id: element.id,
+          status_id: 1,
+        }
+    }));
+    res.json({success: true, message: 'products sent to stock'})
+  } catch (err) {
+    res.status(500).json({success: false, message: 'error from add newProducts', error: err});
+  }
 
 })
 
 router.get('/batches', validateFactory, async (req, res) => {
-    const factory = await Batch.findAll({
+  try{
+    const batches = await Batch.findAll({
       where: {
         factory_id: req.body.factory_id
       }
     })
-    res.json({'data': factory});
-
+    res.json({success: true, data: batches});
+  } catch (err) {
+    res.status(500).json({success: false, message: 'error from get batches', error: err});
+  }
 })
 
-
+router.post('/sendProducts', validateFactory, async (req, res) => {
+  
+})
 
 module.exports = router;

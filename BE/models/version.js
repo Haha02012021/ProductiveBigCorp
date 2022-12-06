@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({Product, MODEL, Chassis, Engine, Exterior, Interior,I_ACTIVSENSE, Safety, Size, Batch}) {
+    static associate({Product, MODEL, Chassis, Engine, Exterior, Interior,I_ACTIVSENSE, Safety, Size, Batch, Image}) {
       // define association here
       this.hasMany(Batch, {foreignKey: 'version_id', as: 'batches', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
       this.hasMany(Product, {foreignKey: 'version_id', as: 'products', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasOne(Safety, {foreignKey: 'version_id', as: 'safety', onDelete: 'CASCADE', onUpdate: 'CASCADE'});    
       this.hasOne(Size, {foreignKey: 'version_id', as: 'size', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
       this.belongsTo(MODEL, {foreignKey: 'model_id', as: 'model', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
+      this.hasMany(Image, {foreignKey: 'version_id', as: 'images', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
     }
   }
   Version.init({
@@ -28,7 +29,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    name: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    }
   }, {
     sequelize,
     tableName: 'versions',
