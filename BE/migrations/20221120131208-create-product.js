@@ -25,6 +25,10 @@ module.exports = {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      batch_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       maintain_month: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -34,6 +38,22 @@ module.exports = {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 1,
+      },
+      request_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      customer_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      isSold: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      soldAt: {
+        allowNull: true,
+        type: DataTypes.DATE
       },
       createdAt: {
         allowNull: false,

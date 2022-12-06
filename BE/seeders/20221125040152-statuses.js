@@ -32,7 +32,13 @@ module.exports = {
       context: 'requestMaintain'
     },
     {
+      context: 'sendToMaintain'
+    },
+    {
       context: 'underMaintain'
+    },
+    {
+      context: 'doneMaintain'
     },
     {
       context: 'maintainedAndReturn'
