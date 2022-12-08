@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable('products', {
+    await queryInterface.createTable("products", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
       uuid: {
         type: DataTypes.UUID,
@@ -15,11 +15,11 @@ module.exports = {
       },
       model_id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       version_id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       color_id: {
         type: DataTypes.INTEGER,
@@ -57,15 +57,15 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: DataTypes.DATE
-      }
-  });
+        type: DataTypes.DATE,
+      },
+    });
   },
   async down(queryInterface, DataTypes) {
-    await queryInterface.dropTable('products');
-  }
+    await queryInterface.dropTable("products");
+  },
 };
