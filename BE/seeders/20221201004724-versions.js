@@ -43,7 +43,7 @@ module.exports = {
       },
       {
         model_id: 2,
-        name: 'NEW Mazda CX-8 2.5L Premium AWD (6S)'
+        name: 'New Mazda CX-8 2.5L Premium AWD (6S)'
       },
       {
         model_id: 3,

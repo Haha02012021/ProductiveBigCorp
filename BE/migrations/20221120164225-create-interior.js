@@ -17,15 +17,11 @@ module.exports = {
           notEmpty: { msg: 'version must not be empty' },
         },
       },
-      chat_lieu: {
+      chat_lieu_noi_that: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      ghe_lai_dieu_chinh_dien: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      ghe_lai_nho_vi_tri: {
+      ghe_lai_co_nho_vi_tri: {
         type: DataTypes.STRING,
         allowNull: true,
       },
@@ -61,7 +57,7 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      khoi_dong_nut: {
+      khoi_dong_bang_nut_bam: {
         type: DataTypes.STRING,
         allowNull: true,
       },
@@ -73,15 +69,15 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      cua_gio_sau: {
+      cua_gio_hang_ghe_sau: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      cua_so_dien: {
+      cua_so_chinh_dien: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      guong_hau_trung_tam: {
+      guong_hau_trung_tam_chong_choi_tu_dong: {
         type: DataTypes.STRING,
         allowNull: true,
       },
@@ -89,11 +85,11 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      che_nang_kinh_sau_chinh_dien: {
+      rem_che_nang_kinh_sau_chinh_dien: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      che_nang_cua_so_sau: {
+      rem_che_nang_cua_so_sau: {
         type: DataTypes.STRING,
         allowNull: true,
       },
@@ -101,11 +97,11 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      tua_tay_hang_ghe_sau_co_usb: {
+      tua_tay_ghe_sau_tich_hop_cong_usb: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      hang_ghe_2: {
+      hang_ghe_thu_hai_gap_theo_ti_le_60_40: {
         type: DataTypes.STRING,
         allowNull: true,
       },

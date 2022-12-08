@@ -55,31 +55,31 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    chong_sao_chep_khoa: {
+    ma_hoa_chong_sao_chep_chia_khoa: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    chong_trom: {
+    canh_bao_chong_trom: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    cam_lui: {
+    camera_lui: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    canh_bao_va_cham_sau: {
+    cam_bien_canh_bao_va_cham_phia_sau: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    canh_bao_va_cham_truoc: {
+    cam_bien_canh_bao_va_cham_phia_truoc: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    cam_360: {
+    camera_quan_sat_360: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    canh_bao_day_an_toan: {
+    canh_bao_that_day_an_toan: {
       type: DataTypes.STRING,
       allowNull: true,
     },  
