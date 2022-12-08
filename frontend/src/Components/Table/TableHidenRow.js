@@ -1,23 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { ConfigProvider, Table } from "antd";
 import styled from "styled-components";
 
-export default function TableHidenRow({ columns, isShow, data, setIsShow }) {
+export default function TableHidenRow({ columns, data }) {
+  const [show, setShow] = useState(true);
   return (
     <ConfigProvider renderEmpty={() => <></>}>
       <MyTable
         columns={columns}
-        dataSource={isShow ? data : []}
+        dataSource={show ? data : []}
         style={{
           width: "100%",
           backgroundColor: "white",
-          paddingTop: "10px",
         }}
         pagination={false}
         onHeaderRow={() => {
           return {
-            onClick: (event) => {
-              setIsShow();
+            onClick: () => {
+              setShow(!show);
             },
           };
         }}
@@ -37,7 +37,6 @@ const MyTable = styled(Table)`
         text-transform: uppercase;
         font-size: 12px;
         cursor: pointer;
-        border-top: 1px solid rgba(5, 5, 5, 0.06);
       }
     }
   }
