@@ -35,11 +35,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    cong_suat_max: {
+    cong_suat_toi_da: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    momen_max: {
+    momen_xoan_cuc_dai: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    sport_mode: {
+    che_do_the_thao: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -55,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    smart_start_stop: {
+    he_thong_ngung_khoi_dong_thong_minh: {
       type: DataTypes.STRING,
       allowNull: true,
     },

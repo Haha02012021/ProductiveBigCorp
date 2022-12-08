@@ -7,6 +7,7 @@ dotenv.config();
 var authRouter = require('./routes/auth');
 var factoryRouter = require('./routes/factory');
 var coporationRouter = require('./routes/coporation');
+var storeRouter = require('./routes/store');
 
 var app = express();
 
@@ -26,5 +27,6 @@ app.get('/', (req, res) => {
 app.use('/auth', authRouter);
 app.use('/factory', factoryRouter);
 app.use('/coporation', coporationRouter);
+app.use('/store', storeRouter);
 
 module.exports = app;

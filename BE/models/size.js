@@ -23,27 +23,27 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { msg: 'version must not be empty' },
       },
     },
-    tong_the: {
+    kich_thuoc_tong_the: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    do_dai_co_so: {
+    chieu_dai_co_so: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    ban_kinh_quay: {
+    ban_kinh_quay_vong_toi_thieu: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    khoang_sang_gam: {
+    khoang_sang_gam_xe: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    khoi_luong_chuan: {
+    khoi_luong_khong_tai: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    khoi_luong_co_tai: {
+    khoi_luong_toan_tai: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    dung_tich_nhien_lieu: {
+    dung_tich_thung_nhien_lieu: {
       type: DataTypes.STRING,
       allowNull: true,
     },  

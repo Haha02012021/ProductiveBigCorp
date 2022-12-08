@@ -3,6 +3,7 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 
 const {db, Manager, Batch, Product, History} = require('../models');
+const {createProducts, getBatches} = require('../Controllers/FactoryController');
 
 function validateFactory(req, res, next) {
     const bearer = req.headers['authorization'];
@@ -26,51 +27,9 @@ function validateFactory(req, res, next) {
     });
 }
 
-router.post('/newProducts', validateFactory, async (req, res) => {
-  try {
-    const batch = await Batch.create({
-      factory_id: req.body.factory_id,
-      color_id: req.body.color_id,
-      model_id: req.body.model_id,
-      version_id: req.body.version_id,
-      amount: req.body.amount
-    })
+router.post('/newProducts', validateFactory, createProducts);
 
-    const products = await Product.bulkCreate(Array(req.body.amount).fill({
-        color_id: req.body.color_id,
-        model_id: req.body.model_id,
-        version_id: req.body.version_id,
-        batch_id: batch.id,
-        status_id: 1
-      })     
-    );
-
-    const history = await History.bulkCreate(
-      products.map(element => {
-        return {
-          product_id: element.id,
-          status_id: 1,
-        }
-    }));
-    res.json({success: true, message: 'products sent to stock'})
-  } catch (err) {
-    res.status(500).json({success: false, message: 'error from add newProducts', error: err});
-  }
-
-})
-
-router.get('/batches', validateFactory, async (req, res) => {
-  try{
-    const batches = await Batch.findAll({
-      where: {
-        factory_id: req.body.factory_id
-      }
-    })
-    res.json({success: true, data: batches});
-  } catch (err) {
-    res.status(500).json({success: false, message: 'error from get batches', error: err});
-  }
-})
+router.get('/batches', validateFactory, getBatches);
 
 router.post('/sendProducts', validateFactory, async (req, res) => {
   

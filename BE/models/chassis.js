@@ -23,35 +23,35 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { msg: 'version must not be empty' },
       },
     },
-    treo_truoc: {
+    he_thong_treo_truoc: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    treo_sau: {
+    he_thong_treo_sau: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    dan_dong: {
+    he_thong_dan_dong: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    phanh_truoc: {
+    he_thong_phanh_truoc: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    phanh_sau: {
+    he_thong_phanh_sau: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    tro_luc: {
+    he_thong_tro_luc_lai: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    lop_xe: {
+    kich_thuoc_lop_xe: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    d_mam_xe: {
+    duong_kinh_mam_xe: {
       type: DataTypes.STRING,
       allowNull: true,
     },
