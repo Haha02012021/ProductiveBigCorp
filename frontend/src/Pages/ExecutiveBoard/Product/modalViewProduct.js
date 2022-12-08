@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal } from "antd";
 import { Tabs } from "antd";
 import { Image } from "antd";
@@ -7,23 +7,34 @@ import { Col, Row } from "antd";
 import { Radio, ConfigProvider } from "antd";
 import styled from "styled-components";
 import TableHidenRow from "../../../Components/Table/TableHidenRow";
+import ListImage from "../../../Components/ListImage";
 
 export default function ModalViewProduct(props) {
   const onChange = (key) => {
     console.log(key);
   };
 
-  const [isShowSize, setIsShowSize] = useState(true);
-
-  const columns = [
+  const columnsSize = [
     {
       title: "Kích thước khối lượng",
       dataIndex: "name",
+      width: "40%",
     },
     {
       title: "",
-      className: "column-money",
-      dataIndex: "money",
+      dataIndex: "value",
+      height: 34,
+    },
+  ];
+  const columnsEngine = [
+    {
+      title: "Động cơ hộp số",
+      dataIndex: "name",
+      width: "40%",
+    },
+    {
+      title: "",
+      dataIndex: "value",
       height: 34,
     },
   ];
@@ -31,21 +42,23 @@ export default function ModalViewProduct(props) {
   const data = [
     {
       key: "1",
-      name: "John Brown",
-      money: "￥300,000.00",
-      address: "New York No. 1 Lake Park",
+      name: "Kích thước tổng thể",
+      value: "￥300,000.00",
     },
     {
       key: "2",
-      name: "Jim Green",
-      money: "￥1,256,000.00",
-      address: "London No. 1 Lake Park",
+      name: "Chiều dài cơ sở",
+      value: "￥1,256,000.00",
     },
     {
       key: "3",
-      name: "Joe Black",
-      money: "￥120,000.00",
-      address: "Sidney No. 1 Lake Park",
+      name: "Bán kính quay vòng tối thiểu",
+      value: "￥120,000.00",
+    },
+    {
+      key: "3",
+      name: "Khoảng sáng gầm xe",
+      value: "￥120,000.00",
     },
   ];
 
@@ -116,12 +129,8 @@ export default function ModalViewProduct(props) {
         <Row style={{ display: "flex", flexDirection: "column" }}>
           <BoldText style={{ marginTop: 10 }}>Thông số kỹ thuật</BoldText>
           <Row>
-            <TableHidenRow
-              columns={columns}
-              isShow={isShowSize}
-              setIsShow={() => setIsShowSize(!isShowSize)}
-              data={data}
-            />
+            <TableHidenRow columns={columnsSize} data={data} />
+            <TableHidenRow columns={columnsEngine} data={data} />
           </Row>
         </Row>
       </>
@@ -151,7 +160,7 @@ export default function ModalViewProduct(props) {
             {
               label: `Hình ảnh`,
               key: "2",
-              children: `Content of Tab Pane 2`,
+              children: <ListImage />,
             },
           ]}
         />
