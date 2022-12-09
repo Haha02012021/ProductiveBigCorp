@@ -21,6 +21,10 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      ghe_lai_dieu_chinh_dien: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       ghe_lai_co_nho_vi_tri: {
         type: DataTypes.STRING,
         allowNull: true,
