@@ -30,6 +30,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'yes',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 1,
@@ -48,6 +50,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'yes',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 1,
@@ -66,6 +70,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'yes',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 1,
@@ -84,6 +90,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'yes',
         camera_quan_sat_360: 'Gói AWD / AWD Package',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 5,
@@ -102,6 +110,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'yes',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 6,
@@ -120,6 +130,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'yes',
         camera_quan_sat_360: 'yes',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 7,
@@ -138,6 +150,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'yes',
         camera_quan_sat_360: 'yes',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 8,
@@ -156,6 +170,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'yes',
         camera_quan_sat_360: 'yes',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 9,
@@ -174,6 +190,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'no',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 10,
@@ -192,6 +210,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'no',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 11,
@@ -210,6 +230,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'no',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 12,
@@ -228,6 +250,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'no',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 13,
@@ -246,6 +270,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'yes',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 14,
@@ -264,6 +290,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'no',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 15,
@@ -282,6 +310,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'no',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 16,
@@ -300,6 +330,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'no',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 17,
@@ -318,6 +350,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'no',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 18,
@@ -336,6 +370,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'no',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 19,
@@ -354,6 +390,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'yes',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 20,
@@ -372,6 +410,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'yes',
         camera_quan_sat_360: 'yes',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 21,
@@ -390,6 +430,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'yes',
         camera_quan_sat_360: 'yes',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 22,
@@ -408,6 +450,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'yes',
         camera_quan_sat_360: 'yes',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 23,
@@ -426,6 +470,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'no',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 24,
@@ -444,6 +490,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'no',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 25,
@@ -462,6 +510,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'no',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 26,
@@ -480,6 +530,8 @@ module.exports = {
         cam_bien_canh_bao_va_cham_phia_truoc: 'yes',
         camera_quan_sat_360: 'no',
         canh_bao_that_day_an_toan: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ], {})
   },

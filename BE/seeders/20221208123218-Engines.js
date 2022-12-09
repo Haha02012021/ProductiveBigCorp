@@ -24,6 +24,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'GVC Plus',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 2,
@@ -36,6 +38,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'GVC Plus',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 3,
@@ -48,6 +52,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'GVC Plus',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 4,
@@ -60,6 +66,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'GVC Plus',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 5,
@@ -72,6 +80,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'yes',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 6,
@@ -84,6 +94,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'yes',
         he_thong_ngung_khoi_dong_thong_minh: 'i-stop',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 7,
@@ -96,6 +108,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'yes',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 8,
@@ -108,6 +122,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'yes',
         he_thong_ngung_khoi_dong_thong_minh: 'i-stop',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 9,
@@ -120,6 +136,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'GVC',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 10,
@@ -132,6 +150,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'GVC',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 11,
@@ -144,6 +164,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'GVC',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 12,
@@ -156,6 +178,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'GVC Plus',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 13,
@@ -168,6 +192,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'GVC Plus',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 14,
@@ -180,6 +206,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'yes',
         he_thong_ngung_khoi_dong_thong_minh: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 15,
@@ -192,6 +220,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'yes',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 16,
@@ -204,6 +234,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'yes',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 17,
@@ -216,6 +248,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'yes',
         he_thong_ngung_khoi_dong_thong_minh: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 18,
@@ -228,6 +262,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'yes',
         he_thong_ngung_khoi_dong_thong_minh: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 19,
@@ -240,6 +276,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'yes',
         he_thong_ngung_khoi_dong_thong_minh: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 20,
@@ -252,6 +290,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'yes',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 21,
@@ -264,6 +304,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'yes',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 22,
@@ -276,6 +318,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'yes',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 23,
@@ -288,6 +332,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'yes',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 24,
@@ -300,6 +346,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'yes',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 25,
@@ -312,6 +360,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'GVC Plus',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 26,
@@ -324,6 +374,8 @@ module.exports = {
         che_do_the_thao: 'yes',
         GVC: 'GVC Plus',
         he_thong_ngung_khoi_dong_thong_minh: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ], {})
   },

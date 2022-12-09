@@ -25,6 +25,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'yes',
         ong_xa_kep: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 2,
@@ -38,6 +40,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'yes',
         ong_xa_kep: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 3,
@@ -51,6 +55,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'yes',
         ong_xa_kep: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 4,
@@ -64,6 +70,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'yes',
         ong_xa_kep: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 5,
@@ -77,6 +85,8 @@ module.exports = {
         cum_den_sau_dang_led: 'LED',
         cua_so_troi: 'yes',
         ong_xa_kep: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 6,
@@ -90,6 +100,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'yes',
         ong_xa_kep: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 7,
@@ -103,6 +115,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'yes',
         ong_xa_kep: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 8,
@@ -116,6 +130,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'yes',
         ong_xa_kep: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 9,
@@ -129,6 +145,8 @@ module.exports = {
         cum_den_sau_dang_led: 'Halogen',
         cua_so_troi: 'no',
         ong_xa_kep: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 10,
@@ -142,6 +160,8 @@ module.exports = {
         cum_den_sau_dang_led: 'LED',
         cua_so_troi: 'no',
         ong_xa_kep: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 11,
@@ -155,6 +175,8 @@ module.exports = {
         cum_den_sau_dang_led: 'LED',
         cua_so_troi: 'no',
         ong_xa_kep: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 12,
@@ -168,6 +190,8 @@ module.exports = {
         cum_den_sau_dang_led: 'LED',
         cua_so_troi: 'no',
         ong_xa_kep: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 13,
@@ -181,6 +205,8 @@ module.exports = {
         cum_den_sau_dang_led: 'LED',
         cua_so_troi: 'yes',
         ong_xa_kep: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 14,
@@ -194,6 +220,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'no',
         ong_xa_kep: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 15,
@@ -207,6 +235,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'no',
         ong_xa_kep: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 16,
@@ -220,6 +250,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'no',
         ong_xa_kep: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 17,
@@ -233,6 +265,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'no',
         ong_xa_kep: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 18,
@@ -246,6 +280,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'no',
         ong_xa_kep: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 19,
@@ -259,6 +295,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'yes',
         ong_xa_kep: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 20,
@@ -272,6 +310,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'yes',
         ong_xa_kep: 'Ốp cản sau thể thao',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 21,
@@ -285,6 +325,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'yes',
         ong_xa_kep: 'Ốp cản sau thể thao',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 22,
@@ -298,6 +340,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'yes',
         ong_xa_kep: 'Ốp cản sau thể thao',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 23,
@@ -311,6 +355,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'no',
         ong_xa_kep: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 24,
@@ -324,6 +370,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'no',
         ong_xa_kep: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 25,
@@ -337,6 +385,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'no',
         ong_xa_kep: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 26,
@@ -350,6 +400,8 @@ module.exports = {
         cum_den_sau_dang_led: 'yes',
         cua_so_troi: 'yes',
         ong_xa_kep: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ], {})
   },

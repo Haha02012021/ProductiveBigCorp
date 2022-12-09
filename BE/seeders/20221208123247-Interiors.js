@@ -38,6 +38,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'yes',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 2,
@@ -64,6 +66,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'yes',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 3,
@@ -90,6 +94,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'yes',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 4,
@@ -116,6 +122,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'yes',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 5,
@@ -142,6 +150,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'yes',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 6,
@@ -168,6 +178,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'yes',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 7,
@@ -194,6 +206,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'yes',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 8,
@@ -220,6 +234,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'yes',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 9,
@@ -246,6 +262,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'no',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 10,
@@ -272,6 +290,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'no',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 11,
@@ -298,6 +318,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'no',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 12,
@@ -324,6 +346,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'no',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 13,
@@ -350,6 +374,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'no',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 14,
@@ -376,6 +402,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'no',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'no',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 15,
@@ -402,6 +430,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'no',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'no',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 16,
@@ -428,6 +458,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'no',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'no',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'no',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 17,
@@ -454,6 +486,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'no',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 18,
@@ -480,6 +514,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'no',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 19,
@@ -506,6 +542,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'no',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 20,
@@ -532,6 +570,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'yes',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 21,
@@ -558,6 +598,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'yes',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 22,
@@ -584,6 +626,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'yes',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 23,
@@ -610,6 +654,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'no',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'no',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 24,
@@ -636,6 +682,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'no',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'no',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 25,
@@ -662,6 +710,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'no',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         version_id: 26,
@@ -688,6 +738,8 @@ module.exports = {
         tua_tay_hang_ghe_sau: 'yes',
         tua_tay_ghe_sau_tich_hop_cong_usb: 'no',
         hang_ghe_thu_hai_gap_theo_ti_le_60_40: 'yes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ], {})
   },

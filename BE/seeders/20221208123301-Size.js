@@ -23,6 +23,8 @@ module.exports = {
       khoi_luong_toan_tai: '2,000',
       the_tich_khoang_hanh_ly: '442',
       dung_tich_thung_nhien_lieu: '56',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 2,
@@ -34,6 +36,8 @@ module.exports = {
       khoi_luong_toan_tai: '2,000',
       the_tich_khoang_hanh_ly: '442',
       dung_tich_thung_nhien_lieu: '56',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 3,
@@ -45,6 +49,8 @@ module.exports = {
       khoi_luong_toan_tai: '2,000',
       the_tich_khoang_hanh_ly: '442',
       dung_tich_thung_nhien_lieu: '56',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 4,
@@ -56,6 +62,8 @@ module.exports = {
       khoi_luong_toan_tai: '2,080',
       the_tich_khoang_hanh_ly: '442',
       dung_tich_thung_nhien_lieu: '56',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 5,
@@ -67,6 +75,8 @@ module.exports = {
       khoi_luong_toan_tai: '2365',
       the_tich_khoang_hanh_ly: '209 - 742',
       dung_tich_thung_nhien_lieu: '72',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 6,
@@ -78,6 +88,8 @@ module.exports = {
       khoi_luong_toan_tai: '2365',
       the_tich_khoang_hanh_ly: '209 - 742',
       dung_tich_thung_nhien_lieu: '72',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 7,
@@ -89,6 +101,8 @@ module.exports = {
       khoi_luong_toan_tai: '2445',
       the_tich_khoang_hanh_ly: '209 - 742',
       dung_tich_thung_nhien_lieu: '74',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 8,
@@ -100,6 +114,8 @@ module.exports = {
       khoi_luong_toan_tai: '2445',
       the_tich_khoang_hanh_ly: '209 - 742',
       dung_tich_thung_nhien_lieu: '74',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 9,
@@ -111,6 +127,8 @@ module.exports = {
       khoi_luong_toan_tai: '1,695',
       the_tich_khoang_hanh_ly: '350 - 1,260',
       dung_tich_thung_nhien_lieu: '48',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 10,
@@ -122,6 +140,8 @@ module.exports = {
       khoi_luong_toan_tai: '1,695',
       the_tich_khoang_hanh_ly: '350 - 1,260',
       dung_tich_thung_nhien_lieu: '48',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 11,
@@ -133,6 +153,8 @@ module.exports = {
       khoi_luong_toan_tai: '1,695',
       the_tich_khoang_hanh_ly: '350 - 1,260',
       dung_tich_thung_nhien_lieu: '48',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 12,
@@ -144,6 +166,8 @@ module.exports = {
       khoi_luong_toan_tai: '1,936',
       the_tich_khoang_hanh_ly: '430 - 1,460',
       dung_tich_thung_nhien_lieu: '51',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 13,
@@ -155,6 +179,8 @@ module.exports = {
       khoi_luong_toan_tai: '1,936',
       the_tich_khoang_hanh_ly: '430 - 1,406',
       dung_tich_thung_nhien_lieu: '51',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 14,
@@ -166,6 +192,8 @@ module.exports = {
       khoi_luong_toan_tai: '1538',
       the_tich_khoang_hanh_ly: '440',
       dung_tich_thung_nhien_lieu: '51',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 15,
@@ -177,6 +205,8 @@ module.exports = {
       khoi_luong_toan_tai: '1538',
       the_tich_khoang_hanh_ly: '440',
       dung_tich_thung_nhien_lieu: '51',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 16,
@@ -188,6 +218,8 @@ module.exports = {
       khoi_luong_toan_tai: '1538',
       the_tich_khoang_hanh_ly: '440',
       dung_tich_thung_nhien_lieu: '51',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 17,
@@ -199,6 +231,8 @@ module.exports = {
       khoi_luong_toan_tai: '1780',
       the_tich_khoang_hanh_ly: '450',
       dung_tich_thung_nhien_lieu: '51',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 18,
@@ -210,6 +244,8 @@ module.exports = {
       khoi_luong_toan_tai: '1780',
       the_tich_khoang_hanh_ly: '450',
       dung_tich_thung_nhien_lieu: '51',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 19,
@@ -221,6 +257,8 @@ module.exports = {
       khoi_luong_toan_tai: '1780',
       the_tich_khoang_hanh_ly: '450',
       dung_tich_thung_nhien_lieu: '51',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 20,
@@ -232,6 +270,8 @@ module.exports = {
       khoi_luong_toan_tai: '1970',
       the_tich_khoang_hanh_ly: '480',
       dung_tich_thung_nhien_lieu: '62',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 21,
@@ -243,6 +283,8 @@ module.exports = {
       khoi_luong_toan_tai: '1970',
       the_tich_khoang_hanh_ly: '480',
       dung_tich_thung_nhien_lieu: '62',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 22,
@@ -254,6 +296,8 @@ module.exports = {
       khoi_luong_toan_tai: '2000',
       the_tich_khoang_hanh_ly: '480',
       dung_tich_thung_nhien_lieu: '62',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 23,
@@ -265,6 +309,8 @@ module.exports = {
       khoi_luong_toan_tai: '1524',
       the_tich_khoang_hanh_ly: '280',
       dung_tich_thung_nhien_lieu: '44',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 24,
@@ -276,6 +322,8 @@ module.exports = {
       khoi_luong_toan_tai: '1524',
       the_tich_khoang_hanh_ly: '280',
       dung_tich_thung_nhien_lieu: '44',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 25,
@@ -287,6 +335,8 @@ module.exports = {
       khoi_luong_toan_tai: '1790',
       the_tich_khoang_hanh_ly: '334',
       dung_tich_thung_nhien_lieu: '51',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       version_id: 26,
@@ -298,6 +348,8 @@ module.exports = {
       khoi_luong_toan_tai: '1790',
       the_tich_khoang_hanh_ly: '334',
       dung_tich_thung_nhien_lieu: '51',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
    ], {})
   },
