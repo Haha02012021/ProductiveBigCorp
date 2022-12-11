@@ -118,6 +118,24 @@ var addVersion = async (data) => {
     }
 }
 
+const getInfo = async (id) => {
+    try {
+        const versionInfo = await Version.findByPk(id, {include: [
+        'chassis', 
+        'engine', 
+        'exterior',
+        'interior',
+        'i_activesense',
+        'safety',
+        'size',
+        'model',]});
+        return versionInfo;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 module.exports = {
     addVersion,
+    getInfo,
 }

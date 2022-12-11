@@ -1,4 +1,5 @@
 const {db, Manager, Customer} = require('../models');
+
 var findByAccount = async (req, res) => {
     try {
         const manager = await Manager.findOne({where: {account: req.body.account}});
@@ -51,9 +52,30 @@ var createCustomer = async (name, place, phone, email) => {
   }
 }
 
+var getProducts = async (id) => {
+  try {
+    const products = await Manager.findByPk(id, {include: ['products']});
+    return products
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+var updateManagerInfo = async (id, updateInfo) => {
+  try {
+    const manager = await Manager.findByPk(id);
+    manager.update(updateInfo);
+    return manager;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 module.exports = {
   findByAccount,
   createManager,
   createCustomer,
   findCustomerByPhoneNum,
+  getProducts,
+  updateManagerInfo
 }
