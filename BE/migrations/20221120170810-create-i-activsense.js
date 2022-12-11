@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable('i_activesense', {
+    await queryInterface.createTable('i_activsense', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -76,6 +76,6 @@ module.exports = {
     });
   },
   async down(queryInterface, DataTypes) {
-    await queryInterface.dropTable('i_activesense');
+    await queryInterface.dropTable('i_activsense');
   }
 };

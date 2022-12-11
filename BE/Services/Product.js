@@ -36,8 +36,18 @@ var updateOneProduct = async (updateInfo, id) => {
   }
 }
 
+var getInfo = async (id) => {
+  try {
+    const product = await Product.findByPk(id, {include: ['model', 'version', 'status', 'color', 'batch', 'request', 'customer', 'hasStatuses']});
+    return product;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
   module.exports = {
     addProducts,
     updateProducts,
     updateOneProduct,
+    getInfo,
   }

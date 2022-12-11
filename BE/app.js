@@ -8,6 +8,7 @@ var authRouter = require('./routes/auth');
 var factoryRouter = require('./routes/factory');
 var coporationRouter = require('./routes/coporation');
 var storeRouter = require('./routes/store');
+var indexRouter = require('./routes/index')
 
 var app = express();
 
@@ -28,5 +29,6 @@ app.use('/auth', authRouter);
 app.use('/factory', factoryRouter);
 app.use('/coporation', coporationRouter);
 app.use('/store', storeRouter);
+app.use('/', indexRouter);
 
 module.exports = app;
