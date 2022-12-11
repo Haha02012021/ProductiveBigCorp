@@ -73,7 +73,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    tableName: 'i_activesense',
+    tableName: 'i_activsense',
     modelName: 'I_ACTIVSENSE',
   });
   return I_ACTIVSENSE;
