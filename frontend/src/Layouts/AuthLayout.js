@@ -1,8 +1,8 @@
-import { Avatar, Dropdown, Layout, Menu, Space, Tabs } from "antd";
+import { Avatar, Dropdown, Layout, Space, Tabs } from "antd";
 import Search from "antd/es/input/Search";
 import PageHeader from "../Components/PageHeader";
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
-import { useLocation, useNavigate } from "react-router-dom";
+import Drawer from "../Components/Drawer";
 
 const { Header, Sider, Content } = Layout;
 
@@ -31,40 +31,9 @@ export default function AuthLayout({
   },
   pageHeaderProps = {},
 }) {
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-
-  const handleClickMenuOption = (selectedItem) => {
-    let { keyPath } = selectedItem;
-    keyPath.reverse();
-    navigate("/" + keyPath.join("/"));
-  };
-
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Sider style={{ height: "100vh" }} width={256}>
-        <div
-          style={{
-            height: "64px",
-            backgroundColor: "white",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <label style={{ fontSize: 48, fontWeight: 900 }} className="logo">
-            LOGO
-          </label>
-        </div>
-        <Menu
-          onClick={handleClickMenuOption}
-          style={{ width: 256, height: "100%" }}
-          defaultSelectedKeys={[pathname.split("/").reverse()[0]]}
-          defaultOpenKeys={[pathname.split("/").reverse()[1]]}
-          mode="inline"
-          items={menuProps.items}
-        />
-      </Sider>
+      <Drawer menuProps={menuProps} />
       <Layout>
         <Header className="custom-header">
           <Space className="user" size={[8, 0]}>
