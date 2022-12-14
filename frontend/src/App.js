@@ -7,6 +7,7 @@ import VersionManage from "./Pages/ExecutiveBoard/ProductLine/VersionManage";
 import Product from "./Pages/ExecutiveBoard/Product";
 import UnitManage from "./Pages/ExecutiveBoard/UnitManage";
 import ProductLot from "./Pages/Factory/ProductLot";
+import StoreProduct from "./Pages/Store/StoreProduct";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/product" element={<Product />} />
           <Route path="/units-manage" element={<UnitManage />} />
           <Route path="/product-lot" element={<ProductLot />} />
+          <Route path="/store-product" element={<StoreProduct />} />
         </Routes>
       </BrowserRouter>
     </ConfigProvider>
