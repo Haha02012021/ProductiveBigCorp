@@ -26,10 +26,10 @@ function validateCoporation(req, res, next) {
     });
 }
 
-router.post('/addManager', validateCoporation, addManager);
+router.post('/addManager', addManager);
 
-router.post('/newModel', validateCoporation, createModel);
+router.post('/newModel', createModel);
 
-router.post('/newVersion', validateCoporation, createVersion);
+router.post('/newVersion', createVersion);
 
 module.exports = router;

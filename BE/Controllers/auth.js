@@ -1,11 +1,13 @@
 const {findByAccount} = require('../Services/User');
+const jwt = require('jsonwebtoken');
 
 var login = async (req, res) => {
   try {
       const manager = await findByAccount(req.body.account);
+      console.log(manager);
       if(manager) {
         if(req.body.password === manager.password) {
-            const accessToken = jwt.sign(manager.dataValues, process.env.ACCESS_TOKEN_SECRET)
+            const accessToken = jwt.sign(manager, process.env.ACCESS_TOKEN_SECRET)
             res.status(200).cookie('jwt', accessToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production' ? true : false,

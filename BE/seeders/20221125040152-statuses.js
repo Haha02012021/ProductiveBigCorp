@@ -81,6 +81,11 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          context: "returnedToFactory",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
           context: "destroyed",
           createdAt: new Date(),
           updatedAt: new Date(),

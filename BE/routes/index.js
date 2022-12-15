@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var {getVersionInfo} = require('../Controllers/index');
+var {getVersionInfo, getModelInfo} = require('../Controllers/index');
 
 function authenToken(req, res, next) {
     const bearer = req.headers['authorization'];
@@ -22,5 +22,7 @@ function authenToken(req, res, next) {
   }
 
 router.get('/version/:id', getVersionInfo);
+
+router.get('/model/:id', getModelInfo);
 
 module.exports = router;

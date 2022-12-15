@@ -12,6 +12,7 @@ var addRelation = async (products, manager_id) => {
         );
     } catch (err) {
         console.log(err);
+        return null;
     }
 }
 
@@ -26,6 +27,7 @@ var addOneRelation = async (product_id, manager_id) => {
         );
     } catch (err) {
         console.log(err);
+        return null;
     }
 }
 
