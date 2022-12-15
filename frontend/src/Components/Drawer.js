@@ -15,7 +15,7 @@ const Drawer = ({ menuProps = {} }) => {
   };
   return (
     <Sider
-      style={{ height: "100vh", position: "relative" }}
+      style={{ height: "calc(100vh - 64px)", position: "sticky", top: 0 }}
       width={256}
       trigger={null}
       collapsible

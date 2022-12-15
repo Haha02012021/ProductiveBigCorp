@@ -1,6 +1,7 @@
 import { Form, Input } from "antd";
 import { useMemo, useState } from "react";
 import CustomModal from "../../../../Components/CustomModal";
+import PageContent from "../../../../Components/PageContent";
 import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
 import ExecutiveBoardLayout from "../../../../Layouts/ExecutiveBoardLayout";
@@ -45,6 +46,7 @@ export default function LineManage() {
           <ActionsCell
             hasView={false}
             onEdit={() => handleEditLine(productLineInfo)}
+            hasConfirm={false}
           />
         ),
       },
@@ -73,7 +75,9 @@ export default function LineManage() {
         onAdd: () => handleAddLine(),
       }}
     >
-      <CustomTable dataSource={dataSource} columns={columns} />
+      <PageContent>
+        <CustomTable dataSource={dataSource} columns={columns} />
+      </PageContent>
       {addModalVisible && (
         <CustomModal
           title="Thêm dòng sản phẩm"

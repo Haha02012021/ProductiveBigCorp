@@ -5,6 +5,7 @@ import ActionsCell from "../../../Components/Table/ActionsCell";
 import CustomTable from "../../../Components/Table/CustomTable";
 import ModalViewProduct from "./modalViewProduct";
 import ExecutiveBoardLayout from "../../../Layouts/ExecutiveBoardLayout";
+import PageContent from "../../../Components/PageContent";
 
 export default function Product() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -101,7 +102,12 @@ export default function Product() {
       fixed: "center",
       width: 60,
       render: () => (
-        <ActionsCell hasEdit={false} hasDelete={false} onView={showModal} />
+        <ActionsCell
+          hasEdit={false}
+          hasDelete={false}
+          onView={showModal}
+          hasConfirm={false}
+        />
       ),
     },
   ];
@@ -122,7 +128,9 @@ export default function Product() {
     <ExecutiveBoardLayout
       pageHeaderProps={{ title: "Sản phẩm", hasAction: false }}
     >
-      <CustomTable columns={columns} dataSource={dataSource} />
+      <PageContent>
+        <CustomTable columns={columns} dataSource={dataSource} />
+      </PageContent>
       <ModalViewProduct
         isModalOpen={isModalOpen}
         handleOk={handleOk}

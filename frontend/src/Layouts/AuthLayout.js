@@ -1,10 +1,9 @@
-import { Avatar, Dropdown, Layout, Space, Tabs } from "antd";
-import Search from "antd/es/input/Search";
+import { Avatar, Dropdown, Layout, Space } from "antd";
 import PageHeader from "../Components/PageHeader";
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import Drawer from "../Components/Drawer";
 
-const { Header, Sider, Content } = Layout;
+const { Header, Content } = Layout;
 
 const dropdownMenu = [
   {
@@ -22,8 +21,6 @@ const dropdownMenu = [
 export default function AuthLayout({
   menuProps = {},
   children,
-  pageTabs = [],
-  searchPlaceholder = "Nhập vào đây",
   user = {
     username: "username",
     avatar:
@@ -56,21 +53,8 @@ export default function AuthLayout({
                 title={pageHeaderProps.title}
                 hasAction={pageHeaderProps.hasAction}
                 onAdd={pageHeaderProps.onAdd}
+                customAction={pageHeaderProps.customAction}
               />
-              {pageTabs && (
-                <Tabs
-                  items={pageTabs.map((tab) => {
-                    return { key: tab, label: tab };
-                  })}
-                  tabBarStyle={{ marginBottom: 0 }}
-                />
-              )}
-              <div style={{ display: "flex", justifyContent: "right" }}>
-                <Search
-                  placeholder={searchPlaceholder}
-                  style={{ width: "36%" }}
-                />
-              </div>
             </Space>
             {children}
           </Space>

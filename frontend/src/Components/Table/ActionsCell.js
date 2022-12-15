@@ -5,9 +5,11 @@ export default function ActionsCell({
   hasView = true,
   hasEdit = true,
   hasDelete = true,
+  hasConfirm = true,
   onView,
   onEdit,
   onDelete,
+  onConfirm,
 }) {
   return (
     <Space split={<Divider type="vertical" />} size>
@@ -28,6 +30,11 @@ export default function ActionsCell({
       {hasDelete && (
         <StyledButton type="primary" danger onClick={onDelete}>
           Xóa
+        </StyledButton>
+      )}
+      {hasConfirm && (
+        <StyledButton type="primary" onClick={onConfirm}>
+          Xác nhận
         </StyledButton>
       )}
     </Space>

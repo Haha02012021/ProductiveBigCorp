@@ -5,6 +5,7 @@ import CustomModal from "../../../Components/CustomModal";
 import { Form, Tabs } from "antd";
 import { useMemo, useState } from "react";
 import UnitForm from "./UnitForm";
+import PageContent from "../../../Components/PageContent";
 
 const factoryDataSource = [
   {
@@ -100,24 +101,30 @@ export default function UnitManage() {
         label: `Cơ sở sản xuất`,
         key: "1",
         children: (
-          <CustomTable dataSource={factoryDataSource} columns={columns} />
+          <PageContent>
+            <CustomTable dataSource={factoryDataSource} columns={columns} />
+          </PageContent>
         ),
       },
       {
         label: `Đại lý phân phối`,
         key: "2",
         children: (
-          <CustomTable dataSource={storeDataSource} columns={columns} />
+          <PageContent>
+            <CustomTable dataSource={storeDataSource} columns={columns} />
+          </PageContent>
         ),
       },
       {
         label: `Trung tâm bảo hành`,
         key: "3",
         children: (
-          <CustomTable
-            dataSource={maintainCenterDataSource}
-            columns={columns}
-          />
+          <PageContent>
+            <CustomTable
+              dataSource={maintainCenterDataSource}
+              columns={columns}
+            />
+          </PageContent>
         ),
       },
     ],

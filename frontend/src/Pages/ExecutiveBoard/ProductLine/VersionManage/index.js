@@ -1,6 +1,7 @@
 import { Form } from "antd";
 import { useMemo, useState } from "react";
 import CustomModal from "../../../../Components/CustomModal";
+import PageContent from "../../../../Components/PageContent";
 import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
 import ExecutiveBoardLayout from "../../../../Layouts/ExecutiveBoardLayout";
@@ -35,7 +36,7 @@ export default function VersionManage() {
         key: "actions",
         fixed: "center",
         width: 236,
-        render: () => <ActionsCell />,
+        render: () => <ActionsCell hasConfirm={false} />,
       },
     ],
     []
@@ -55,7 +56,9 @@ export default function VersionManage() {
         onAdd: () => handleAddVer(),
       }}
     >
-      <CustomTable columns={columns} />
+      <PageContent>
+        <CustomTable columns={columns} />
+      </PageContent>
       <CustomModal
         open={modalVisible}
         onOk={handleSave}

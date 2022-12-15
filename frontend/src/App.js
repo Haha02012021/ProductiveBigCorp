@@ -8,6 +8,9 @@ import Product from "./Pages/ExecutiveBoard/Product";
 import UnitManage from "./Pages/ExecutiveBoard/UnitManage";
 import ProductLot from "./Pages/Factory/ProductLot";
 import StoreProduct from "./Pages/Store/StoreProduct";
+import ProductImport from "./Pages/Factory/ProductImportExport/ProductImport";
+import ProductExport from "./Pages/Factory/ProductImportExport/ProductExport";
+import { default as FactoryReport } from "./Pages/Factory/Statistical/Report";
 
 function App() {
   return (
@@ -31,6 +34,17 @@ function App() {
           <Route path="/product" element={<Product />} />
           <Route path="/units-manage" element={<UnitManage />} />
           <Route path="/product-lot" element={<ProductLot />} />
+          <Route
+            path="/product-in-out/export-to-store"
+            element={<ProductExport />}
+          />
+          <Route
+            path="/product-in-out/receive-from-maitainence"
+            element={<ProductImport />}
+          />
+          <Route path="/statistical/report" element={<FactoryReport />} />
+          <Route path="/statistical/analysis" element />
+          <Route path="/statistical/error-rate" element />
           <Route path="/store-product" element={<StoreProduct />} />
         </Routes>
       </BrowserRouter>

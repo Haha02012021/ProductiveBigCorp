@@ -1,6 +1,13 @@
 import { Modal } from "antd";
 
-export default function CustomModal({ children, title, open, onCancel, onOk }) {
+export default function CustomModal({
+  children,
+  title,
+  open,
+  onCancel,
+  onOk,
+  width = "72%",
+}) {
   return (
     <Modal
       title={title}
@@ -9,7 +16,7 @@ export default function CustomModal({ children, title, open, onCancel, onOk }) {
       onOk={onOk}
       okText="Lưu"
       cancelText="Bỏ qua"
-      width="72%"
+      width={width}
     >
       {children}
     </Modal>

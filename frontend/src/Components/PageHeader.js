@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function PageHeader({
   title = "Title",
   hasAction = true,
+  customAction = null,
   onAdd,
 }) {
   const navigate = useNavigate();
@@ -40,11 +41,12 @@ export default function PageHeader({
           <ArrowLeftOutlined size={16} onClick={handleBack} />
           <p style={{ fontSize: 20, fontWeight: 600 }}>{title}</p>
         </Space>
-        {hasAction && (
+        {hasAction && !customAction && (
           <Button type="primary" onClick={onAdd}>
             Thêm
           </Button>
         )}
+        {customAction}
       </div>
     </div>
   );
