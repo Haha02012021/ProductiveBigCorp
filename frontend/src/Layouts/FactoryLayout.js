@@ -32,7 +32,7 @@ export default function FactoryLayout({ children, pageHeaderProps }) {
       {
         key: "statistical",
         icon: <SettingOutlined />,
-        label: "Quản lý đơn vị",
+        label: "Thống kê sản phẩm",
         children: [
           {
             key: "report",
