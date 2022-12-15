@@ -1,15 +1,18 @@
 import { useMemo } from "react";
-import ColumnChart from "./ColumnChart";
+import ColumnChart from "../ColumnChart";
 
-export default function YearyChart({
+export default function QuarteryColumnChart({
   data,
-  title = "Biểu đồ số liệu sản phẩm từ năm 2010 đến năm 2013",
+  title = "Biểu đồ số liệu sản phẩm theo quý năm 2010",
+  isGroup = true,
+  isStack = false,
 }) {
   const config = useMemo(() => {
     return {
       data: data,
-      isGroup: true,
-      xField: "year",
+      isGroup,
+      isStack,
+      xField: "quarter",
       yField: "amount",
       seriesField: "name",
 
@@ -40,7 +43,7 @@ export default function YearyChart({
     <div style={{ paddingTop: "40px", paddingBottom: "40px" }}>
       <ColumnChart
         titleY="Số lượng sản phẩm"
-        titleX="Năm"
+        titleX="Quý"
         title={title}
         config={config}
       />

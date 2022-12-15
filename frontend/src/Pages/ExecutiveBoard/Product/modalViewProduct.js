@@ -2,7 +2,7 @@ import React from "react";
 import { Modal } from "antd";
 import { Tabs } from "antd";
 import { Image } from "antd";
-import sample from "../../../assets/cx-5-mau.jpg";
+// import sample from "../../../assets/cx-5-mau.jpg";
 import { Col, Row } from "antd";
 import { Radio, ConfigProvider } from "antd";
 import styled from "styled-components";
@@ -73,9 +73,7 @@ export default function ModalViewProduct(props) {
     return (
       <>
         <Row>
-          <Col span={12}>
-            <Image width={270} src={sample} />
-          </Col>
+          <Col span={12}>{/* <Image width={270} src={sample} /> */}</Col>
           <Col span={12}>
             <Row
               style={{

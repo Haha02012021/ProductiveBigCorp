@@ -11,6 +11,8 @@ import StoreProduct from "./Pages/Store/StoreProduct";
 import ProductImport from "./Pages/Factory/ProductImportExport/ProductImport";
 import ProductExport from "./Pages/Factory/ProductImportExport/ProductExport";
 import { default as FactoryReport } from "./Pages/Factory/Statistical/Report";
+import { default as FactoryAnalysis } from "./Pages/Factory/Statistical/Analysis";
+import ErrorRate from "./Pages/Factory/Statistical/ErrorRate";
 
 function App() {
   return (
@@ -43,8 +45,8 @@ function App() {
             element={<ProductImport />}
           />
           <Route path="/statistical/report" element={<FactoryReport />} />
-          <Route path="/statistical/analysis" element />
-          <Route path="/statistical/error-rate" element />
+          <Route path="/statistical/analysis" element={<FactoryAnalysis />} />
+          <Route path="/statistical/error-rate" element={<ErrorRate />} />
           <Route path="/store-product" element={<StoreProduct />} />
         </Routes>
       </BrowserRouter>

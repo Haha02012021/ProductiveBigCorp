@@ -5,6 +5,8 @@ import { SearchOutlined } from "@ant-design/icons";
 import MonthyReport from "./MonthyReport";
 import QuarteryReport from "./QuarteryReport";
 import YearyReport from "./YearyReport";
+import YearSearch from "../../../../Components/HeaderExtra/YearSearch";
+import FromToYearSearch from "../../../../Components/HeaderExtra/FromToYearSearch";
 
 export default function Report() {
   const [currentTabKey, setCurrentTabKey] = useState(1);
@@ -39,40 +41,9 @@ export default function Report() {
         title: "Báo cáo số liệu sản xuất",
         customAction:
           currentTabKey === "3" ? (
-            <Form layout="inline" onFinish={handleSearch}>
-              <Form.Item name="from" label="Năm">
-                <InputNumber />
-              </Form.Item>
-              <Typography.Text
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  fontWeight: 600,
-                  marginRight: 16,
-                }}
-              >
-                đến
-              </Typography.Text>
-              <Form.Item name="to" label="Năm" style={{ marginRight: 0 }}>
-                <InputNumber />
-              </Form.Item>
-              <Button
-                htmlType="submit"
-                icon={<SearchOutlined />}
-                type="primary"
-              />
-            </Form>
+            <FromToYearSearch onFinish={handleSearch} />
           ) : (
-            <Form layout="inline" onFinish={handleSearch}>
-              <Form.Item name="year" label="Năm" style={{ marginRight: 0 }}>
-                <InputNumber />
-              </Form.Item>
-              <Button
-                htmlType="submit"
-                icon={<SearchOutlined />}
-                type="primary"
-              />
-            </Form>
+            <YearSearch onFinish={handleSearch} />
           ),
       }}
       showSearch={false}

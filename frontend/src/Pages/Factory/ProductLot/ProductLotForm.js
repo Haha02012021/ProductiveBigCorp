@@ -1,13 +1,4 @@
-import {
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Row,
-  Select,
-  Space,
-} from "antd";
+import { Col, DatePicker, Form, Input, InputNumber, Row, Select } from "antd";
 
 export default function ProductLotForm() {
   return (

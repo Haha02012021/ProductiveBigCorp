@@ -1,16 +1,19 @@
 import { Space } from "antd";
 import { useMemo } from "react";
-import ColumnChart from "./ColumnChart";
+import ColumnChart from "../ColumnChart";
 
-export default function MonthyChart({
+export default function MonthyColumnChart({
   data,
   firstTitle = "Biểu đồ số liệu sản phẩm theo 6 tháng đầu năm 2010",
   lastTitle = "Biểu đồ số liệu sản phẩm theo 6 tháng cuối năm 2010",
+  isGroup = true,
+  isStack = false,
 }) {
   const first6MonthsConfig = useMemo(() => {
     return {
       data: data.slice(0, data.length / 2),
-      isGroup: true,
+      isGroup,
+      isStack,
       xField: "month",
       yField: "amount",
       seriesField: "name",
@@ -42,7 +45,8 @@ export default function MonthyChart({
   const last6MonthsConfig = useMemo(() => {
     return {
       data: data.slice(data.length / 2, data.length),
-      isGroup: true,
+      isGroup,
+      isStack,
       xField: "month",
       yField: "amount",
       seriesField: "name",
