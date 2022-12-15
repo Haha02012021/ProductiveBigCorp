@@ -33,6 +33,7 @@ var updateOneProduct = async (updateInfo, id) => {
     return product
   } catch (err) {
     console.log(err);
+    return null;
   }
 }
 
@@ -42,12 +43,24 @@ var getInfo = async (id) => {
     return product;
   } catch (err) {
     console.log(err);
+    return null;
   }
 }
 
-  module.exports = {
-    addProducts,
-    updateProducts,
-    updateOneProduct,
-    getInfo,
+var getCustomerInfo = async (id) => {
+  try {
+    const product = await Product.findByPk(id, {include: ['customer']});
+    return product;
+  } catch (err) {
+    console.log(err);
+    return null;
   }
+}
+
+module.exports = {
+  addProducts,
+  updateProducts,
+  updateOneProduct,
+  getInfo,
+  getCustomerInfo,
+}

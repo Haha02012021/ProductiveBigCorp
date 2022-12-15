@@ -2,8 +2,7 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 
-const {db, Manager, Batch, Product, History} = require('../models');
-const {createProducts, getBatches} = require('../Controllers/FactoryController');
+const {createProducts, getBatches, receiveBrokenProducts} = require('../Controllers/FactoryController');
 
 function validateFactory(req, res, next) {
     const bearer = req.headers['authorization'];
@@ -27,12 +26,10 @@ function validateFactory(req, res, next) {
     });
 }
 
-router.post('/newProducts', validateFactory, createProducts);
+router.post('/newProducts', createProducts);
 
-router.get('/batches', validateFactory, getBatches);
+router.get('/batches/:factory_id', getBatches);
 
-router.post('/sendProducts', validateFactory, async (req, res) => {
-  
-})
+router.post('/receiveBrokenProducts', receiveBrokenProducts);
 
 module.exports = router;

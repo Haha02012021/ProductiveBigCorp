@@ -1,22 +1,53 @@
-const {db, MODEL, Model_Color} = require('../models');
+const {db, MODEL, Model_Color, Color, sequelize} = require('../models');
+const {QueryTypes} = require('sequelize');
 
 var addModel = async (name, colors) => {
     try {
-        const newModel = await MODEL.create({
-            name: name
-        })
-        await Model_Color.bulkCreate(colors.map(element => {
-            return {
-                model_id: newModel.id,
-                color_id: element,
+        const oldModel = await sequelize.query(
+            'SELECT * FROM models WHERE BINARY name = $1 limit 1',
+            {
+              bind: [name],
+              type: QueryTypes.SELECT
             }
-        }))
-        return newModel
+        );
+        console.log(oldModel);
+        if(oldModel) {
+            throw 'Already existed'
+        } else {
+            const newModel = await MODEL.create({
+                name: name
+            })
+            await Model_Color.bulkCreate(colors.map(element => {
+                return {
+                    model_id: newModel.id,
+                    color_id: element,
+                }
+            }))
+            return newModel
+        }
       } catch (err) {
           console.log(err);
+          return null
       }
+}
+
+var info = async (id) => {
+    try {
+        const model = await MODEL.findByPk(id, {include: [{
+            model: Color,
+            as: 'colors',
+            through: {
+                attributes: [],
+            },
+        }, 'versions']});
+        return model;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
 }
 
 module.exports = {
     addModel,
+    info,
 }

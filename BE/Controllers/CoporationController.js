@@ -19,7 +19,7 @@ var addManager = async (req, res) => {
 
 var createModel = async (req, res) => {
     try {
-        const newModel = await addModel(req.body.name);
+        const newModel = await addModel(req.body.name, req.body.colors);
         res.json({success: true, data: newModel});
     } catch {
         res.status(500).json({success: false, message: 'error from newModel', error: err});

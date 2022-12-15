@@ -1,30 +1,49 @@
-const {db, Manager, Customer} = require('../models');
+const {db, Manager, Customer, sequelize} = require('../models');
+const {QueryTypes} = require('sequelize');
 
-var findByAccount = async (req, res) => {
+var findByAccount = async (account) => {
     try {
-        const manager = await Manager.findOne({where: {account: req.body.account}});
-        if(manager) {
-          return manager;
+        const manager = await sequelize.query(
+          'SELECT * FROM managers WHERE BINARY account = $1 limit 1',
+          {
+            bind: [account],
+            type: QueryTypes.SELECT
+          }
+        );
+        if(manager.length !== 0) {
+          return manager[0];
         } else {
           return null;
         }
       } catch (error) {
         console.log(error);
+        return null;
       }
 }
 
 var createManager = async (name, place, account, password, role) => {
   try {
-      const manager = await Manager.create({
-          name: name,
-          place: place,
-          account: account,
-          password: password,
-          role: role,
-      })
-      return manager;
+    const checkManager = await sequelize.query(
+      'SELECT * FROM managers WHERE BINARY account = $1 limit 1',
+      {
+        bind: [account],
+        type: QueryTypes.SELECT
+      }
+    );
+    if(checkManager.length !== 0) {
+      throw 'Account has already been taken';
+    }
+    const manager = await Manager.create({
+        name,
+        place,
+        account,
+        password,
+        role,
+    })
+    return manager;
     } catch (err) {
         console.log(err);
+        return null;
     }
 }
 
@@ -38,17 +57,52 @@ var findCustomerByPhoneNum = async (phoneNum) => {
     }
   } catch (err) {
     console.log(err);
+    return null;
+  }
+}
+
+var findCustomerByEmail = async (email) => {
+  try {
+    //console.log(email);
+    const customer = await sequelize.query(
+      'SELECT * FROM customers WHERE BINARY email = $1',
+      {
+        bind: [email],
+        type: QueryTypes.SELECT
+      }
+    );
+    if(customer.length !== 0) {
+      console.log(customer[0]);
+      return customer[0];
+    } else {
+      return null
+    }
+  } catch (err) {
+    console.log(err);
+    return null;
   }
 }
 
 var createCustomer = async (name, place, phone, email) => {
   try {
-    const customer = await Customer.create({
-      name, place, phone, email
-    })
-    return customer;
+    const customer = await sequelize.query(
+      'SELECT * FROM customers WHERE BINARY email = $1 or phone = $2 limit 1',
+      {
+        bind: [email, phone],
+        type: QueryTypes.SELECT
+      }
+    );
+    if(customer.length !== 0) {
+      throw "Customer already existed";
+    } else {
+      const customer = await Customer.create({
+        name, place, phone, email
+      })
+      return customer;
+    }
   } catch (err) {
     console.log(err);
+    return null;
   }
 }
 
@@ -58,6 +112,18 @@ var getProducts = async (id) => {
     return products
   } catch (err) {
     console.log(err);
+    return null;
+  }
+}
+
+var updateCustomer = async (updateInfo, id) => {
+  try {
+    const customer = Customer.findByPk(id);
+    await customer.update(updateInfo);
+    return customer;
+  } catch (err) {
+    console.log(err);
+    return null;
   }
 }
 
@@ -68,6 +134,7 @@ var updateManagerInfo = async (id, updateInfo) => {
     return manager;
   } catch (err) {
     console.log(err);
+    return null;
   }
 }
 
@@ -77,5 +144,7 @@ module.exports = {
   createCustomer,
   findCustomerByPhoneNum,
   getProducts,
-  updateManagerInfo
+  updateManagerInfo,
+  findCustomerByEmail,
+  updateCustomer,
 }

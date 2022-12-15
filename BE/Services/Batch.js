@@ -1,4 +1,4 @@
-const {db, Batch} = require('../models');
+const {db, Batch, MODEL, Version, Color} = require('../models');
 
 const addBatch = async (factory_id, color_id, model_id, version_id, amount) => {
     try {
@@ -12,6 +12,7 @@ const addBatch = async (factory_id, color_id, model_id, version_id, amount) => {
         return batch;
     } catch (err) {
         console.log(err);
+        return null;
     }
 }
 
@@ -20,11 +21,29 @@ const findByFactoryId = async (factory_id) => {
         const batches = await Batch.findAll({
           where: {
             factory_id: factory_id
-          }
+          },
+          include: [
+            {
+                model: MODEL,
+                as: 'model',
+                attributes: ['name'],
+            },
+            {
+                model: Version,
+                as: 'version',
+                attributes: ['name'],
+            },
+            {
+                model: Color,
+                as: 'color',
+                attributes: ['code', 'name'],
+            },
+          ]
         })
         return batches;
     } catch (err) {
         console.log(err);
+        return null;
     }
 }
 
