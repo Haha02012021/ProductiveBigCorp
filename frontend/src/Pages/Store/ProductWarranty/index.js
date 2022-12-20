@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import Store from "../../../Layouts/Store";
+import StoreLayout from "../../../Layouts/StoreLayout";
 import CustomTable from "../../../Components/Table/CustomTable";
 import ActionsCell from "../../../Components/Table/ActionsCell";
 import { Tabs } from "antd";
@@ -136,7 +136,7 @@ const ProductWarranty = () => {
     []
   );
   return (
-    <Store
+    <StoreLayout
       pageHeaderProps={{
         title: "Sản phẩm bảo hành/triệu hồi",
         hasAction: false,
@@ -149,7 +149,7 @@ const ProductWarranty = () => {
           setCurrentTab(key);
         }}
       />
-    </Store>
+    </StoreLayout>
   );
 };
 

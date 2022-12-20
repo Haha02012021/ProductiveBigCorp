@@ -39,6 +39,7 @@ export default function ExecutiveBoardLayout({ children, pageHeaderProps }) {
     <AuthLayout
       menuProps={{
         items: menuItems,
+        layout: "executive-board",
       }}
       pageHeaderProps={pageHeaderProps}
     >

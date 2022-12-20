@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, Layout, Button } from "antd";
+import { Menu, Layout } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
@@ -11,7 +11,7 @@ const Drawer = ({ menuProps = {} }) => {
   const handleClickMenuOption = (selectedItem) => {
     let { keyPath } = selectedItem;
     keyPath.reverse();
-    navigate("/" + keyPath.join("/"));
+    navigate("/" + menuProps.layout + "/" + keyPath.join("/"));
   };
   return (
     <Sider

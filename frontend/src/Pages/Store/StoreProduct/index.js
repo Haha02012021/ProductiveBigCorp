@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import Store from "../../../Layouts/Store";
+import Store from "../../../Layouts/StoreLayout";
 import { Tabs } from "antd";
 import CustomTable from "../../../Components/Table/CustomTable";
 import ActionsCell from "../../../Components/Table/ActionsCell";
