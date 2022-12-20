@@ -2,7 +2,7 @@ import AuthLayout from "./AuthLayout";
 import { SettingOutlined } from "@ant-design/icons";
 import React, { useMemo } from "react";
 
-const Store = ({ children, pageHeaderProps }) => {
+const StoreLayout = ({ children, pageHeaderProps }) => {
   const menuItems = useMemo(
     () => [
       {
@@ -16,7 +16,7 @@ const Store = ({ children, pageHeaderProps }) => {
         label: "Sản phẩm bảo hành",
       },
       {
-        key: "statistic",
+        key: "statistical",
         icon: <SettingOutlined />,
         label: "Thống kê sản phẩm",
         children: [
@@ -41,6 +41,7 @@ const Store = ({ children, pageHeaderProps }) => {
     <AuthLayout
       menuProps={{
         items: menuItems,
+        layout: "store",
       }}
       pageHeaderProps={pageHeaderProps}
     >
@@ -49,4 +50,4 @@ const Store = ({ children, pageHeaderProps }) => {
   );
 };
 
-export default Store;
+export default StoreLayout;

@@ -61,6 +61,7 @@ export default function FactoryLayout({ children, pageHeaderProps }) {
     <AuthLayout
       menuProps={{
         items: menuItems,
+        layout: "factory",
       }}
       pageHeaderProps={pageHeaderProps}
     >
