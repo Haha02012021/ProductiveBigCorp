@@ -3,16 +3,8 @@ import Store from "../../../Layouts/Store";
 import { Tabs } from "antd";
 import CustomTable from "../../../Components/Table/CustomTable";
 import ActionsCell from "../../../Components/Table/ActionsCell";
+import { createDataTable } from "../../../Components/Table/createDataTable";
 
-const productDataSource = [
-  {
-    key: 1,
-    productLine: 1,
-    product: "Store 1",
-    number: "store1",
-    status: "store1",
-  },
-];
 const StoreProduct = () => {
   const [currentTab, setCurrentTab] = useState(1);
   const productColumns = useMemo(
@@ -22,19 +14,24 @@ const StoreProduct = () => {
         dataIndex: "productLine",
         key: "productLine",
         fixed: true,
-        width: 265,
+        width: 150,
         height: 56,
       },
       {
         title: "Sản phẩm",
         dataIndex: "product",
         key: "product",
-        width: 265,
       },
       {
         title: "Số",
         dataIndex: "number",
         key: "number",
+        width: 100,
+      },
+      {
+        title: "Giá",
+        dataIndex: "price",
+        key: "price",
       },
       {
         title: "Trạng thấi",
@@ -46,14 +43,22 @@ const StoreProduct = () => {
         title: "Thao tác",
         dataIndex: "actions",
         key: "actions",
-        width: 91,
-        render: (unitInfo) => <ActionsCell hasEdit={false} hasDelete={false} />,
+        width: 150,
+        render: () => <ActionsCell hasConfirm={false} hasDelete={false} />,
       },
     ],
     []
   );
   const newProductColumns = useMemo(
     () => [
+      {
+        title: "Dòng sản phẩm",
+        dataIndex: "productLine",
+        key: "productLine",
+        fixed: true,
+        width: 150,
+        height: 56,
+      },
       {
         title: "Phiên bản",
         dataIndex: "version",
@@ -91,11 +96,13 @@ const StoreProduct = () => {
         dataIndex: "actions",
         key: "actions",
         width: 158,
-        render: (unitInfo) => <ActionsCell hasDelete={false} />,
+        render: () => <ActionsCell hasDelete={false} hasConfirm={false} />,
       },
     ],
     []
   );
+  const productDataSource = createDataTable(productColumns, 3);
+  const newProductDataSource = createDataTable(newProductColumns, 3);
   const tabItems = useMemo(
     () => [
       {
@@ -111,7 +118,12 @@ const StoreProduct = () => {
       {
         label: `Sản phẩm mới`,
         key: "2",
-        children: <CustomTable columns={newProductColumns} />,
+        children: (
+          <CustomTable
+            dataSource={newProductDataSource}
+            columns={newProductColumns}
+          />
+        ),
       },
     ],
     []
