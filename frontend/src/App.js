@@ -8,6 +8,7 @@ import Product from "./Pages/ExecutiveBoard/Product";
 import UnitManage from "./Pages/ExecutiveBoard/UnitManage";
 import ProductLot from "./Pages/Factory/ProductLot";
 import StoreProduct from "./Pages/Store/StoreProduct";
+import ProductWarranty from "./Pages/Store/ProductWarranty";
 import ProductImport from "./Pages/Factory/ProductImportExport/ProductImport";
 import ProductExport from "./Pages/Factory/ProductImportExport/ProductExport";
 import { default as FactoryReport } from "./Pages/Factory/Statistical/Report";
@@ -48,6 +49,7 @@ function App() {
           <Route path="/statistical/analysis" element={<FactoryAnalysis />} />
           <Route path="/statistical/error-rate" element={<ErrorRate />} />
           <Route path="/store-product" element={<StoreProduct />} />
+          <Route path="/product-warranty" element={<ProductWarranty />} />
         </Routes>
       </BrowserRouter>
     </ConfigProvider>
