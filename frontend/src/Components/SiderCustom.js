@@ -4,7 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 const { Sider } = Layout;
-const Drawer = ({ menuProps = {} }) => {
+
+const SiderCustom = ({ menuProps = {} }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [collapsed, setCollapsed] = useState(false);
@@ -15,7 +16,13 @@ const Drawer = ({ menuProps = {} }) => {
   };
   return (
     <Sider
-      style={{ height: "calc(100vh - 64px)", position: "sticky", top: 0 }}
+      style={{
+        height: "calc(100vh - 64px)",
+        top: 0,
+        position: "sticky",
+        left: 0,
+        bottom: 0,
+      }}
       width={256}
       trigger={null}
       collapsible
@@ -34,7 +41,9 @@ const Drawer = ({ menuProps = {} }) => {
           <label style={{ fontSize: 48, fontWeight: 900 }} className="logo">
             LOGO
           </label>
-        ) : null}
+        ) : (
+          <></>
+        )}
       </div>
       <Menu
         onClick={handleClickMenuOption}
@@ -67,4 +76,4 @@ const Drawer = ({ menuProps = {} }) => {
   );
 };
 
-export default Drawer;
+export default SiderCustom;

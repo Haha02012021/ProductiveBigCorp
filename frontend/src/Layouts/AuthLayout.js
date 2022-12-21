@@ -1,7 +1,8 @@
 import { Avatar, Dropdown, Layout, Space } from "antd";
-import PageHeader from "../Components/PageHeader";
-import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
-import Drawer from "../Components/Drawer";
+import { UserOutlined, LogoutOutlined, MenuOutlined } from "@ant-design/icons";
+import SiderCustom from "../Components/SiderCustom";
+import DrawerCustom from "../Components/DrawerCustom";
+import React, { useState, useEffect } from "react";
 
 const { Header, Content } = Layout;
 
@@ -28,11 +29,44 @@ export default function AuthLayout({
   },
   pageHeaderProps = {},
 }) {
+  const [isMobile, setIsMobile] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    window.screen.width <= 1000 ? setIsMobile(true) : setIsMobile(false);
+  }, [window.screen.width]);
+
+  function detectWindowSize() {
+    window.innerWidth <= 1000 ? setIsMobile(true) : setIsMobile(false);
+  }
+  window.onresize = detectWindowSize;
+
   return (
-    <Layout hasSider={true} style={{ minHeight: "100vh" }}>
-      <Drawer menuProps={menuProps} />
+    <Layout style={{ minHeight: "100vh" }}>
+      {isMobile ? <></> : <SiderCustom menuProps={menuProps} />}
+      {isMobile ? (
+        <DrawerCustom menuProps={menuProps} onClose={onClose} open={open} />
+      ) : (
+        <></>
+      )}
       <Layout>
         <Header className="custom-header">
+          {isMobile ? (
+            <MenuOutlined
+              onClick={() => showDrawer()}
+              style={{ cursor: "pointer" }}
+            />
+          ) : (
+            <></>
+          )}
           <Space className="user" size={[8, 0]}>
             <p style={{ fontWeight: 500 }}>{user.username}</p>
             <Dropdown menu={{ items: dropdownMenu }} arrow placement="topRight">
