@@ -29,7 +29,7 @@ export default function AuthLayout({
   pageHeaderProps = {},
 }) {
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout hasSider={true} style={{ minHeight: "100vh" }}>
       <Drawer menuProps={menuProps} />
       <Layout>
         <Header className="custom-header">
