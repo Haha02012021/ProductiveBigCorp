@@ -20,6 +20,7 @@ const DrawerCustom = ({ onClose, open, menuProps = {} }) => {
       open={open}
       getContainer={false}
       height="100%"
+      width={256}
     >
       <div
         style={{
