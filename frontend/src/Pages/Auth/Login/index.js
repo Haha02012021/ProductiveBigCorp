@@ -44,8 +44,8 @@ export default function Login() {
       const now = new Date();
       const item = { value: data.accessToken, expiry: now.getTime() + ttl };
       localStorage.setItem("accessToken", JSON.stringify(item));
-      setAuthUser(data.user);
       setTimeout(() => {
+        setAuthUser(data.user);
         switch (data.user.role) {
           case "1":
             navigate("/executive-board/product-line/lines-manage", {
@@ -64,7 +64,7 @@ export default function Login() {
           default:
             break;
         }
-      }, 3000);
+      }, 2000);
     } else {
       console.log(data);
       message.error(data?.message, 2);
