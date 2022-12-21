@@ -3,7 +3,6 @@ import { useMemo } from "react";
 import PageContent from "../../../../Components/PageContent";
 import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
-import FactoryLayout from "../../../../Layouts/FactoryLayout";
 
 const waitingProducts = [
   {
@@ -87,13 +86,14 @@ export default function ProductImport() {
   );
 
   return (
-    <FactoryLayout
+    <PageContent
       pageHeaderProps={{
         title: "Sản phẩm lỗi",
         hasAction: false,
       }}
+      showSearch={false}
     >
       <Tabs items={tabItems} />
-    </FactoryLayout>
+    </PageContent>
   );
 }

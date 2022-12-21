@@ -119,7 +119,12 @@ export default function UnitManage() {
         label: `Trung tâm bảo hành`,
         key: "3",
         children: (
-          <PageContent>
+          <PageContent
+            pageHeaderProps={{
+              title: "Quản lý đơn vị",
+              onAdd: () => handleAdd(),
+            }}
+          >
             <CustomTable
               dataSource={maintainCenterDataSource}
               columns={columns}
@@ -151,11 +156,12 @@ export default function UnitManage() {
     console.log(form.getFieldsValue());
   };
   return (
-    <ExecutiveBoardLayout
+    <PageContent
       pageHeaderProps={{
         title: "Quản lý đơn vị",
         onAdd: () => handleAdd(),
       }}
+      showSearch={false}
     >
       <Tabs
         defaultActiveKey="1"
@@ -185,6 +191,6 @@ export default function UnitManage() {
           <UnitForm form={form} />
         </CustomModal>
       )}
-    </ExecutiveBoardLayout>
+    </PageContent>
   );
 }

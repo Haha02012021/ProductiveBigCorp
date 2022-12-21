@@ -1,8 +1,9 @@
 import AuthLayout from "./AuthLayout";
 import { SettingOutlined } from "@ant-design/icons";
 import { useMemo } from "react";
+import { Outlet } from "react-router-dom";
 
-export default function FactoryLayout({ children, pageHeaderProps }) {
+export default function FactoryLayout({ pageHeaderProps }) {
   const menuItems = useMemo(
     () => [
       {
@@ -65,7 +66,7 @@ export default function FactoryLayout({ children, pageHeaderProps }) {
       }}
       pageHeaderProps={pageHeaderProps}
     >
-      {children}
+      <Outlet />
     </AuthLayout>
   );
 }

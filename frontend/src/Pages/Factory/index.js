@@ -6,22 +6,25 @@ import ProductImport from "./ProductImportExport/ProductImport";
 import Report from "./Statistical/Report";
 import Analysis from "./Statistical/Analysis";
 import ErrorRate from "./Statistical/ErrorRate";
+import FactoryLayout from "../../Layouts/FactoryLayout";
 
 const Factory = () => {
   return (
     <Routes>
-      <Route path="/product-lot" element={<ProductLot />} />
-      <Route
-        path="/product-in-out/export-to-store"
-        element={<ProductExport />}
-      />
-      <Route
-        path="/product-in-out/receive-from-maitainence"
-        element={<ProductImport />}
-      />
-      <Route path="/statistical/report" element={<Report />} />
-      <Route path="/statistical/analysis" element={<Analysis />} />
-      <Route path="/statistical/error-rate" element={<ErrorRate />} />
+      <Route path="/*" element={<FactoryLayout />}>
+        <Route path="product-lot" element={<ProductLot />} />
+        <Route
+          path="product-in-out/export-to-store"
+          element={<ProductExport />}
+        />
+        <Route
+          path="product-in-out/receive-from-maitainence"
+          element={<ProductImport />}
+        />
+        <Route path="statistical/report" element={<Report />} />
+        <Route path="statistical/analysis" element={<Analysis />} />
+        <Route path="statistical/error-rate" element={<ErrorRate />} />
+      </Route>
     </Routes>
   );
 };

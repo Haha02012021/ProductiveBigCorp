@@ -1,6 +1,7 @@
 import AuthLayout from "./AuthLayout";
 import { SettingOutlined } from "@ant-design/icons";
 import React, { useMemo } from "react";
+import { Outlet } from "react-router-dom";
 
 const StoreLayout = ({ children, pageHeaderProps }) => {
   const menuItems = useMemo(
@@ -43,9 +44,8 @@ const StoreLayout = ({ children, pageHeaderProps }) => {
         items: menuItems,
         layout: "store",
       }}
-      pageHeaderProps={pageHeaderProps}
     >
-      {children}
+      <Outlet />
     </AuthLayout>
   );
 };

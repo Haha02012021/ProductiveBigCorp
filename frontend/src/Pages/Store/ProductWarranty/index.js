@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from "react";
-import StoreLayout from "../../../Layouts/StoreLayout";
 import CustomTable from "../../../Components/Table/CustomTable";
 import ActionsCell from "../../../Components/Table/ActionsCell";
 import { Tabs } from "antd";
 import { createDataTable } from "../../../Components/Table/createDataTable";
+import PageContent from "../../../Components/PageContent";
 
 const ProductWarranty = () => {
   const [currentTab, setCurrentTab] = useState(1);
@@ -136,11 +136,12 @@ const ProductWarranty = () => {
     []
   );
   return (
-    <StoreLayout
+    <PageContent
       pageHeaderProps={{
         title: "Sản phẩm bảo hành/triệu hồi",
         hasAction: false,
       }}
+      showSearch={false}
     >
       <Tabs
         defaultActiveKey="1"
@@ -149,7 +150,7 @@ const ProductWarranty = () => {
           setCurrentTab(key);
         }}
       />
-    </StoreLayout>
+    </PageContent>
   );
 };
 

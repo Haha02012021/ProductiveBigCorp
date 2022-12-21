@@ -3,7 +3,6 @@ import CustomModal from "../../../Components/CustomModal";
 import PageContent from "../../../Components/PageContent";
 import ActionsCell from "../../../Components/Table/ActionsCell";
 import CustomTable from "../../../Components/Table/CustomTable";
-import FactoryLayout from "../../../Layouts/FactoryLayout";
 import ProductLotForm from "./ProductLotForm";
 
 export default function ProductLot() {
@@ -45,13 +44,13 @@ export default function ProductLot() {
   }, []);
 
   return (
-    <FactoryLayout
-      pageHeaderProps={{
-        title: "Lô sản phẩm",
-        onAdd: () => setAddModalVisible(true),
-      }}
-    >
-      <PageContent>
+    <>
+      <PageContent
+        pageHeaderProps={{
+          title: "Lô sản phẩm",
+          onAdd: () => setAddModalVisible(true),
+        }}
+      >
         <CustomTable columns={columns} />
       </PageContent>
       {addModalVisible && (
@@ -64,6 +63,6 @@ export default function ProductLot() {
           <ProductLotForm />
         </CustomModal>
       )}
-    </FactoryLayout>
+    </>
   );
 }

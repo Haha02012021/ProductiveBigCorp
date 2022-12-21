@@ -48,14 +48,6 @@ export default function AuthLayout({
           }}
         >
           <Space direction="vertical" className="page-content" size={[0, 16]}>
-            <Space direction="vertical" style={{ width: "100%" }}>
-              <PageHeader
-                title={pageHeaderProps.title}
-                hasAction={pageHeaderProps.hasAction}
-                onAdd={pageHeaderProps.onAdd}
-                customAction={pageHeaderProps.customAction}
-              />
-            </Space>
             {children}
           </Space>
         </Content>

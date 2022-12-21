@@ -1,9 +1,9 @@
-import FactoryLayout from "../../../../Layouts/FactoryLayout";
 import { Button, Col, Form, Input, Row, Select, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PieChart from "../../../../Components/Chart/PieChart";
 import { G2 } from "@ant-design/plots";
+import PageContent from "../../../../Components/PageContent";
 
 const factoryData = [
   {
@@ -165,7 +165,7 @@ export default function ErrorRate() {
     setStore({ store, storeData });
   };
   return (
-    <FactoryLayout
+    <PageContent
       pageHeaderProps={{
         title: "Tỉ lệ sản phẩm lỗi",
         customAction: (
@@ -185,6 +185,7 @@ export default function ErrorRate() {
           </Form>
         ),
       }}
+      showSearch={false}
     >
       <Row gutter={[24]}>
         <Col span={12}>
@@ -234,6 +235,6 @@ export default function ErrorRate() {
           </Space>
         </Col>
       </Row>
-    </FactoryLayout>
+    </PageContent>
   );
 }

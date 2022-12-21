@@ -2,7 +2,7 @@ import { Tabs } from "antd";
 import { useMemo, useState } from "react";
 import FromToYearSearch from "../../../../Components/HeaderExtra/FromToYearSearch";
 import YearSearch from "../../../../Components/HeaderExtra/YearSearch";
-import FactoryLayout from "../../../../Layouts/FactoryLayout";
+import PageContent from "../../../../Components/PageContent";
 import MonthyAnalysis from "./MonthyAnalysis";
 import QuarteryAnalysis from "./QuarteryAnalysis";
 import YearyAnalysis from "./YearyAnalysis";
@@ -32,7 +32,7 @@ export default function Analysis() {
   );
   const handleSearch = (values) => {};
   return (
-    <FactoryLayout
+    <PageContent
       pageHeaderProps={{
         title: "Phân tích số lượng tiêu thụ",
         customAction:
@@ -42,8 +42,9 @@ export default function Analysis() {
             <FromToYearSearch onFinish={handleSearch} />
           ),
       }}
+      showSearch={false}
     >
       <Tabs items={tabItems} onChange={(key) => setCurrentTabKey(key)} />
-    </FactoryLayout>
+    </PageContent>
   );
 }

@@ -11,36 +11,33 @@ export default function VersionManage() {
   const [modalVisible, setModalVisible] = useState(false);
   const [form] = Form.useForm();
 
-  const columns = useMemo(
-    () => [
-      {
-        title: "STT",
-        dataIndex: "index",
-        key: "index",
-        fixed: true,
-        width: 64,
-      },
-      {
-        title: "Dòng sản phẩm",
-        dataIndex: "productLine",
-        key: "productLine",
-      },
-      {
-        title: "Phiên bản",
-        dataIndex: "productLine",
-        key: "productLine",
-      },
-      {
-        title: "Thao tác",
-        dataIndex: "actions",
-        key: "actions",
-        fixed: "center",
-        width: 236,
-        render: () => <ActionsCell hasConfirm={false} />,
-      },
-    ],
-    []
-  );
+  const columns = [
+    {
+      title: "STT",
+      dataIndex: "index",
+      key: "index",
+      fixed: true,
+      width: 64,
+    },
+    {
+      title: "Dòng sản phẩm",
+      dataIndex: "productLine",
+      key: "productLine",
+    },
+    {
+      title: "Phiên bản",
+      dataIndex: "productLine",
+      key: "productLine",
+    },
+    {
+      title: "Thao tác",
+      dataIndex: "actions",
+      key: "actions",
+      fixed: "center",
+      width: 236,
+      render: () => <ActionsCell hasConfirm={false} />,
+    },
+  ];
 
   const handleAddVer = () => {
     form.resetFields();
@@ -50,13 +47,13 @@ export default function VersionManage() {
     console.log(form.getFieldsValue());
   };
   return (
-    <ExecutiveBoardLayout
-      pageHeaderProps={{
-        title: "Quản lý phiên bản",
-        onAdd: () => handleAddVer(),
-      }}
-    >
-      <PageContent>
+    <>
+      <PageContent
+        pageHeaderProps={{
+          title: "Quản lý phiên bản",
+          onAdd: () => handleAddVer(),
+        }}
+      >
         <CustomTable columns={columns} />
       </PageContent>
       <CustomModal
@@ -67,6 +64,6 @@ export default function VersionManage() {
       >
         <VersionForm form={form} />
       </CustomModal>
-    </ExecutiveBoardLayout>
+    </>
   );
 }

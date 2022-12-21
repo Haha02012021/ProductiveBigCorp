@@ -1,5 +1,6 @@
 import AuthLayout from "./AuthLayout";
 import { SettingOutlined } from "@ant-design/icons";
+import { Outlet } from "react-router-dom";
 
 const menuItems = [
   {
@@ -34,7 +35,7 @@ const menuItems = [
     label: "Quản lý đơn vị",
   },
 ];
-export default function ExecutiveBoardLayout({ children, pageHeaderProps }) {
+export default function ExecutiveBoardLayout({ pageHeaderProps }) {
   return (
     <AuthLayout
       menuProps={{
@@ -43,7 +44,7 @@ export default function ExecutiveBoardLayout({ children, pageHeaderProps }) {
       }}
       pageHeaderProps={pageHeaderProps}
     >
-      {children}
+      <Outlet />
     </AuthLayout>
   );
 }

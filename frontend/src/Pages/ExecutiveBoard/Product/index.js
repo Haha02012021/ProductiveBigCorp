@@ -8,6 +8,7 @@ import ExecutiveBoardLayout from "../../../Layouts/ExecutiveBoardLayout";
 import PageContent from "../../../Components/PageContent";
 
 export default function Product() {
+  console.log("product");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -125,17 +126,17 @@ export default function Product() {
   ];
 
   return (
-    <ExecutiveBoardLayout
-      pageHeaderProps={{ title: "Sản phẩm", hasAction: false }}
-    >
-      <PageContent>
+    <>
+      <PageContent pageHeaderProps={{ title: "Sản phẩm", hasAction: false }}>
         <CustomTable columns={columns} dataSource={dataSource} />
       </PageContent>
-      <ModalViewProduct
-        isModalOpen={isModalOpen}
-        handleOk={handleOk}
-        handleCancel={handleCancel}
-      />
-    </ExecutiveBoardLayout>
+      {isModalOpen && (
+        <ModalViewProduct
+          isModalOpen={isModalOpen}
+          handleOk={handleOk}
+          handleCancel={handleCancel}
+        />
+      )}
+    </>
   );
 }

@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import PageContent from "../../../../Components/PageContent";
 import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
-import FactoryLayout from "../../../../Layouts/FactoryLayout";
 
 export default function ProductExport() {
   const columns = useMemo(() => {
@@ -51,15 +50,15 @@ export default function ProductExport() {
     ];
   }, []);
   return (
-    <FactoryLayout
-      pageHeaderProps={{
-        title: "Xuất sản phẩm cho đại lý",
-        hasAction: false,
-      }}
-    >
-      <PageContent>
+    <>
+      <PageContent
+        pageHeaderProps={{
+          title: "Xuất sản phẩm cho đại lý",
+          hasAction: false,
+        }}
+      >
         <CustomTable columns={columns} />
       </PageContent>
-    </FactoryLayout>
+    </>
   );
 }

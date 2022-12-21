@@ -1,11 +1,11 @@
 import { Tabs } from "antd";
 import { useMemo, useState } from "react";
-import StoreLayout from "../../../../Layouts/StoreLayout";
 import MonthyReport from "./MonthyReport";
 import QuarteryReport from "./QuarteryReport";
 import YearyReport from "./YearyReport";
 import YearSearch from "../../../../Components/HeaderExtra/YearSearch";
 import FromToYearSearch from "../../../../Components/HeaderExtra/FromToYearSearch";
+import PageContent from "../../../../Components/PageContent";
 
 export default function Report() {
   const [currentTabKey, setCurrentTabKey] = useState(1);
@@ -35,7 +35,7 @@ export default function Report() {
     setSearchValue(values);
   };
   return (
-    <StoreLayout
+    <PageContent
       pageHeaderProps={{
         title: "Báo cáo số liệu sản xuất",
         customAction:
@@ -48,6 +48,6 @@ export default function Report() {
       showSearch={false}
     >
       <Tabs items={tabItems} onChange={(key) => setCurrentTabKey(key)} />
-    </StoreLayout>
+    </PageContent>
   );
 }

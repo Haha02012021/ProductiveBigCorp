@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from "react";
-import Store from "../../../Layouts/StoreLayout";
 import { Tabs } from "antd";
 import CustomTable from "../../../Components/Table/CustomTable";
 import ActionsCell from "../../../Components/Table/ActionsCell";
 import { createDataTable } from "../../../Components/Table/createDataTable";
+import PageContent from "../../../Components/PageContent";
 
 const StoreProduct = () => {
   const [currentTab, setCurrentTab] = useState(1);
@@ -130,11 +130,12 @@ const StoreProduct = () => {
   );
 
   return (
-    <Store
+    <PageContent
       pageHeaderProps={{
         title: "Kho sản phẩm",
         hasAction: false,
       }}
+      showSearch={false}
     >
       <Tabs
         defaultActiveKey="1"
@@ -143,7 +144,7 @@ const StoreProduct = () => {
           setCurrentTab(key);
         }}
       />
-    </Store>
+    </PageContent>
   );
 };
 

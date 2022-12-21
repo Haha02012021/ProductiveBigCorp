@@ -4,13 +4,16 @@ import StoreProduct from "./StoreProduct";
 import ProductWarranty from "./ProductWarranty";
 import Report from "./Statistical/Report";
 import Analysis from "./Statistical/Analysis";
+import StoreLayout from "../../Layouts/StoreLayout";
 const Store = () => {
   return (
     <Routes>
-      <Route path="/store-product" element={<StoreProduct />} />
-      <Route path="/product-warranty" element={<ProductWarranty />} />
-      <Route path="/statistical/report" element={<Report />} />
-      <Route path="/statistical/analysis" element={<Analysis />} />
+      <Route path="/*" element={<StoreLayout />}>
+        <Route path="store-product" element={<StoreProduct />} />
+        <Route path="product-warranty" element={<ProductWarranty />} />
+        <Route path="statistical/report" element={<Report />} />
+        <Route path="statistical/analysis" element={<Analysis />} />
+      </Route>
     </Routes>
   );
 };

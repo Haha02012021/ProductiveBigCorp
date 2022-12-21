@@ -68,14 +68,15 @@ export default function LineManage() {
     console.log(form.getFieldsValue());
   };
 
+  console.log("productline/linemanage");
   return (
-    <ExecutiveBoardLayout
-      pageHeaderProps={{
-        title: "Quản lý dòng sản phẩm",
-        onAdd: () => handleAddLine(),
-      }}
-    >
-      <PageContent>
+    <>
+      <PageContent
+        pageHeaderProps={{
+          title: "Quản lý dòng sản phẩm",
+          onAdd: () => handleAddLine(),
+        }}
+      >
         <CustomTable dataSource={dataSource} columns={columns} />
       </PageContent>
       {addModalVisible && (
@@ -108,6 +109,6 @@ export default function LineManage() {
           </Form>
         </CustomModal>
       )}
-    </ExecutiveBoardLayout>
+    </>
   );
 }
