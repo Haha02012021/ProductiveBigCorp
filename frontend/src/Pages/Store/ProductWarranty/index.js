@@ -13,7 +13,6 @@ const ProductWarranty = () => {
         title: "Mã sản phẩm",
         dataIndex: "productCode",
         key: "productCode",
-        fixed: true,
         width: 140,
         height: 56,
       },
