@@ -4,6 +4,7 @@ import {
   Form,
   Image,
   Input,
+  message,
   Row,
   Space,
   Spin,
@@ -31,35 +32,42 @@ export default function Login() {
     const data = await instance
       .post("auth/login", values)
       .then((res) => {
-        setLoading(false);
         return res.data;
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        return err.response.data;
+      });
 
+    setLoading(false);
     if (data?.user) {
+      message.success("Đăng nhập thành công!", 2);
       const now = new Date();
       const item = { value: data.accessToken, expiry: now.getTime() + ttl };
       localStorage.setItem("accessToken", JSON.stringify(item));
       setAuthUser(data.user);
-
-      switch (data.user.role) {
-        case "1":
-          navigate("/executive-board/product-line/lines-manage", {
-            replace: true,
-          });
-          break;
-        case "2":
-          navigate("/factory/product-lot", { replace: true });
-          break;
-        case "3":
-          navigate("/maintainer/", { replace: true });
-          break;
-        case "4":
-          navigate("/store/store-product", { replace: true });
-          break;
-        default:
-          break;
-      }
+      setTimeout(() => {
+        switch (data.user.role) {
+          case "1":
+            navigate("/executive-board/product-line/lines-manage", {
+              replace: true,
+            });
+            break;
+          case "2":
+            navigate("/factory/product-lot", { replace: true });
+            break;
+          case "3":
+            navigate("/maintainer/", { replace: true });
+            break;
+          case "4":
+            navigate("/store/store-product", { replace: true });
+            break;
+          default:
+            break;
+        }
+      }, 3000);
+    } else {
+      console.log(data);
+      message.error(data?.message, 2);
     }
   };
   return (

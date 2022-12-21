@@ -30,7 +30,7 @@ export default function AuthLayout({ menuProps = {}, children }) {
   useEffect(() => {
     const localAccessToken = JSON.parse(localStorage.getItem("accessToken"));
     const now = new Date();
-    if (localAccessToken && localAccessToken.expiry < now) {
+    if (!localAccessToken || localAccessToken?.expiry < now) {
       localStorage.removeItem("accessToken");
       setAuthUser(null);
       navigate("/login");
