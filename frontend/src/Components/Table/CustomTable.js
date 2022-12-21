@@ -9,18 +9,20 @@ export default function CustomTable({
   },
 }) {
   return (
-    <Table
-      className="custom-table"
-      bordered
-      dataSource={dataSource}
-      columns={columns}
-      pagination={{
-        showQuickJumper: true,
-        showSizeChanger: true,
-        defaultCurrent: 1,
-        total: paginationProps.total,
-        onChange: paginationProps.onChangePagination,
-      }}
-    />
+    <div style={{ width: "100%", overflowX: "auto" }}>
+      <Table
+        className="custom-table"
+        bordered
+        dataSource={dataSource}
+        columns={columns}
+        pagination={{
+          showQuickJumper: true,
+          showSizeChanger: true,
+          defaultCurrent: 1,
+          total: paginationProps.total,
+          onChange: paginationProps.onChangePagination,
+        }}
+      />
+    </div>
   );
 }

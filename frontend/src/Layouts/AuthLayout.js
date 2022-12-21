@@ -1,10 +1,10 @@
 import { Avatar, Dropdown, Layout, Space, Spin } from "antd";
-import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
-import Drawer from "../Components/Drawer";
-import { useContext, useEffect } from "react";
+import { UserOutlined, LogoutOutlined, MenuOutlined } from "@ant-design/icons";
+import SiderCustom from "../Components/SiderCustom";
+import DrawerCustom from "../Components/DrawerCustom";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
-import { getLocaStorageItem } from "../const";
 
 const { Header, Content } = Layout;
 
@@ -24,6 +24,9 @@ const dropdownMenu = [
 export default function AuthLayout({ menuProps = {}, children }) {
   const navigate = useNavigate();
   const { authUser, setAuthUser } = useContext(AuthContext);
+  const [isMobile, setIsMobile] = useState(false);
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
     const localAccessToken = JSON.parse(localStorage.getItem("accessToken"));
     const now = new Date();
@@ -34,13 +37,43 @@ export default function AuthLayout({ menuProps = {}, children }) {
     }
   }, [authUser, navigate]);
 
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    window.screen.width <= 1000 ? setIsMobile(true) : setIsMobile(false);
+  }, [window.screen.width]);
+
+  function detectWindowSize() {
+    window.innerWidth <= 1000 ? setIsMobile(true) : setIsMobile(false);
+  }
+  window.onresize = detectWindowSize;
+
   return (
     <Spin size="large" spinning={!authUser}>
       <Layout hasSider={true} style={{ minHeight: "100vh" }}>
-        <Drawer menuProps={menuProps} />
+        {isMobile ? <></> : <SiderCustom menuProps={menuProps} />}
+        {isMobile ? (
+          <DrawerCustom menuProps={menuProps} onClose={onClose} open={open} />
+        ) : (
+          <></>
+        )}
         {authUser && (
           <Layout>
             <Header className="custom-header">
+              {isMobile ? (
+                <MenuOutlined
+                  onClick={() => showDrawer()}
+                  style={{ cursor: "pointer" }}
+                />
+              ) : (
+                <></>
+              )}
               <Space className="user" size={[8, 0]}>
                 <p style={{ fontWeight: 500 }}>{authUser.name}</p>
                 <Dropdown

@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 
-const {requestWarranty, sendToWarranty, receiveWarranty, getCustomer, sell, addCustomer} = require('../Controllers/StoreController');
+const {requestWarranty, sendToWarranty, receiveWarranty, getCustomer, sell, addCustomer, analizeProducts} = require('../Controllers/StoreController');
 
 function validateStore(req, res, next) {
     const bearer = req.headers['authorization'];
@@ -38,6 +38,8 @@ router.post('/customer/search', getCustomer);
 router.post('/customer/new', addCustomer)
 
 router.post('/sell', sell);
+
+router.get('/analize/status/:manager_id', analizeProducts);
 
 
 module.exports = router

@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Baloo+2:wght@500&family=Judson&family=Kaisei+Decol&family=Luxurious+Roman&family=Playfair+Display&family=Praise&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ruda&family=Shojumaru&family=Vampiro+One&display=swap');:root {
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Baloo+2:wght@500&family=Judson&family=Kaisei+Decol&family=Luxurious+Roman&family=Playfair+Display&family=Praise&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ruda&family=Shojumaru&family=Vampiro+One&display=swap');
+
+:root {
   --primary-color: #47B5FF;
   --secondary-color: #DFF6FF;
   --third-color: #256D85;
@@ -9,6 +11,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -18,7 +21,9 @@
   color: var(--primary-color);
 }
 
-.ant-table .ant-table-container .ant-table-content table thead.ant-table-thead .ant-table-cell { background-color: var(--secondary-color); }
+.ant-table .ant-table-container .ant-table-content table thead.ant-table-thead .ant-table-cell {
+  background-color: var(--secondary-color);
+}
 
 .ant-layout .ant-layout-header {
   background: var(--primary-color);
@@ -30,12 +35,18 @@
   justify-content: center;
 }
 
+.custom-header {
+  position: sticky;
+  z-index: 10;
+  height: 64px;
+  display: flex;
+}
+
 .custom-header .user {
   width: var(--content-width);
   display: flex;
   align-items: center;
   justify-content: end;
-  margin-right: -80px;
 }
 
 .page-content {

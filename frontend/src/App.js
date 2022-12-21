@@ -5,10 +5,6 @@ import { ConfigProvider } from "antd";
 import ExecutiveBoard from "./Pages/ExecutiveBoard";
 import Store from "./Pages/Store";
 import Factory from "./Pages/Factory";
-import ExecutiveBoardLayout from "./Layouts/ExecutiveBoardLayout";
-import UnitManage from "./Pages/ExecutiveBoard/UnitManage";
-import LineManage from "./Pages/ExecutiveBoard/ProductLine/LinesManage";
-import VersionManage from "./Pages/ExecutiveBoard/ProductLine/VersionManage";
 import AuthProvider from "./Provider/AuthProvider";
 
 function App() {
