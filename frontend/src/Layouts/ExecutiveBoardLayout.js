@@ -1,6 +1,9 @@
 import AuthLayout from "./AuthLayout";
 import { SettingOutlined } from "@ant-design/icons";
 import { Outlet } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../Provider/AuthProvider";
+import Fobbiden from "../Pages/ErrorPage/Fobbidden";
 
 const menuItems = [
   {
@@ -36,6 +39,10 @@ const menuItems = [
   },
 ];
 export default function ExecutiveBoardLayout({ pageHeaderProps }) {
+  const { authUser } = useContext(AuthContext);
+  if (authUser && authUser.role !== "1") {
+    return <Fobbiden />;
+  }
   return (
     <AuthLayout
       menuProps={{

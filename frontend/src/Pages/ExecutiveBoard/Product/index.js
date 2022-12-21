@@ -8,7 +8,6 @@ import ExecutiveBoardLayout from "../../../Layouts/ExecutiveBoardLayout";
 import PageContent from "../../../Components/PageContent";
 
 export default function Product() {
-  console.log("product");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);

@@ -67,8 +67,6 @@ export default function LineManage() {
   const handleSave = () => {
     console.log(form.getFieldsValue());
   };
-
-  console.log("productline/linemanage");
   return (
     <>
       <PageContent

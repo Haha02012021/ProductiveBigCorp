@@ -9,6 +9,7 @@ import ExecutiveBoardLayout from "./Layouts/ExecutiveBoardLayout";
 import UnitManage from "./Pages/ExecutiveBoard/UnitManage";
 import LineManage from "./Pages/ExecutiveBoard/ProductLine/LinesManage";
 import VersionManage from "./Pages/ExecutiveBoard/ProductLine/VersionManage";
+import AuthProvider from "./Provider/AuthProvider";
 
 function App() {
   return (
@@ -21,14 +22,16 @@ function App() {
         },
       }}
     >
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="executive-board/*" element={<ExecutiveBoard />} />
-          <Route path="factory/*" element={<Factory />} />
-          <Route path="store/*" element={<Store />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="executive-board/*" element={<ExecutiveBoard />} />
+            <Route path="factory/*" element={<Factory />} />
+            <Route path="store/*" element={<Store />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </ConfigProvider>
   );
 }
