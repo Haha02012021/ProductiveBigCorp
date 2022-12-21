@@ -21,6 +21,7 @@ const DrawerCustom = ({ onClose, open, menuProps = {} }) => {
       getContainer={false}
       height="100%"
       width={256}
+      bodyStyle={{ margin: 0, padding: 0 }}
     >
       <div
         style={{
