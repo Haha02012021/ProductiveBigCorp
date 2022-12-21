@@ -13,9 +13,9 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ttl } from "../../../const";
-import { instance } from "../../../apis/axios";
 import loginImg from "../../../assets/toppng.com-car-front-vector-png-clipart-library-clip-art-library-car-clipart-png-transparent-1979x1054.png";
 import { AuthContext } from "../../../Provider/AuthProvider";
+import authApi from "../../../apis/auth";
 
 export default function Login() {
   const { authUser, setAuthUser } = useContext(AuthContext);
@@ -29,14 +29,7 @@ export default function Login() {
   }, [authUser, navigate]);
   const handleLogin = async (values) => {
     setLoading(true);
-    const data = await instance
-      .post("auth/login", values)
-      .then((res) => {
-        return res.data;
-      })
-      .catch((err) => {
-        return err.response.data;
-      });
+    const data = await authApi.login(values);
 
     setLoading(false);
     if (data?.user) {
