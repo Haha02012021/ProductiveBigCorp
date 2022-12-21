@@ -1,5 +1,5 @@
 const {updateOneProduct, updateProducts} = require('../Services/Product');
-const {addOneHistory, addHistory} = require('../Services/History');
+const {addOneHistory, addHistory, productsByStatus} = require('../Services/History');
 const {createCustomer} = require('../Services/User');
 const {findCustomerByEmail} = require('../Services/User');
 
@@ -71,6 +71,19 @@ var sell = async (req, res) => {
     }
 }
 
+var analizeProducts = async (req, res) => {
+    try {
+        const data = await productsByStatus(req.params.manager_id);
+        if(!data) {
+            res.json({success: false, message: 'data not returned'});
+        } else {
+            res.json({success: true, message: 'analized', data});
+        }
+    } catch (err) {
+        res.status(500).json({error: err, success: false, message: 'error from analize products'});
+    }
+}
+
 module.exports = {
     requestWarranty,
     sendToWarranty,
@@ -78,4 +91,5 @@ module.exports = {
     getCustomer,
     sell,
     addCustomer,
+    analizeProducts
 }
