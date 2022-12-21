@@ -54,6 +54,8 @@ export default function AuthLayout({ menuProps = {}, children }) {
   }
   window.onresize = detectWindowSize;
 
+  const handleDropdown = () => {};
+
   return (
     <Spin size="large" spinning={!authUser}>
       <Layout hasSider={true} style={{ minHeight: "100vh" }}>
@@ -80,6 +82,7 @@ export default function AuthLayout({ menuProps = {}, children }) {
                   menu={{ items: dropdownMenu }}
                   arrow
                   placement="topRight"
+                  onClick={handleDropdown}
                 >
                   <Avatar
                     size={40}
