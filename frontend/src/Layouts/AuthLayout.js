@@ -5,6 +5,7 @@ import DrawerCustom from "../Components/DrawerCustom";
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
+import authApi from "../apis/auth";
 
 const { Header, Content } = Layout;
 
@@ -16,7 +17,7 @@ const dropdownMenu = [
   },
   {
     label: "Đăng xuất",
-    key: "signout",
+    key: "logout",
     icon: <LogoutOutlined />,
   },
 ];
@@ -54,7 +55,20 @@ export default function AuthLayout({ menuProps = {}, children }) {
   }
   window.onresize = detectWindowSize;
 
-  const handleDropdown = () => {};
+  const handleDropdown = async ({ key }) => {
+    switch (key) {
+      case "logout":
+        const res = await authApi.logout();
+
+        console.log(res);
+        localStorage.removeItem("accessToken");
+        setAuthUser(null);
+        break;
+
+      default:
+        break;
+    }
+  };
 
   return (
     <Spin size="large" spinning={!authUser}>
@@ -79,10 +93,13 @@ export default function AuthLayout({ menuProps = {}, children }) {
               <Space className="user" size={[8, 0]}>
                 <p style={{ fontWeight: 500 }}>{authUser.name}</p>
                 <Dropdown
-                  menu={{ items: dropdownMenu }}
+                  menu={{
+                    items: dropdownMenu,
+                    selectable: true,
+                    onClick: (selectedItem) => handleDropdown(selectedItem),
+                  }}
                   arrow
                   placement="topRight"
-                  onClick={handleDropdown}
                 >
                   <Avatar
                     size={40}

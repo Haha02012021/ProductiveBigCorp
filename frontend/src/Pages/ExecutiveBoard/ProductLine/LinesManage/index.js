@@ -89,6 +89,7 @@ export default function LineManage() {
             <Form.Item label="Dòng sản phẩm" required name="productLine">
               <Input placeholder="Nhập dòng sản phẩm mới" />
             </Form.Item>
+            <Form.Item label="Màu" required name="color"></Form.Item>
           </Form>
         </CustomModal>
       )}

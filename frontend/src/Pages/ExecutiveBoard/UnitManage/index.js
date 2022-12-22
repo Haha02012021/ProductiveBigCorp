@@ -2,10 +2,12 @@ import ExecutiveBoardLayout from "../../../Layouts/ExecutiveBoardLayout";
 import ActionsCell from "../../../Components/Table/ActionsCell";
 import CustomTable from "../../../Components/Table/CustomTable";
 import CustomModal from "../../../Components/CustomModal";
-import { Form, Tabs } from "antd";
+import { Form, message, Tabs } from "antd";
 import { useMemo, useState } from "react";
 import UnitForm from "./UnitForm";
 import PageContent from "../../../Components/PageContent";
+import { errorMessages } from "../../../const";
+import coporationApi from "../../../apis/coporation";
 
 const factoryDataSource = [
   {
@@ -58,83 +60,81 @@ export default function UnitManage() {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [form] = Form.useForm();
 
-  const columns = useMemo(
-    () => [
-      {
-        title: "STT",
-        dataIndex: "index",
-        key: "index",
-        fixed: true,
-        width: 64,
-      },
-      {
-        title: "Tên",
-        dataIndex: "name",
-        key: "name",
-      },
-      {
-        title: "Tài khoản",
-        dataIndex: "username",
-        key: "username",
-      },
-      {
-        title: "Mật khẩu",
-        dataIndex: "password",
-        key: "password",
-      },
-      {
-        title: "Thao tác",
-        dataIndex: "actions",
-        key: "actions",
-        width: 130,
-        render: (unitInfo) => (
-          <ActionsCell hasView={false} onEdit={() => handleEdit(unitInfo)} />
-        ),
-      },
-    ],
-    []
-  );
+  const columns = [
+    {
+      title: "STT",
+      dataIndex: "index",
+      key: "index",
+      fixed: true,
+      width: 64,
+    },
+    {
+      title: "Tên",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Tài khoản",
+      dataIndex: "username",
+      key: "username",
+    },
+    {
+      title: "Mật khẩu",
+      dataIndex: "password",
+      key: "password",
+    },
+    {
+      title: "Thao tác",
+      dataIndex: "actions",
+      key: "actions",
+      width: 130,
+      render: (unitInfo) => (
+        <ActionsCell
+          hasConfirm={false}
+          hasView={false}
+          onEdit={() => handleEdit(unitInfo)}
+        />
+      ),
+    },
+  ];
 
-  const tabItems = useMemo(
-    () => [
-      {
-        label: `Cơ sở sản xuất`,
-        key: "1",
-        children: (
-          <PageContent>
-            <CustomTable dataSource={factoryDataSource} columns={columns} />
-          </PageContent>
-        ),
-      },
-      {
-        label: `Đại lý phân phối`,
-        key: "2",
-        children: (
-          <PageContent>
-            <CustomTable dataSource={storeDataSource} columns={columns} />
-          </PageContent>
-        ),
-      },
-      {
-        label: `Trung tâm bảo hành`,
-        key: "3",
-        children: (
-          <PageContent
-            pageHeaderProps={{
-              title: "Quản lý đơn vị",
-              onAdd: () => handleAdd(),
-            }}
-          >
-            <CustomTable
-              dataSource={maintainCenterDataSource}
-              columns={columns}
-            />
-          </PageContent>
-        ),
-      },
-    ],
-    []
-  );
+  const tabItems = [
+    {
+      label: `Cơ sở sản xuất`,
+      key: "1",
+      children: (
+        <PageContent>
+          <CustomTable dataSource={factoryDataSource} columns={columns} />
+        </PageContent>
+      ),
+    },
+    {
+      label: `Đại lý phân phối`,
+      key: "2",
+      children: (
+        <PageContent>
+          <CustomTable dataSource={storeDataSource} columns={columns} />
+        </PageContent>
+      ),
+    },
+    {
+      label: `Trung tâm bảo hành`,
+      key: "3",
+      children: (
+        <PageContent
+          pageHeaderProps={{
+            title: "Quản lý đơn vị",
+            onAdd: () => handleAdd(),
+          }}
+        >
+          <CustomTable
+            dataSource={maintainCenterDataSource}
+            columns={columns}
+          />
+        </PageContent>
+      ),
+    },
+  ];
 
   const handleAdd = () => {
     form.resetFields();
@@ -152,8 +152,19 @@ export default function UnitManage() {
     console.log(form.getFieldsValue());
   };
 
-  const handleSave = () => {
-    console.log(form.getFieldsValue());
+  const handleSave = async () => {
+    try {
+      await form.validateFields();
+
+      const res = await coporationApi.addManager(form.getFieldsValue());
+
+      if (res.success) {
+        message.success(res.message, 2);
+        setAddModalVisible(false);
+      }
+    } catch (error) {
+      message.error(errorMessages.unitForm.errorSubmit, 2);
+    }
   };
   return (
     <PageContent

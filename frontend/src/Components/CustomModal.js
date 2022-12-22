@@ -7,6 +7,7 @@ export default function CustomModal({
   onCancel,
   onOk,
   width = "72%",
+  footer,
 }) {
   return (
     <Modal
@@ -17,6 +18,7 @@ export default function CustomModal({
       okText="Lưu"
       cancelText="Bỏ qua"
       width={width}
+      footer={footer}
     >
       {children}
     </Modal>
