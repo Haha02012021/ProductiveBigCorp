@@ -48,7 +48,17 @@ var productInfo = async (id) => {
       {
         model: Version,
         as: 'version',
-        attributes: ['id', 'name']
+        attributes: ['id', 'name'],
+        include: [
+          'chassis', 
+          'engine', 
+          'exterior',
+          'interior',
+          'i_activesense',
+          'safety',
+          'size',
+          'model'
+        ]
       },
       {
         model: Color,
