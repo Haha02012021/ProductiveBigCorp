@@ -1,4 +1,4 @@
-const {db, Manager, Customer, sequelize} = require('../models');
+const {db, Manager, Customer, sequelize, Product} = require('../models');
 const {QueryTypes} = require('sequelize');
 
 var findByAccount = async (account) => {
@@ -108,7 +108,15 @@ var createCustomer = async (name, place, phone, email) => {
 
 var getProducts = async (id) => {
   try {
-    const products = await Manager.findByPk(id, {include: ['products']});
+    const products = await Manager.findByPk(id, {
+      include: [{
+        model: Product,
+        as: 'products',
+        through: {
+          attributes: [],
+        },
+      }],
+    });
     return products
   } catch (err) {
     console.log(err);
