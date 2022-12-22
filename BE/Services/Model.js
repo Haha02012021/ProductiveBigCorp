@@ -49,7 +49,16 @@ var info = async (id) => {
 
 var getAll = async () => {
     try {
-        const models = await MODEL.findAll();
+        const models = await MODEL.findAll({
+            include: [{
+                model: Color,
+                as: 'colors',
+                through: {
+                    attributes: []
+                },
+                attributes: ['name', 'code']
+            }]
+        });
         return models;
     } catch (err) {
         console.log(err);

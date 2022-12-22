@@ -1,6 +1,7 @@
 const {createManager} = require('../Services/User');
 const {addModel} = require('../Services/Model');
 const {addVersion} = require('../Services/Version');
+const {allProducts} = require('../Services/Product');
 
 var addManager = async (req, res) => {
     try {
@@ -35,8 +36,22 @@ var createVersion = async (req, res) => {
     }
 }
 
+var getAllProducts = async (req, res) => {
+    try {
+        const products = await allProducts();
+        if(!products) {
+            res.status(404).json({success: false, message: 'not found'});
+        } else {
+            res.json({success: true, data: products, message: 'get all products of all managers'});
+        }
+    } catch (err) {
+        res.status(500).json({success: false, message: 'error from get all products of all managers', error: err});
+    }
+}
+
 module.exports = {
     addManager,
     createModel,
     createVersion,
+    getAllProducts
 }

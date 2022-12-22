@@ -1,4 +1,4 @@
-const {db, Product, Manager} = require('../models');
+const {db, Product, Manager, MODEL, Version, Batch, Color} = require('../models');
 
 var addProducts = async (amount, color_id, model_id, version_id, batch_id) => {
   try {
@@ -57,10 +57,37 @@ var getCustomerInfo = async (id) => {
   }
 }
 
+var allProducts = async () => {
+  try {
+    const products = await Product.findAll({include: [
+      {
+        model: MODEL,
+        as: 'model',
+        attributes: ['name']
+      },
+      {
+        model: Version,
+        as: 'version',
+        attributes: ['name']
+      },
+      {
+        model: Color,
+        as: 'color',
+        attributes: ['name', 'code'],
+      },
+    ]});
+    return products
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
 module.exports = {
   addProducts,
   updateProducts,
   updateOneProduct,
   getInfo,
   getCustomerInfo,
+  allProducts,
 }
