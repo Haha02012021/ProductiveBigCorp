@@ -18,12 +18,14 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Credentials", true);
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
   if (req.method === "OPTIONS") {
-    res.status(200).end();
+    res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE,PATCH');
+    return res.status(200).json({});
   } else {
     next();
   }
@@ -34,18 +36,6 @@ app.use(function (err, req, res, next) {
   res.locals.error = req.app.get("env") === "development" ? err : {}; //  // render the error page
   res.status(err.status || 500);
   res.render("error");
-});
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  if (req.method === "OPTIONS") {
-    res.status(200).end();
-  } else {
-    next();
-  }
 });
 app.get("/", (req, res) => {
   res.json({ hello: "hello" });

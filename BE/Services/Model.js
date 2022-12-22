@@ -47,7 +47,18 @@ var info = async (id) => {
     }
 }
 
+var getAll = async () => {
+    try {
+        const models = await MODEL.findAll();
+        return models;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
 module.exports = {
     addModel,
     info,
+    getAll,
 }
