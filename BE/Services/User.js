@@ -1,4 +1,4 @@
-const {db, Manager, Customer, sequelize, Product} = require('../models');
+const {db, Manager, Customer, sequelize, Product, MODEL, Version, Color} = require('../models');
 const {QueryTypes} = require('sequelize');
 
 var findByAccount = async (account) => {
@@ -115,7 +115,23 @@ var getProducts = async (id) => {
         through: {
           attributes: [],
         },
-      }],
+      },
+      {
+        model: MODEL,
+        as: 'model',
+        attributes: ['name']
+      },
+      {
+        model: Version,
+        as: 'version',
+        attributes: ['name']
+      },
+      {
+        model: Color,
+        as: 'color',
+        attributes: ['name', 'code'],
+      },
+    ],
     });
     return products
   } catch (err) {
