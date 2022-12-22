@@ -1,4 +1,4 @@
-const {db, Product} = require('../models');
+const {db, Product, Manager} = require('../models');
 
 var addProducts = async (amount, color_id, model_id, version_id, batch_id) => {
   try {

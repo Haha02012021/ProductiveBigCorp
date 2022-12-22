@@ -135,7 +135,18 @@ const getInfo = async (id) => {
     }
 }
 
+const getAllVers = async () => {
+    try {
+        const versions = await Version.findAll();
+        return versions;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
 module.exports = {
     addVersion,
     getInfo,
+    getAllVers,
 }
