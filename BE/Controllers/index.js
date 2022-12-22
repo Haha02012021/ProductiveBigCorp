@@ -1,18 +1,32 @@
-const {getInfo} = require('../Services/Version');
-const {info} = require('../Services/Model');
+const {getInfo, getAllVers} = require('../Services/Version');
+const {info, getAll} = require('../Services/Model');
 const {getProducts} = require('../Services/User');
-const {getAll} = require('../Services/Model');
-const {getAllVers} = require('../Services/Version');
+const {allColors} = require('../Services/Color');
+const {productInfo} = require('../Services/Product');
 
 var getVersionInfo = async (req, res) => {
     try {
         const info = await getInfo(req.params.id);
         if(!info) {
             res.status(404).json({success: false, message: 'not found'});
+        } else {
+            res.json({success: true, data: info});
         }
-        res.json({success: true, data: info});
     } catch (err) {
         res.status(500).json({success: false, message: 'error from get version info', error: err});
+    }
+}
+
+var getProductInfo = async (req, res) => {
+    try {
+        const info = await productInfo(req.params.id);
+        if(!info) {
+            res.status(404).json({success: false, message: 'not found'});
+        } else {
+            res.json({success: true, data: info, message: 'get product info'});
+        }
+    } catch (err) {
+        res.json({success: false, message: 'error from get product info', error: err})
     }
 }
 
@@ -21,8 +35,9 @@ var getModelInfo = async (req, res) => {
         const model = await info(req.params.id);
         if(!model) {
             res.status(404).json({success: false, message: 'not found'});
+        } else {
+            res.json({success: true, data: model, message: 'get info success'});
         }
-        res.json({success: true, data: model, message: 'get info success'});
     } catch (err) {
         res.status(500).json({success: false, message: 'error from get model info', error: err});
     }
@@ -33,8 +48,9 @@ var getAllProducts = async (req, res) => {
         const products = await getProducts(req.params.manager_id);
         if(!products) {
             res.status(404).json({success: false, message: 'products not found'});
+        } else {
+            res.json({success: true, data: products, message: 'get all products'});
         }
-        res.json({success: true, data: products, message: 'get all products'});
     } catch (err) {
         res.status(500).json({success: false, message: 'error from get all products', error: err});
     }
@@ -45,8 +61,9 @@ var getAllVersions = async (req, res) => {
         const versions = await getAllVers();
         if(!versions) {
             res.status(404).json({success: false, message: 'not found'});
-        } 
-        res.json({success: true, data: versions, message: 'get all versions'});
+        } else {
+            res.json({success: true, data: versions, message: 'get all versions'});
+        }
     } catch (err) {
         res.status(500).json({success: false, message: 'error from get all versions', error: err});
     }
@@ -57,11 +74,25 @@ var getAllModels = async (req, res) => {
         const models = await getAll();
         if(!models) {
             res.status(404).json({success: false, message: 'not found'});
-        } 
-        res.json({success: true, data: models, message: 'get all models'});
-        
+        } else {
+            res.json({success: true, data: models, message: 'get all models'});
+        }
     } catch (err) {
         res.status(500).json({success: false, message: 'error from get all models', error: err});
+    }
+}
+
+var getAllColors = async (req, res) => {
+    try {
+        const colors = await allColors();
+        //console.log(colors);
+        if(!colors) {
+            res.status(404).json({success: false, message: 'not found'});
+        } else {
+            res.json({success: true, data: colors, message: 'get all colors'});
+        }
+    } catch (err) {
+        res.status(500).json({success: false, message: 'error from get all colors', error: err});
     }
 }
 
@@ -71,4 +102,6 @@ module.exports = {
     getAllProducts,
     getAllModels,
     getAllVersions,
+    getAllColors,
+    getProductInfo,
 }

@@ -1,4 +1,4 @@
-const {db, Product, Manager} = require('../models');
+const {db, Product, Manager, MODEL, Version, Batch, Color, Status, History} = require('../models');
 
 var addProducts = async (amount, color_id, model_id, version_id, batch_id) => {
   try {
@@ -37,9 +37,33 @@ var updateOneProduct = async (updateInfo, id) => {
   }
 }
 
-var getInfo = async (id) => {
+var productInfo = async (id) => {
   try {
-    const product = await Product.findByPk(id, {include: ['model', 'version', 'status', 'color', 'batch', 'request', 'customer', 'hasStatuses']});
+    const product = await Product.findByPk(id, {include: [
+      {
+        model: MODEL,
+        as: 'model',
+        attributes: ['id', 'name']
+      },
+      {
+        model: Version,
+        as: 'version',
+        attributes: ['id', 'name']
+      },
+      {
+        model: Color,
+        as: 'color',
+        attributes: ['id', 'name', 'code'],
+      },
+      {
+        model: Status,
+        as: 'status',
+        attributes: ['id', 'context']
+      },'batch', 
+      'request', 
+      'customer', 
+      'hasStatuses'  
+    ]});
     return product;
   } catch (err) {
     console.log(err);
@@ -57,10 +81,37 @@ var getCustomerInfo = async (id) => {
   }
 }
 
+var allProducts = async () => {
+  try {
+    const products = await Product.findAll({include: [
+      {
+        model: MODEL,
+        as: 'model',
+        attributes: ['id', 'name']
+      },
+      {
+        model: Version,
+        as: 'version',
+        attributes: ['id', 'name']
+      },
+      {
+        model: Color,
+        as: 'color',
+        attributes: ['id', 'name', 'code'],
+      },
+    ]});
+    return products
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
 module.exports = {
   addProducts,
   updateProducts,
   updateOneProduct,
-  getInfo,
+  productInfo,
   getCustomerInfo,
+  allProducts,
 }

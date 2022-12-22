@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 
-const {addManager, createModel, createVersion} = require('../Controllers/CoporationController');
+const {addManager, createModel, createVersion, getAllProducts} = require('../Controllers/CoporationController');
 
 function validateCoporation(req, res, next) {
     const bearer = req.headers['authorization'];
@@ -31,5 +31,7 @@ router.post('/addManager', addManager);
 router.post('/newModel', createModel);
 
 router.post('/newVersion', createVersion);
+
+router.get('/products/all', getAllProducts)
 
 module.exports = router;

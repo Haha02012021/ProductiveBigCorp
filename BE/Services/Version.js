@@ -1,4 +1,4 @@
-const {db, Version, Size, Safety, Interior, I_ACTIVSENSE, Exterior, Chassis, Engine} = require('../models');
+const {db, Version, Size, Safety, Interior, I_ACTIVSENSE, Exterior, Chassis, Engine, MODEL} = require('../models');
 
 var addVersion = async (data) => {
     try {
@@ -137,7 +137,15 @@ const getInfo = async (id) => {
 
 const getAllVers = async () => {
     try {
-        const versions = await Version.findAll();
+        const versions = await Version.findAll({
+            include: [
+                {
+                    model: MODEL,
+                    as: 'model',
+                    attributes: ['id', 'name']
+                }
+            ]
+        });
         return versions;
     } catch (err) {
         console.log(err);
