@@ -142,7 +142,7 @@ const getAllVers = async () => {
                 {
                     model: MODEL,
                     as: 'model',
-                    attributes: ['name']
+                    attributes: ['id', 'name']
                 }
             ]
         });

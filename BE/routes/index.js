@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var {getVersionInfo, getModelInfo, getAllModels, getAllProducts, getAllVersions, getAllColors} = require('../Controllers/index');
+var {getVersionInfo, getModelInfo, getAllModels, getAllProducts, getAllVersions, getAllColors, getProductInfo} = require('../Controllers/index');
 
 function authenToken(req, res, next) {
     const bearer = req.headers['authorization'];
@@ -32,5 +32,7 @@ router.get('/versions/all', getAllVersions);
 router.get('/models/all', getAllModels);
 
 router.get('/colors/all', getAllColors);
+
+router.get('/product/detail/:id', getProductInfo)
 
 module.exports = router;

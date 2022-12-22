@@ -1,9 +1,8 @@
-const {getInfo} = require('../Services/Version');
-const {info} = require('../Services/Model');
+const {getInfo, getAllVers} = require('../Services/Version');
+const {info, getAll} = require('../Services/Model');
 const {getProducts} = require('../Services/User');
-const {getAll} = require('../Services/Model');
-const {getAllVers} = require('../Services/Version');
 const {allColors} = require('../Services/Color');
+const {productInfo} = require('../Services/Product');
 
 var getVersionInfo = async (req, res) => {
     try {
@@ -15,6 +14,19 @@ var getVersionInfo = async (req, res) => {
         }
     } catch (err) {
         res.status(500).json({success: false, message: 'error from get version info', error: err});
+    }
+}
+
+var getProductInfo = async (req, res) => {
+    try {
+        const info = await productInfo(req.params.id);
+        if(!info) {
+            res.status(404).json({success: false, message: 'not found'});
+        } else {
+            res.json({success: true, data: info, message: 'get product info'});
+        }
+    } catch (err) {
+        res.json({success: false, message: 'error from get product info', error: err})
     }
 }
 
@@ -91,4 +103,5 @@ module.exports = {
     getAllModels,
     getAllVersions,
     getAllColors,
+    getProductInfo,
 }
