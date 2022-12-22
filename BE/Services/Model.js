@@ -56,7 +56,7 @@ var getAll = async () => {
                 through: {
                     attributes: []
                 },
-                attributes: ['name', 'code']
+                attributes: ['id', 'name', 'code']
             }]
         });
         return models;

@@ -119,17 +119,17 @@ var getProducts = async (id) => {
       {
         model: MODEL,
         as: 'model',
-        attributes: ['name']
+        attributes: ['id', 'name']
       },
       {
         model: Version,
         as: 'version',
-        attributes: ['name']
+        attributes: ['id', 'name']
       },
       {
         model: Color,
         as: 'color',
-        attributes: ['name', 'code'],
+        attributes: ['id', 'name', 'code'],
       },
     ],
     });
