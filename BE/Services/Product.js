@@ -67,7 +67,6 @@ var productInfo = async (id) => {
           'i_activesense',
           'safety',
           'size',
-          'model'
         ]
       },
       {
