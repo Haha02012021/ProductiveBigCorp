@@ -91,9 +91,11 @@ var getCustomerInfo = async (id) => {
   }
 }
 
-var allProducts = async () => {
+var allProducts = async (condition) => {
   try {
-    const products = await Product.findAll({include: [
+    const products = await Product.findAll({
+      where: condition,
+      include: [
       {
         model: MODEL,
         as: 'model',

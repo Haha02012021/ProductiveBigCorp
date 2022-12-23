@@ -106,7 +106,7 @@ var createCustomer = async (name, place, phone, email) => {
   }
 }
 
-var getProducts = async (id) => {
+var getProducts = async (id, condition) => {
   try {
     const products = await Manager.findByPk(id, {
       include: [{
@@ -115,21 +115,24 @@ var getProducts = async (id) => {
         through: {
           attributes: [],
         },
-      },
-      {
-        model: MODEL,
-        as: 'model',
-        attributes: ['id', 'name']
-      },
-      {
-        model: Version,
-        as: 'version',
-        attributes: ['id', 'name']
-      },
-      {
-        model: Color,
-        as: 'color',
-        attributes: ['id', 'name', 'code'],
+        include: [
+          {
+            model: MODEL,
+            as: 'model',
+            attributes: ['id', 'name']
+          },
+          {
+            model: Version,
+            as: 'version',
+            attributes: ['id', 'name']
+          },
+          {
+            model: Color,
+            as: 'color',
+            attributes: ['id', 'name', 'code'],
+          },
+        ],
+        where: condition,
       },
     ],
     });
