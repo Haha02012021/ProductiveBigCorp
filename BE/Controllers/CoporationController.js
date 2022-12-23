@@ -38,7 +38,7 @@ var createVersion = async (req, res) => {
 
 var getAllProducts = async (req, res) => {
     try {
-        const products = await allProducts();
+        const products = await allProducts(req.body.condition);
         if(!products) {
             res.status(404).json({success: false, message: 'not found'});
         } else {
