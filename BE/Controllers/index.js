@@ -45,7 +45,7 @@ var getModelInfo = async (req, res) => {
 
 var getAllProducts = async (req, res) => {
     try {
-        const products = await getProducts(req.params.manager_id);
+        const products = await getProducts(req.params.manager_id, req.body.condition);
         if(!products) {
             res.status(404).json({success: false, message: 'products not found'});
         } else {
