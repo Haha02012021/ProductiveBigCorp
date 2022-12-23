@@ -15,7 +15,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   Model_Color.init({
     model_id: DataTypes.INTEGER,
-    color_id: DataTypes.INTEGER
+    color_id: DataTypes.INTEGER,
+    image: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   }, {
     sequelize,
     tableName: 'model_color',
