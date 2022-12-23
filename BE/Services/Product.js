@@ -43,7 +43,17 @@ var productInfo = async (id) => {
       {
         model: MODEL,
         as: 'model',
-        attributes: ['id', 'name']
+        attributes: ['id', 'name'],
+        include: [
+          {
+            model: Color,
+            as: 'colors',
+            through: {
+              attributes: ['image'],
+            },
+            attributes: ['id', 'name', 'code']
+          }
+        ]
       },
       {
         model: Version,
