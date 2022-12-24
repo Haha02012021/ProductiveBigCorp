@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal } from "antd";
-import { Tabs } from "antd";
-import { Image } from "antd";
-import sample from "../../../assets/cx-5-mau.jpg";
-import { Col, Row } from "antd";
-import { Radio, ConfigProvider } from "antd";
+import { Modal, Image, Tabs, Col, Row, Radio, ConfigProvider } from "antd";
 import styled from "styled-components";
 import TableHidenRow from "../../../Components/Table/TableHidenRow";
 import ListImage from "../../../Components/ListImage";
@@ -19,10 +14,11 @@ export default function ModalViewProduct(props) {
   };
 
   useEffect(() => {
-    if (props.isModalOpen === true && props.idProduct) {
+    if (props.idProduct) {
+      console.log(product);
       getProduct(props.idProduct);
     }
-  }, [props.isModalOpen]);
+  }, [props.idProduct]);
 
   const getProduct = async (id) => {
     const res = await indexApi.getProductById(id);
@@ -97,7 +93,6 @@ export default function ModalViewProduct(props) {
   ];
 
   if (product && product.version) {
-    console.log(product.version);
     for (let i = 0; i < listTable.length; i++) {
       if (product.version[listTable[i].key]) {
         listTable[i].data = buildDataVersion(product.version[listTable[i].key]);
@@ -196,7 +191,6 @@ export default function ModalViewProduct(props) {
           <BoldText style={{ marginTop: 10 }}>Thông số kỹ thuật</BoldText>
           <Row>
             {listTable.map((table, index) => {
-              console.log(table);
               return Object.keys(table.columns).length > 0 ? (
                 <TableHidenRow
                   columns={table.columns}
@@ -220,7 +214,7 @@ export default function ModalViewProduct(props) {
         open={props.isModalOpen}
         onOk={props.handleOk}
         onCancel={props.handleCancel}
-        width={600}
+        width={880}
         footer={[]}
         centered={true}
       >
@@ -237,7 +231,15 @@ export default function ModalViewProduct(props) {
             {
               label: `Hình ảnh`,
               key: "2",
-              children: <ListImage />,
+              children: (
+                <ListImage
+                  images={
+                    product && product.model && product.model.images
+                      ? product.model.images
+                      : []
+                  }
+                />
+              ),
             },
           ]}
         />
