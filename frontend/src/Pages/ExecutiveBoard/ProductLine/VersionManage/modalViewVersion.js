@@ -1,29 +1,114 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Image, Tabs, Col, Row, Radio, ConfigProvider } from "antd";
 import styled from "styled-components";
-import indexApi from "../../../apis/index";
+import TableHidenRow from "../../../../Components/Table/TableHidenRow";
+import ListImage from "../../../../Components/ListImage";
+import indexApi from "../../../../apis/index";
 
 export default function ModalViewProduct(props) {
-  const [product, setProduct] = useState({});
+  const [version, setVersion] = useState({});
   const [colors, setColors] = useState([]);
   const [idColor, setIdColor] = useState(0);
   const onChange = (key) => {};
 
   useEffect(() => {
-    if (props.idProduct) {
-      getProduct(props.idProduct);
+    if (props.idVersion) {
+      getVersion(props.idVersion);
     }
-  }, [props.idProduct]);
+  }, [props.idVersion]);
 
-  const getProduct = async (id) => {
-    const res = await indexApi.getProductById(id);
+  const getVersion = async (id) => {
+    const res = await indexApi.getVersionById(id);
     if (res.data) {
-      setProduct(res.data);
-      if (res.data.color) {
+      setVersion(res.data);
+      console.log(res.data.model);
+      if (res.data.model && res.data.model.colors) {
         setColors(res.data.model.colors);
       }
     }
   };
+
+  const buildDataVersion = (data) => {
+    const arr = new Array();
+    if (Object.keys(data).length < 4) return [];
+    for (let i = 2; i < Object.keys(data).length - 2; i++) {
+      const o = {};
+      o["value"] = data[Object.keys(data)[i]];
+      o["name"] = Object.keys(data)[i];
+      o["key"] = i - 1;
+      arr.push(o);
+    }
+    return arr;
+  };
+
+  const listTable = [
+    {
+      key: "chasis",
+      title: "Khung gầm",
+      data: {},
+      columns: {},
+    },
+    {
+      key: "engine",
+      title: "Động cơ hộp số",
+      data: {},
+      columns: {},
+    },
+    {
+      key: "exterior",
+      title: "Ngoại thất",
+      data: {},
+
+      columns: {},
+    },
+    {
+      key: "interior",
+      title: "NỘI THẤT",
+      data: {},
+
+      columns: {},
+    },
+    {
+      key: "i_activesense",
+      title: "I-ACTIVSENSE",
+      data: {},
+
+      columns: {},
+    },
+    {
+      key: "safety",
+      title: "An toàn",
+      data: {},
+
+      columns: {},
+    },
+    {
+      key: "size",
+      title: "Kích thước khối lượng",
+      data: {},
+      columns: {},
+    },
+  ];
+
+  if (version) {
+    for (let i = 0; i < listTable.length; i++) {
+      if (version[listTable[i].key]) {
+        listTable[i].data = buildDataVersion(version[listTable[i].key]);
+        listTable[i].columns = [
+          {
+            title: listTable[i].title,
+            dataIndex: "name",
+            width: "40%",
+          },
+          {
+            title: "",
+            dataIndex: "value",
+            height: 34,
+          },
+        ];
+      }
+    }
+  }
 
   const Specification = () => {
     return (
@@ -53,7 +138,7 @@ export default function ModalViewProduct(props) {
                 height: "17px",
               }}
             >
-              MAZDA CX-5
+              {version && version.name ? version.name : null}
             </Row>
             <Row
               style={{
@@ -62,10 +147,9 @@ export default function ModalViewProduct(props) {
                 marginBottom: "2px",
                 fontStyle: "italic",
                 color: "gray",
+                height: 12,
               }}
-            >
-              Ma
-            </Row>
+            ></Row>
             <Row>
               {colors.length > 0 ? (
                 <Radio.Group
@@ -94,7 +178,7 @@ export default function ModalViewProduct(props) {
                 <></>
               )}
             </Row>
-            <BoldText>Cơ sở sản xuất:</BoldText>
+            <BoldText>Dòng sản phẩm: {version?.model?.name}</BoldText>
             <BoldText>Đại lý phân phối:</BoldText>
             <BoldText>Trung tâm bảo hành:</BoldText>
             <BoldText>Trạng thái:</BoldText>
@@ -102,7 +186,19 @@ export default function ModalViewProduct(props) {
         </Row>
         <Row style={{ display: "flex", flexDirection: "column" }}>
           <BoldText style={{ marginTop: 10 }}>Thông số kỹ thuật</BoldText>
-          <Row></Row>
+          <Row>
+            {listTable.map((table, index) => {
+              return Object.keys(table.columns).length > 0 ? (
+                <TableHidenRow
+                  columns={table.columns}
+                  data={table.data}
+                  key={index}
+                />
+              ) : (
+                <div key={index}></div>
+              );
+            })}
+          </Row>
         </Row>
       </>
     );
@@ -132,7 +228,15 @@ export default function ModalViewProduct(props) {
             {
               label: `Hình ảnh`,
               key: "2",
-              children: <>Lich su</>,
+              children: (
+                <ListImage
+                  images={
+                    version && version.model && version.model.images
+                      ? version.model.images
+                      : []
+                  }
+                />
+              ),
             },
           ]}
         />

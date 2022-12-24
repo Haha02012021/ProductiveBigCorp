@@ -1,3 +1,5 @@
+import { Form } from "antd";
+import { useEffect, useState } from "react";
 import { Form, message } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import indexApi from "../../../../apis";
@@ -6,18 +8,38 @@ import CustomModal from "../../../../Components/CustomModal";
 import PageContent from "../../../../Components/PageContent";
 import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
-import ExecutiveBoardLayout from "../../../../Layouts/ExecutiveBoardLayout";
 import VersionForm from "./VersionForm";
+import ModalViewVersion from "./modalViewVersion";
 
 export default function VersionManage() {
   const [modalVisible, setModalVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [dataSource, setDataSource] = useState([]);
   const [errorPanelKey, setErrorPanelKey] = useState([]);
+  const [idVersion, setIdVersion] = useState(0);
   const [form] = Form.useForm();
 
   useEffect(() => {
     getAllVersions();
   }, []);
+
+  const showModal = (data) => {
+    console.log(data.id);
+    if (data.id !== idVersion) {
+      setIdVersion(data.id);
+    }
+    if (isModalOpen === false) {
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   const getAllVersions = async () => {
     const res = await indexApi.getAllVersions();
@@ -29,6 +51,7 @@ export default function VersionManage() {
           index: index + 1,
           productLine: version.model_id,
           version: version.name,
+          id: version.id,
         };
       });
 
@@ -60,7 +83,9 @@ export default function VersionManage() {
       key: "actions",
       fixed: "center",
       width: 236,
-      render: () => <ActionsCell hasConfirm={false} />,
+      render: (text, record, index) => (
+        <ActionsCell hasConfirm={false} onView={() => showModal(record)} />
+      ),
     },
   ];
 
@@ -118,6 +143,22 @@ export default function VersionManage() {
       >
         <CustomTable columns={columns} dataSource={dataSource} />
       </PageContent>
+      {isModalOpen && (
+        <ModalViewVersion
+          isModalOpen={isModalOpen}
+          handleOk={handleOk}
+          handleCancel={handleCancel}
+          idVersion={idVersion}
+        />
+      )}
+      <CustomModal
+        open={modalVisible}
+        onOk={handleSave}
+        onCancel={() => setModalVisible(false)}
+        title="Thêm phiên bản"
+      >
+        <VersionForm form={form} errorPanelKey={errorPanelKey} />
+      </CustomModal>
       {modalVisible && (
         <CustomModal
           open={modalVisible}

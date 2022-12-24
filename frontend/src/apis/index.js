@@ -19,6 +19,9 @@ const indexApi = {
   getAllColors() {
     return axios.get("/colors/all");
   },
+  getVersionById(id) {
+    return axios.get(`/version/${id}`);
+  },
 };
 
 export default indexApi;
