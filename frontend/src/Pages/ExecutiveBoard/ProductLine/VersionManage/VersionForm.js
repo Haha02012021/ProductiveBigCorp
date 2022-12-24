@@ -40,6 +40,7 @@ export default function VersionForm({ form, errorPanelKey }) {
     const res = await indexApi.getAllModels();
     if (res.success) {
       setAllModels(res.data);
+      console.log(res.data);
     }
   };
 

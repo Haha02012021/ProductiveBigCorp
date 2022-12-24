@@ -1,7 +1,5 @@
-import { Form } from "antd";
-import { useEffect, useState } from "react";
 import { Form, message } from "antd";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import indexApi from "../../../../apis";
 import coporationApi from "../../../../apis/coporation";
 import CustomModal from "../../../../Components/CustomModal";
@@ -143,6 +141,14 @@ export default function VersionManage() {
       >
         <CustomTable columns={columns} dataSource={dataSource} />
       </PageContent>
+      <CustomModal
+        open={modalVisible}
+        onOk={handleSave}
+        onCancel={() => setModalVisible(false)}
+        title="Thêm phiên bản"
+      >
+        <VersionForm form={form} errorPanelKey={errorPanelKey} />
+      </CustomModal>
       {isModalOpen && (
         <ModalViewVersion
           isModalOpen={isModalOpen}

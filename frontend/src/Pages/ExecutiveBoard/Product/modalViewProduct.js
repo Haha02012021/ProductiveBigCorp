@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Image, Tabs, Col, Row, Radio, ConfigProvider } from "antd";
 import styled from "styled-components";
+import TableHidenRow from "../../../Components/Table/TableHidenRow";
+import ListImage from "../../../Components/ListImage";
 import indexApi from "../../../apis/index";
 
 export default function ModalViewProduct(props) {
   const [product, setProduct] = useState({});
   const [colors, setColors] = useState([]);
   const [idColor, setIdColor] = useState(0);
-  const onChange = (key) => {};
+  const onChange = (key) => {
+    console.log(key);
+  };
 
   useEffect(() => {
     if (props.idProduct) {
+      console.log(product);
       getProduct(props.idProduct);
     }
   }, [props.idProduct]);
@@ -24,6 +29,88 @@ export default function ModalViewProduct(props) {
       }
     }
   };
+
+  const buildDataVersion = (data) => {
+    const arr = new Array();
+    if (Object.keys(data).length < 4) return [];
+    for (let i = 2; i < Object.keys(data).length - 2; i++) {
+      const o = {};
+      o["value"] = data[Object.keys(data)[i]];
+      o["name"] = Object.keys(data)[i];
+      o["key"] = i - 1;
+      arr.push(o);
+    }
+    return arr;
+  };
+
+  const listTable = [
+    {
+      key: "chasis",
+      title: "Khung gầm",
+      data: {},
+      columns: {},
+    },
+    {
+      key: "engine",
+      title: "Động cơ hộp số",
+      data: {},
+      columns: {},
+    },
+    {
+      key: "exterior",
+      title: "Ngoại thất",
+      data: {},
+
+      columns: {},
+    },
+    {
+      key: "interior",
+      title: "NỘI THẤT",
+      data: {},
+
+      columns: {},
+    },
+    {
+      key: "i_activesense",
+      title: "I-ACTIVSENSE",
+      data: {},
+
+      columns: {},
+    },
+    {
+      key: "safety",
+      title: "An toàn",
+      data: {},
+
+      columns: {},
+    },
+    {
+      key: "size",
+      title: "Kích thước khối lượng",
+      data: {},
+      columns: {},
+    },
+  ];
+
+  if (product && product.version) {
+    for (let i = 0; i < listTable.length; i++) {
+      if (product.version[listTable[i].key]) {
+        listTable[i].data = buildDataVersion(product.version[listTable[i].key]);
+        listTable[i].columns = [
+          {
+            title: listTable[i].title,
+            dataIndex: "name",
+            width: "40%",
+          },
+          {
+            title: "",
+            dataIndex: "value",
+            height: 34,
+          },
+        ];
+      }
+    }
+  }
 
   const Specification = () => {
     return (
@@ -85,7 +172,7 @@ export default function ModalViewProduct(props) {
                           },
                         }}
                       >
-                        <Radio value={index} key={index}></Radio>
+                        <Radio value={index}></Radio>
                       </ConfigProvider>
                     );
                   })}
@@ -102,7 +189,19 @@ export default function ModalViewProduct(props) {
         </Row>
         <Row style={{ display: "flex", flexDirection: "column" }}>
           <BoldText style={{ marginTop: 10 }}>Thông số kỹ thuật</BoldText>
-          <Row></Row>
+          <Row>
+            {listTable.map((table, index) => {
+              return Object.keys(table.columns).length > 0 ? (
+                <TableHidenRow
+                  columns={table.columns}
+                  data={table.data}
+                  key={index}
+                />
+              ) : (
+                <></>
+              );
+            })}
+          </Row>
         </Row>
       </>
     );
@@ -132,7 +231,15 @@ export default function ModalViewProduct(props) {
             {
               label: `Hình ảnh`,
               key: "2",
-              children: <>Lich su</>,
+              children: (
+                <ListImage
+                  images={
+                    product && product.model && product.model.images
+                      ? product.model.images
+                      : []
+                  }
+                />
+              ),
             },
           ]}
         />
