@@ -1,14 +1,17 @@
-import instance from "./axios";
+import axios from "./axios";
 
 const indexApi = {
   getAllModels() {
-    return instance.get("/models/all");
+    return axios.get("/models/all");
   },
   getAllVersions() {
-    return instance.get("/versions/all");
+    return axios.get("/versions/all");
   },
   getModelById(modelId) {
-    return instance.get(`/model/${modelId}`);
+    return axios.get(`/model/${modelId}`);
+  },
+  getProductById(productId) {
+    return axios.get(`/product/detail/${productId}`);
   },
 };
 

@@ -1,79 +1,139 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Modal } from "antd";
 import { Tabs } from "antd";
 import { Image } from "antd";
-// import sample from "../../../assets/cx-5-mau.jpg";
+import sample from "../../../assets/cx-5-mau.jpg";
 import { Col, Row } from "antd";
 import { Radio, ConfigProvider } from "antd";
 import styled from "styled-components";
 import TableHidenRow from "../../../Components/Table/TableHidenRow";
 import ListImage from "../../../Components/ListImage";
+import indexApi from "../../../apis/index";
 
 export default function ModalViewProduct(props) {
+  const [product, setProduct] = useState({});
+  const [colors, setColors] = useState([]);
+  const [idColor, setIdColor] = useState(0);
   const onChange = (key) => {
     console.log(key);
   };
 
-  const columnsSize = [
+  useEffect(() => {
+    if (props.isModalOpen === true && props.idProduct) {
+      getProduct(props.idProduct);
+    }
+  }, [props.isModalOpen]);
+
+  const getProduct = async (id) => {
+    const res = await indexApi.getProductById(id);
+    if (res.data) {
+      setProduct(res.data);
+      if (res.data.color) {
+        setColors(res.data.model.colors);
+      }
+    }
+  };
+
+  const buildDataVersion = (data) => {
+    const arr = new Array();
+    if (Object.keys(data).length < 4) return [];
+    for (let i = 2; i < Object.keys(data).length - 2; i++) {
+      const o = {};
+      o["value"] = data[Object.keys(data)[i]];
+      o["name"] = Object.keys(data)[i];
+      o["key"] = i - 1;
+      arr.push(o);
+    }
+    return arr;
+  };
+
+  const listTable = [
     {
-      title: "Kích thước khối lượng",
-      dataIndex: "name",
-      width: "40%",
+      key: "chasis",
+      title: "Khung gầm",
+      data: {},
+      columns: {},
     },
     {
-      title: "",
-      dataIndex: "value",
-      height: 34,
-    },
-  ];
-  const columnsEngine = [
-    {
+      key: "engine",
       title: "Động cơ hộp số",
-      dataIndex: "name",
-      width: "40%",
+      data: {},
+      columns: {},
     },
     {
-      title: "",
-      dataIndex: "value",
-      height: 34,
+      key: "exterior",
+      title: "Ngoại thất",
+      data: {},
+
+      columns: {},
+    },
+    {
+      key: "interior",
+      title: "NỘI THẤT",
+      data: {},
+
+      columns: {},
+    },
+    {
+      key: "i_activesense",
+      title: "I-ACTIVSENSE",
+      data: {},
+
+      columns: {},
+    },
+    {
+      key: "safety",
+      title: "An toàn",
+      data: {},
+
+      columns: {},
+    },
+    {
+      key: "size",
+      title: "Kích thước khối lượng",
+      data: {},
+      columns: {},
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      name: "Kích thước tổng thể",
-      value: "￥300,000.00",
-    },
-    {
-      key: "2",
-      name: "Chiều dài cơ sở",
-      value: "￥1,256,000.00",
-    },
-    {
-      key: "3",
-      name: "Bán kính quay vòng tối thiểu",
-      value: "￥120,000.00",
-    },
-    {
-      key: "3",
-      name: "Khoảng sáng gầm xe",
-      value: "￥120,000.00",
-    },
-  ];
-
-  const colors = [
-    { name: "red", code: "#cf1322" },
-    { name: "black", code: "#000000" },
-    { name: "green", code: "#008000" },
-    { name: "blue", code: "#1677ff" },
-  ];
+  if (product && product.version) {
+    console.log(product.version);
+    for (let i = 0; i < listTable.length; i++) {
+      if (product.version[listTable[i].key]) {
+        listTable[i].data = buildDataVersion(product.version[listTable[i].key]);
+        listTable[i].columns = [
+          {
+            title: listTable[i].title,
+            dataIndex: "name",
+            width: "40%",
+          },
+          {
+            title: "",
+            dataIndex: "value",
+            height: 34,
+          },
+        ];
+      }
+    }
+  }
 
   const Specification = () => {
     return (
       <>
         <Row>
-          <Col span={12}>{/* <Image width={270} src={sample} /> */}</Col>
+          <Col span={12}>
+            <Image
+              width={270}
+              src={
+                colors &&
+                colors.length > 0 &&
+                colors[idColor] &&
+                colors[idColor].Model_Color.image
+                  ? colors[idColor].Model_Color.image
+                  : null
+              }
+            />
+          </Col>
           <Col span={12}>
             <Row
               style={{
@@ -99,24 +159,32 @@ export default function ModalViewProduct(props) {
               Ma
             </Row>
             <Row>
-              <Radio.Group name="radiogroup" defaultValue={colors[0].code}>
-                {colors.map((color, index) => {
-                  return (
-                    <ConfigProvider
-                      key={index}
-                      theme={{
-                        components: {
-                          Radio: {
-                            colorPrimary: `${color.code}`,
+              {colors.length > 0 ? (
+                <Radio.Group
+                  name="radiogroup"
+                  defaultValue={idColor}
+                  onChange={(e) => setIdColor(e.target.value)}
+                >
+                  {colors.map((color, index) => {
+                    return (
+                      <ConfigProvider
+                        key={index}
+                        theme={{
+                          components: {
+                            Radio: {
+                              colorPrimary: `${color.code}`,
+                            },
                           },
-                        },
-                      }}
-                    >
-                      <Radio value={color.code}></Radio>
-                    </ConfigProvider>
-                  );
-                })}
-              </Radio.Group>
+                        }}
+                      >
+                        <Radio value={index}></Radio>
+                      </ConfigProvider>
+                    );
+                  })}
+                </Radio.Group>
+              ) : (
+                <></>
+              )}
             </Row>
             <BoldText>Cơ sở sản xuất:</BoldText>
             <BoldText>Đại lý phân phối:</BoldText>
@@ -127,8 +195,18 @@ export default function ModalViewProduct(props) {
         <Row style={{ display: "flex", flexDirection: "column" }}>
           <BoldText style={{ marginTop: 10 }}>Thông số kỹ thuật</BoldText>
           <Row>
-            <TableHidenRow columns={columnsSize} data={data} />
-            <TableHidenRow columns={columnsEngine} data={data} />
+            {listTable.map((table, index) => {
+              console.log(table);
+              return Object.keys(table.columns).length > 0 ? (
+                <TableHidenRow
+                  columns={table.columns}
+                  data={table.data}
+                  key={index}
+                />
+              ) : (
+                <></>
+              );
+            })}
           </Row>
         </Row>
       </>
@@ -144,6 +222,7 @@ export default function ModalViewProduct(props) {
         onCancel={props.handleCancel}
         width={600}
         footer={[]}
+        centered={true}
       >
         <hr style={{ margin: 0, color: "gray" }} />
         <Tabs

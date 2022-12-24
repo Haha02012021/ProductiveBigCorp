@@ -1,15 +1,20 @@
 import { Badge } from "antd";
-import React, { useState } from "react";
-import { useMemo } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ActionsCell from "../../../Components/Table/ActionsCell";
 import CustomTable from "../../../Components/Table/CustomTable";
 import ModalViewProduct from "./modalViewProduct";
-import ExecutiveBoardLayout from "../../../Layouts/ExecutiveBoardLayout";
 import PageContent from "../../../Components/PageContent";
+import indexApi from "../../../apis/coporation";
+import { AuthContext } from "../../../Provider/AuthProvider";
 
 export default function Product() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
+  const { authUser } = useContext(AuthContext);
+  const [idProduct, setIdProduct] = useState(0);
+  const [products, setProducts] = useState([]);
+  const showModal = (data) => {
+    console.log(data);
+    setIdProduct(1);
     setIsModalOpen(true);
   };
   const handleOk = () => {
@@ -19,6 +24,32 @@ export default function Product() {
     setIsModalOpen(false);
   };
 
+  useEffect(() => {
+    getProduct();
+  }, []);
+
+  const getProduct = async () => {
+    const res = await indexApi.getProducts(authUser.id);
+    if (res.data) {
+      const data = res.data;
+      setProducts([]);
+    }
+  };
+
+  const dataSource = [
+    {
+      id: 1,
+      version: "Version",
+      factory: "Factory",
+      store: "Store",
+      maintainCenter: "Maintain Center",
+      state: 0,
+      key: 1,
+    },
+  ];
+
+  const buildData = (data) => {};
+
   const columns = [
     {
       title: "Mã",
@@ -26,13 +57,6 @@ export default function Product() {
       key: "id",
       fixed: true,
       width: 64,
-    },
-    {
-      title: "Dòng sản phẩm",
-      dataIndex: "productLine",
-      key: "productLine",
-      onFilter: () => {},
-      filters: [],
     },
     {
       title: "Phiên bản",
@@ -101,7 +125,7 @@ export default function Product() {
       key: "actions",
       fixed: "center",
       width: 60,
-      render: () => (
+      render: (data) => (
         <ActionsCell
           hasEdit={false}
           hasDelete={false}
@@ -109,18 +133,6 @@ export default function Product() {
           hasConfirm={false}
         />
       ),
-    },
-  ];
-
-  const dataSource = [
-    {
-      id: 1,
-      productLine: "Product Line",
-      version: "Version",
-      factory: "Factory",
-      store: "Store",
-      maintainCenter: "Maintain Center",
-      state: 0,
     },
   ];
 
@@ -134,6 +146,7 @@ export default function Product() {
           isModalOpen={isModalOpen}
           handleOk={handleOk}
           handleCancel={handleCancel}
+          idProduct={idProduct}
         />
       )}
     </>
