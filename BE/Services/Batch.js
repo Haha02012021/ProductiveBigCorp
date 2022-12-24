@@ -26,17 +26,17 @@ const findByFactoryId = async (factory_id) => {
             {
                 model: MODEL,
                 as: 'model',
-                attributes: ['name'],
+                attributes: ['id', 'name'],
             },
             {
                 model: Version,
                 as: 'version',
-                attributes: ['name'],
+                attributes: ['id', 'name', 'price'],
             },
             {
                 model: Color,
                 as: 'color',
-                attributes: ['code', 'name'],
+                attributes: ['id', 'code', 'name'],
             },
           ]
         })

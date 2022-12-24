@@ -76,7 +76,7 @@ var productInfo = async (id) => {
         {
           model: Version,
           as: "version",
-          attributes: ["id", "name"],
+          attributes: ["id", "name", 'price'],
           include: [
             "chassis",
             "engine",
@@ -142,7 +142,7 @@ var allProducts = async (condition) => {
         {
           model: Version,
           as: "version",
-          attributes: ["id", "name"],
+          attributes: ["id", "name", 'price'],
         },
         {
           model: Color,

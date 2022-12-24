@@ -1,4 +1,4 @@
-const {db, Manager, Customer, sequelize, Product, MODEL, Version, Color} = require('../models');
+const {db, Manager, Customer, sequelize, Product, MODEL, Version, Color, Status} = require('../models');
 const {QueryTypes} = require('sequelize');
 
 var findByAccount = async (account) => {
@@ -125,13 +125,29 @@ var getProducts = async (id, condition) => {
           {
             model: Version,
             as: 'version',
-            attributes: ['id', 'name']
+            attributes: ['id', 'name', 'price'],
           },
           {
             model: Color,
             as: 'color',
             attributes: ['id', 'name', 'code'],
           },
+          {
+            model: Manager,
+            as: "managers",
+            through: {
+              attributes: [],
+            },
+            where: {
+              role: [2, 3, 4],
+            },
+            attributes: ["id", "name"],
+          },
+          {
+            model: Status,
+            as: 'status',
+            attributes: ['id', 'context'],
+          }
         ],
         where: condition,
       },
