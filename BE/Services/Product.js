@@ -1,4 +1,4 @@
-const {db, Product, Manager, MODEL, Version, Batch, Color, Status, History, Image, Manager} = require('../models');
+const {db, Product, MODEL, Version, Batch, Color, Status, History, Image, Manager} = require('../models');
 
 var addProducts = async (amount, color_id, model_id, version_id, batch_id) => {
   try {
@@ -131,7 +131,7 @@ var allProducts = async (condition) => {
         attributes: ['id', 'context']
       },
       {
-        model: Manager_Product,
+        model: Manager,
         as: 'managers',
         through: {
           attributes: [],
