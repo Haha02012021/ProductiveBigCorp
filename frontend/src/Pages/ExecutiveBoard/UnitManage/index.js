@@ -121,12 +121,7 @@ export default function UnitManage() {
       label: `Trung tâm bảo hành`,
       key: "3",
       children: (
-        <PageContent
-          pageHeaderProps={{
-            title: "Quản lý đơn vị",
-            onAdd: () => handleAdd(),
-          }}
-        >
+        <PageContent>
           <CustomTable
             dataSource={maintainCenterDataSource}
             columns={columns}
