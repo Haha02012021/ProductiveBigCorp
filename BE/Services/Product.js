@@ -1,15 +1,4 @@
-const {
-  db,
-  Product,
-  Manager,
-  MODEL,
-  Version,
-  Batch,
-  Color,
-  Status,
-  History,
-  Image,
-} = require("../models");
+const {db, Product, MODEL, Version, Batch, Color, Status, History, Image, Manager} = require('../models');
 
 var addProducts = async (amount, color_id, model_id, version_id, batch_id) => {
   try {
@@ -125,6 +114,7 @@ var allProducts = async (condition) => {
     const products = await Product.findAll({
       where: condition,
       include: [
+<<<<<<< HEAD
         {
           model: MODEL,
           as: "model",
@@ -134,6 +124,33 @@ var allProducts = async (condition) => {
           model: Version,
           as: "version",
           attributes: ["id", "name"],
+=======
+      {
+        model: MODEL,
+        as: 'model',
+        attributes: ['id', 'name']
+      },
+      {
+        model: Version,
+        as: 'version',
+        attributes: ['id', 'name']
+      },
+      {
+        model: Color,
+        as: 'color',
+        attributes: ['id', 'name', 'code'],
+      },
+      {
+        model: Status,
+        as: 'status',
+        attributes: ['id', 'context']
+      },
+      {
+        model: Manager,
+        as: 'managers',
+        through: {
+          attributes: [],
+>>>>>>> 82469587b3a4bb75bc910c59f528c9c8454cd42e
         },
         {
           model: Color,
