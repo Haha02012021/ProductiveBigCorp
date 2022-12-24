@@ -9,7 +9,6 @@ export default function AuthProvider({ children }) {
   useEffect(() => {
     const now = new Date();
     const localAccessToken = JSON.parse(localStorage.getItem("accessToken"));
-    console.log(localAccessToken);
     if (localAccessToken)
       if (now.getTime() <= localAccessToken.expiry) {
         if (!authUser) {
