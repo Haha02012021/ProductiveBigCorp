@@ -4,12 +4,10 @@ import ActionsCell from "../../../Components/Table/ActionsCell";
 import CustomTable from "../../../Components/Table/CustomTable";
 import ModalViewProduct from "./modalViewProduct";
 import PageContent from "../../../Components/PageContent";
-import indexApi from "../../../apis/index";
-import { AuthContext } from "../../../Provider/AuthProvider";
+import coporationApi from "../../../apis/coporation";
 
 export default function Product() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { authUser } = useContext(AuthContext);
   const [idProduct, setIdProduct] = useState(0);
   const [products, setProducts] = useState([]);
 
@@ -29,40 +27,54 @@ export default function Product() {
   };
 
   useEffect(() => {
-    getProduct();
+    getProducts();
   }, []);
 
-  const getProduct = async () => {
-    console.log(authUser);
-    const res = await indexApi.getProductsByManagerId(authUser.id);
+  const getProducts = async () => {
+    const res = await coporationApi.getProducts();
     if (res.data) {
       const data = res.data;
-      console.log(data);
-      setProducts(data);
+      setProducts(buildData(data));
     }
   };
 
-  const dataSource = [
-    {
-      id: 1,
-      version: "Version",
-      factory: "Factory",
-      store: "Store",
-      maintainCenter: "Maintain Center",
-      state: 0,
-      key: 1,
-    },
-  ];
-
-  const buildData = (data) => {};
+  const buildData = (data) => {
+    const result = new Array();
+    for (let i = 0; i < data.length; i++) {
+      const o = {};
+      if (data[i]) {
+        o.id = data[i].id;
+        o.key = i;
+        o.version = data[i].version.name;
+        o.productLine = data[i].model.name;
+        o.factory = data[i].managers[0].name;
+        o.store = data[i].store;
+        o.maintainCenter = data[i].maintainCenter;
+        o.state = data[i].status.context;
+      }
+      result.push(o);
+    }
+    return result;
+  };
 
   const columns = [
     {
       title: "Mã",
       dataIndex: "id",
       key: "id",
-      fixed: true,
       width: 64,
+    },
+    {
+      title: "Dòng sản phẩm",
+      dataIndex: "productLine",
+      key: "productLine",
+      filters: [
+        { text: "Fac 1", value: "Fac 1" },
+        { text: "Fac 2", value: "Fac 2" },
+        { text: "Factory", value: "Factory" },
+      ],
+      filterSearch: true,
+      onFilter: () => {},
     },
     {
       title: "Phiên bản",
@@ -116,7 +128,7 @@ export default function Product() {
       title: "Trạng thái",
       dataIndex: "state",
       key: "state",
-      render: (state) => <Badge color="blue" text={"status"} />,
+      render: (state) => <Badge color="blue" text={state} />,
       filters: [
         { text: "Fac 1", value: "Fac 1" },
         { text: "Fac 2", value: "Fac 2" },
@@ -145,7 +157,7 @@ export default function Product() {
   return (
     <>
       <PageContent pageHeaderProps={{ title: "Sản phẩm", hasAction: false }}>
-        <CustomTable columns={columns} dataSource={dataSource} />
+        <CustomTable columns={columns} dataSource={products} />
       </PageContent>
       {isModalOpen && (
         <ModalViewProduct
