@@ -13,6 +13,15 @@ const indexApi = {
   getProductById(productId) {
     return axios.get(`/product/detail/${productId}`);
   },
+  getProductsByManagerId(managerId) {
+    return axios.get(`/products/manager/${managerId}`);
+  },
+  getAllColors() {
+    return axios.get("/colors/all");
+  },
+  getVersionById(id) {
+    return axios.get(`/version/${id}`);
+  },
 };
 
 export default indexApi;

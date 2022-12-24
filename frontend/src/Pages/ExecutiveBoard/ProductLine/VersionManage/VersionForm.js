@@ -1,4 +1,12 @@
-import { Collapse, Form, InputNumber, Select, Space, Switch } from "antd";
+import {
+  Collapse,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  Space,
+  Switch,
+} from "antd";
 import { useEffect, useState } from "react";
 import indexApi from "../../../../apis";
 
@@ -54,7 +62,7 @@ export default function VersionForm({ form, errorPanelKey }) {
         />
       </Form.Item>
       <Form.Item label="Phiên bản" required name="name">
-        <Select placeholder="Chọn phiên bản" />
+        <Input placeholder="Nhập tên phiên bản" />
       </Form.Item>
       <Form.Item label="Thông số" required>
         <Collapse
@@ -81,9 +89,9 @@ export default function VersionForm({ form, errorPanelKey }) {
                     "length",
                   ]}
                   required
-                  rules={[
-                    { required: true, message: "Bạn phải nhập chiều dài!" },
-                  ]}
+                  // rules={[
+                  //   { required: true, message: "Bạn phải nhập chiều dài!" },
+                  // ]}
                 >
                   <InputNumber
                     placeholder="Nhập chiều dài"
@@ -204,13 +212,13 @@ export default function VersionForm({ form, errorPanelKey }) {
           </Collapse.Panel>
           <Collapse.Panel header="Động cơ hộp số" key="dong_co_hop_so">
             <SpecificationFormItem label="Loại động cơ" name={["loai_dong_co"]}>
-              <Select placeholder="Chọn loại động cơ"></Select>
+              <Input placeholder="Nhập loại động cơ" />
             </SpecificationFormItem>
             <SpecificationFormItem
               label="Hệ thống nhiên liệu"
               name={["dong_co_hop_so", "he_thong_nhien_lieu"]}
             >
-              <Select placeholder="Chọn hệ thống nhiên liệu"></Select>
+              <Input placeholder="Nhập hệ thống nhiên liệu" />
             </SpecificationFormItem>
             <SpecificationFormItem
               label="Dung tích xi lanh"
@@ -243,7 +251,7 @@ export default function VersionForm({ form, errorPanelKey }) {
               label="Hộp số"
               name={["dong_co_hop_so", "hop_so"]}
             >
-              <Select placeholder="Chọn hộp số"></Select>
+              <Input placeholder="Nhập hộp số" />
             </SpecificationFormItem>
             <SpecificationFormItem
               label="Chế độ thể thao"
@@ -259,7 +267,7 @@ export default function VersionForm({ form, errorPanelKey }) {
               label="Hệ thống kiểm soát gia tốc (GVC)"
               name={["dong_co_hop_so", "GVC"]}
             >
-              <Select placeholder="Chọn hệ thống GVC"></Select>
+              <Input placeholder="Nhập GVC" />
             </SpecificationFormItem>
             <SpecificationFormItem
               label="Hệ thống ngừng/khởi động thông minh"
@@ -277,50 +285,50 @@ export default function VersionForm({ form, errorPanelKey }) {
               label="Hệ thống treo trước"
               name={["khung_gam", "he_thong_treo_truoc"]}
             >
-              <Select placeholder="Chọn hệ thống" />
+              <Input placeholder="Nhập hệ thống" />
             </SpecificationFormItem>
 
             <SpecificationFormItem
               label="Hệ thống treo sau"
               name={["khung_gam", "he_thong_treo_sau"]}
             >
-              <Select placeholder="Chọn hệ thống" />
+              <Input placeholder="Nhập hệ thống" />
             </SpecificationFormItem>
             <SpecificationFormItem
               label="Hệ thống dẫn động"
               name={["khung_gam", "he_thong_dan_dong"]}
             >
-              <Select placeholder="Chọn hệ thống" />
+              <Input placeholder="Nhập hệ thống" />
             </SpecificationFormItem>
             <SpecificationFormItem
               label="Hệ thống phanh trước"
               name={["khung_gam", "he_thong_phanh_truoc"]}
             >
-              <Select placeholder="Chọn hệ thống" />
+              <Input placeholder="Nhập hệ thống" />
             </SpecificationFormItem>
             <SpecificationFormItem
               label="Hệ thống phanh sau"
               name={["khung_gam", "he_thong_phanh_sau"]}
             >
-              <Select placeholder="Chọn hệ thống" />
+              <Input placeholder="Nhập hệ thống" />
             </SpecificationFormItem>
             <SpecificationFormItem
               label="Hệ thống trợ lực lái"
               name={["khung_gam", "he_thong_tro_luc_lai"]}
             >
-              <Select placeholder="Chọn hệ thống" />
+              <Input placeholder="Nhập hệ thống" />
             </SpecificationFormItem>
             <SpecificationFormItem
               label="Kích thước lốp xe"
               name={["khung_gam", "kich_thuoc_lop_xe"]}
             >
-              <Select placeholder="Chọn kích thước" />
+              <Input placeholder="Nhập hệ thống" />
             </SpecificationFormItem>
             <SpecificationFormItem
               label="Đường kính lốp xe"
               name={["khung_gam", "duong_kinh_lop_xe"]}
             >
-              <Select placeholder="Chọn đường kính" />
+              <Input placeholder="Nhập đường kính" />
             </SpecificationFormItem>
           </Collapse.Panel>
           <Collapse.Panel header="Ngoại thất" key="ngoai_that">
@@ -328,10 +336,10 @@ export default function VersionForm({ form, errorPanelKey }) {
               name={["ngoai_that", "den_chieu_gan"]}
               label="Đèn chiếu gần"
             >
-              <Select placeholder="Chọn đèn" />
+              <Input placeholder="Nhập đèn" />
             </SpecificationFormItem>
             <SpecificationFormItem name={["den_chieu_xa"]} label="Đèn chiếu xa">
-              <Select placeholder="Chọn đèn" />
+              <Input placeholder="Nhập đèn" />
             </SpecificationFormItem>
             <SpecificationFormItem
               name={["ngoai_that", "den_led_chay_ban_ngay"]}
@@ -419,7 +427,7 @@ export default function VersionForm({ form, errorPanelKey }) {
               name={["noi_that", "chat_lieu_noi_that"]}
               label="Chất liệu nội thất"
             >
-              <Select placeholder="Chọn chất liệu"></Select>
+              <Input placeholder="Nhập chất liệu" />
             </SpecificationFormItem>
             <SpecificationFormItem
               name={["noi_that", "ghe_lai_dieu_chinh_dien"]}
@@ -465,7 +473,7 @@ export default function VersionForm({ form, errorPanelKey }) {
               name={["noi_that", "man_hinh_cam_ung"]}
               label="Màn hình cảm ứng"
             >
-              <Select placeholder="Chọn kích thước" />
+              <Input placeholder="Nhập hệ thống" />
             </SpecificationFormItem>
             <SpecificationFormItem
               name={["noi_that", "AUX_USB_bluetooth"]}

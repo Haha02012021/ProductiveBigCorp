@@ -5,9 +5,9 @@ module.exports = (sequelize, DataTypes) => {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
+     * The models/index file will call this method automatically.
      */
-    static associate({Version, Color, Model_Color, Batch, Image}) {
+    static associate({ Version, Color, Model_Color, Batch, Image }) {
       this.hasMany(Image, {
         foreignKey: "model_id",
         as: "images",
@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
-      }
+      },
     },
     {
       sequelize,
