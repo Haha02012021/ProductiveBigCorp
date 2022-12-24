@@ -1,5 +1,5 @@
 import { Form, message } from "antd";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import indexApi from "../../../../apis";
 import coporationApi from "../../../../apis/coporation";
 import CustomModal from "../../../../Components/CustomModal";
@@ -8,8 +8,10 @@ import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
 import VersionForm from "./VersionForm";
 import ModalViewVersion from "./modalViewVersion";
+import { ThemeContext } from "../../../../Provider/ThemeProvider";
 
 export default function VersionManage() {
+  const { isMobile } = useContext(ThemeContext);
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [viewModalVisible, setViewModalVisible] = useState(false);
@@ -122,7 +124,9 @@ export default function VersionManage() {
           ...kich_thuoc_khoi_luong,
           kich_thuoc_tong_the:
             kich_thuoc_khoi_luong.kich_thuoc_tong_the.length +
+            " x " +
             kich_thuoc_khoi_luong.kich_thuoc_tong_the.width +
+            " x " +
             kich_thuoc_khoi_luong.kich_thuoc_tong_the.height,
         },
         ...dong_co_hop_so,
@@ -170,6 +174,7 @@ export default function VersionManage() {
           onOk={handleSave}
           onCancel={() => setEditModalVisible(false)}
           title="Sửa phiên bản"
+          width={isMobile ? "80%" : "68%"}
         >
           <VersionForm
             form={form}
@@ -184,6 +189,7 @@ export default function VersionManage() {
           onOk={handleSave}
           onCancel={() => setAddModalVisible(false)}
           title="Thêm phiên bản"
+          width={isMobile ? "80%" : "68%"}
         >
           <VersionForm form={form} errorPanelKey={errorPanelKey} />
         </CustomModal>
