@@ -13,6 +13,9 @@ const indexApi = {
   getProductById(productId) {
     return axios.get(`/product/detail/${productId}`);
   },
+  getProductsByManagerId(managerId) {
+    return axios.get(`/products/manager/${managerId}`);
+  },
 };
 
 export default indexApi;

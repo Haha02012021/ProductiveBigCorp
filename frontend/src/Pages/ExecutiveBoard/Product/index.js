@@ -4,7 +4,7 @@ import ActionsCell from "../../../Components/Table/ActionsCell";
 import CustomTable from "../../../Components/Table/CustomTable";
 import ModalViewProduct from "./modalViewProduct";
 import PageContent from "../../../Components/PageContent";
-import indexApi from "../../../apis/coporation";
+import indexApi from "../../../apis/index";
 import { AuthContext } from "../../../Provider/AuthProvider";
 
 export default function Product() {
@@ -12,10 +12,14 @@ export default function Product() {
   const { authUser } = useContext(AuthContext);
   const [idProduct, setIdProduct] = useState(0);
   const [products, setProducts] = useState([]);
+
   const showModal = (data) => {
-    console.log(data);
-    setIdProduct(1);
-    setIsModalOpen(true);
+    if (data.id !== idProduct) {
+      setIdProduct(data.id);
+    }
+    if (isModalOpen === false) {
+      setIsModalOpen(true);
+    }
   };
   const handleOk = () => {
     setIsModalOpen(false);
@@ -29,10 +33,12 @@ export default function Product() {
   }, []);
 
   const getProduct = async () => {
-    const res = await indexApi.getProducts(authUser.id);
+    console.log(authUser);
+    const res = await indexApi.getProductsByManagerId(authUser.id);
     if (res.data) {
       const data = res.data;
-      setProducts([]);
+      console.log(data);
+      setProducts(data);
     }
   };
 
@@ -125,11 +131,11 @@ export default function Product() {
       key: "actions",
       fixed: "center",
       width: 60,
-      render: (data) => (
+      render: (text, record, index) => (
         <ActionsCell
           hasEdit={false}
           hasDelete={false}
-          onView={showModal}
+          onView={() => showModal(record)}
           hasConfirm={false}
         />
       ),
