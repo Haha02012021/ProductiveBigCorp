@@ -14,4 +14,9 @@ export const errorMessages = {
     accountLength: "Chỉ được nhập dưới 20 ký tự!",
     errorSubmit: "Tạo đơn vị không thành công!",
   },
+  lineForm: {
+    name: "Bạn phải nhập dòng sản phẩm!",
+    colors: "Hãy chọn ít nhất 1 màu!",
+    nameLength: "Chỉ được nhập dưới 40 kí tự!",
+  },
 };

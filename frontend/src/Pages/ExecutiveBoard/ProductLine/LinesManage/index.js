@@ -1,26 +1,37 @@
-import { Form, Input } from "antd";
-import { useMemo, useState } from "react";
+import { Form } from "antd";
+import { useEffect, useMemo, useState } from "react";
+import indexApi from "../../../../apis";
 import CustomModal from "../../../../Components/CustomModal";
 import PageContent from "../../../../Components/PageContent";
 import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
-import ExecutiveBoardLayout from "../../../../Layouts/ExecutiveBoardLayout";
-
-const dataSource = [
-  {
-    key: 1,
-    index: 1,
-    productLine: "Product Line",
-    actions: {
-      productLine: "Product Line",
-    },
-  },
-];
+import LineForm from "./LineForm";
 
 export default function LineManage() {
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
+  const [selectedLineId, setSelectedLineId] = useState();
+  const [dataSource, setDataSource] = useState([]);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    getAllModels();
+  }, []);
+
+  const getAllModels = async () => {
+    const res = await indexApi.getAllModels();
+    if (res.success) {
+      const ds = res.data.map((model, index) => {
+        return {
+          key: model.id,
+          index: index + 1,
+          name: model.name,
+          actions: model,
+        };
+      });
+      setDataSource(ds);
+    }
+  };
 
   const columns = useMemo(
     () => [
@@ -33,8 +44,8 @@ export default function LineManage() {
       },
       {
         title: "Dòng sản phẩm",
-        dataIndex: "productLine",
-        key: "productLine",
+        dataIndex: "name",
+        key: "name",
       },
       {
         title: "Thao tác",
@@ -62,11 +73,14 @@ export default function LineManage() {
     form.resetFields();
     setEditModalVisible(true);
     form.setFieldsValue(productLineInfo);
+    setSelectedLineId(productLineInfo.id);
   };
 
   const handleSave = () => {
+    form.submit();
     console.log(form.getFieldsValue());
   };
+
   return (
     <>
       <PageContent
@@ -85,12 +99,7 @@ export default function LineManage() {
           okText="Lưu"
           cancelText="Bỏ qua"
         >
-          <Form form={form} style={{ paddingTop: 24, paddingBottom: 24 }}>
-            <Form.Item label="Dòng sản phẩm" required name="productLine">
-              <Input placeholder="Nhập dòng sản phẩm mới" />
-            </Form.Item>
-            <Form.Item label="Màu" required name="color"></Form.Item>
-          </Form>
+          <LineForm form={form} />
         </CustomModal>
       )}
       {editModalVisible && (
@@ -98,14 +107,11 @@ export default function LineManage() {
           title="Sửa dòng sản phẩm"
           open={editModalVisible}
           onCancel={() => setEditModalVisible(false)}
+          onOk={() => handleSave()}
           okText="Lưu"
           cancelText="Bỏ qua"
         >
-          <Form form={form} style={{ paddingTop: 24, paddingBottom: 24 }}>
-            <Form.Item label="Dòng sản phẩm" required name="productLine">
-              <Input placeholder="Nhập dòng sản phẩm mới" />
-            </Form.Item>
-          </Form>
+          <LineForm form={form} lineId={selectedLineId} />
         </CustomModal>
       )}
     </>
