@@ -49,7 +49,7 @@ module.exports = {
       },
       isSold: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        defaultValue: 0,
       },
       soldAt: {
         allowNull: true,
