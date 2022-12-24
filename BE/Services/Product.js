@@ -83,7 +83,17 @@ var productInfo = async (id) => {
         model: Status,
         as: 'status',
         attributes: ['id', 'context']
-      },'batch', 
+      },
+      {
+        model: Manager,
+        as: 'managers',
+        through: {
+          attributes: []
+        },
+        attributes: ['id', 'name'],
+        where: {role: 2}
+      },
+      'batch', 
       'request', 
       'customer', 
       'hasStatuses'  
@@ -137,7 +147,7 @@ var allProducts = async (condition) => {
           attributes: [],
         },
         where: {
-          role: [2, 4],
+          role: [2, 3, 4],
         },
         attributes: ['id', 'name'],
       }

@@ -49,7 +49,6 @@ var getBatches = async (req, res) => {
 
 var provide = async (req, res) => {
     try {
-
     } catch (err) {
         res.status(500).json({success: false, message: 'error from provide', error: err});
     }
