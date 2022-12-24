@@ -1,53 +1,20 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useContext } from "react";
 import { Tabs } from "antd";
 import CustomTable from "../../../Components/Table/CustomTable";
 import ActionsCell from "../../../Components/Table/ActionsCell";
 import { createDataTable } from "../../../Components/Table/createDataTable";
 import PageContent from "../../../Components/PageContent";
-
+import indexApi from "../../../apis";
+import { AuthContext } from "../../../Provider/AuthProvider";
+import {
+  productColumns,
+  productWarrantyColumns,
+  buildData,
+} from "../../../const/tableProduct";
 const StoreProduct = () => {
   const [currentTab, setCurrentTab] = useState(1);
-  const productColumns = useMemo(
-    () => [
-      {
-        title: "Dòng sản phẩm",
-        dataIndex: "productLine",
-        key: "productLine",
-        width: 150,
-        height: 56,
-      },
-      {
-        title: "Sản phẩm",
-        dataIndex: "product",
-        key: "product",
-      },
-      {
-        title: "Số",
-        dataIndex: "number",
-        key: "number",
-        width: 100,
-      },
-      {
-        title: "Giá",
-        dataIndex: "price",
-        key: "price",
-      },
-      {
-        title: "Trạng thấi",
-        dataIndex: "status",
-        key: "status",
-        width: 104,
-      },
-      {
-        title: "Thao tác",
-        dataIndex: "actions",
-        key: "actions",
-        width: 150,
-        render: () => <ActionsCell hasConfirm={false} hasDelete={false} />,
-      },
-    ],
-    []
-  );
+  const [productStore, setProductStore] = useState([]);
+
   const newProductColumns = useMemo(
     () => [
       {
@@ -61,7 +28,6 @@ const StoreProduct = () => {
         title: "Phiên bản",
         dataIndex: "version",
         key: "version",
-        fixed: true,
         width: 182,
         height: 56,
       },
@@ -99,33 +65,43 @@ const StoreProduct = () => {
     ],
     []
   );
-  const productDataSource = createDataTable(productColumns, 3);
+  const { authUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    getProductsStore();
+  }, []);
+
+  const getProductsStore = async (id) => {
+    const condition = {
+      idSold: 0,
+    };
+    const res = await indexApi.getProductsByManagerId(authUser.id, condition);
+    if (res.data && res.data.products) {
+      setProductStore(buildData(res.data.products));
+    }
+  };
+
   const newProductDataSource = createDataTable(newProductColumns, 3);
-  const tabItems = useMemo(
-    () => [
-      {
-        label: `Sản phẩm`,
-        key: "1",
-        children: (
-          <CustomTable
-            dataSource={productDataSource}
-            columns={productColumns}
-          />
-        ),
-      },
-      {
-        label: `Sản phẩm mới`,
-        key: "2",
-        children: (
-          <CustomTable
-            dataSource={newProductDataSource}
-            columns={newProductColumns}
-          />
-        ),
-      },
-    ],
-    []
-  );
+
+  const tabItems = [
+    {
+      label: `Sản phẩm trong kho`,
+      key: "1",
+      children: (
+        <CustomTable dataSource={productStore} columns={productColumns} />
+      ),
+    },
+    {
+      label: `Sản phẩm đang yêu cầu`,
+      key: "2",
+      children: (
+        <CustomTable
+          dataSource={newProductDataSource}
+          columns={newProductColumns}
+        />
+      ),
+    },
+  ];
 
   return (
     <PageContent

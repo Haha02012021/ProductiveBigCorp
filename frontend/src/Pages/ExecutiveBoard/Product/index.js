@@ -1,5 +1,5 @@
 import { Badge } from "antd";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ActionsCell from "../../../Components/Table/ActionsCell";
 import CustomTable from "../../../Components/Table/CustomTable";
 import ModalViewProduct from "./modalViewProduct";
