@@ -15,7 +15,8 @@ module.exports = {
       },
       phone: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true,
       },
       place: {
         type: DataTypes.STRING,
@@ -23,7 +24,8 @@ module.exports = {
       },
       email: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true,
       },
       createdAt: {
         allowNull: false,

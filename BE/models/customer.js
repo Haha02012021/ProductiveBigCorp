@@ -21,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     phone: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true,
     },
     place: {
       type: DataTypes.STRING,
@@ -29,11 +30,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true,
     },
   }, {
     sequelize,
     modelName: 'Customer',
+    tableName: 'customers',
   });
   return Customer;
 };
