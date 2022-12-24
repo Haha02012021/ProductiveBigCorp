@@ -10,11 +10,12 @@ import VersionForm from "./VersionForm";
 import ModalViewVersion from "./modalViewVersion";
 
 export default function VersionManage() {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [addModalVisible, setAddModalVisible] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [viewModalVisible, setViewModalVisible] = useState(false);
   const [dataSource, setDataSource] = useState([]);
   const [errorPanelKey, setErrorPanelKey] = useState([]);
-  const [idVersion, setIdVersion] = useState(0);
+  const [versionId, setVersionId] = useState(0);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -23,20 +24,30 @@ export default function VersionManage() {
 
   const showModal = (data) => {
     console.log(data.id);
-    if (data.id !== idVersion) {
-      setIdVersion(data.id);
+    if (data.id !== versionId) {
+      setVersionId(data.id);
     }
-    if (isModalOpen === false) {
-      setIsModalOpen(true);
+    if (viewModalVisible === false) {
+      setViewModalVisible(true);
+    }
+  };
+
+  const handleEdit = (data) => {
+    if (data.id !== versionId) {
+      setVersionId(data.id);
+    }
+
+    if (!editModalVisible) {
+      setEditModalVisible(true);
     }
   };
 
   const handleOk = () => {
-    setIsModalOpen(false);
+    setViewModalVisible(false);
   };
 
   const handleCancel = () => {
-    setIsModalOpen(false);
+    setViewModalVisible(false);
   };
 
   const getAllVersions = async () => {
@@ -82,25 +93,29 @@ export default function VersionManage() {
       fixed: "center",
       width: 236,
       render: (text, record, index) => (
-        <ActionsCell hasConfirm={false} onView={() => showModal(record)} />
+        <ActionsCell
+          hasConfirm={false}
+          onView={() => showModal(record)}
+          onEdit={() => handleEdit(record)}
+        />
       ),
     },
   ];
 
   const handleAddVer = () => {
     form.resetFields();
-    setModalVisible(true);
+    setAddModalVisible(true);
   };
   const handleSave = async () => {
     try {
       await form.validateFields();
       const values = form.getFieldsValue();
-      const kich_thuoc_khoi_luong = values["kich_thuoc_khoi_luong"];
-      const dong_co_hop_so = values["dong_co_hop_so"];
-      const khung_gam = values["khung_gam"];
-      const ngoai_that = values["ngoai_that"];
-      const noi_that = values["noi_that"];
-      const an_toan = values["an_toan"];
+      const kich_thuoc_khoi_luong = values["size"];
+      const dong_co_hop_so = values["engine"];
+      const khung_gam = values["chassis"];
+      const ngoai_that = values["exterior"];
+      const noi_that = values["interior"];
+      const an_toan = values["safety"];
       const i_activesense = values["i_activesense"];
       const data = {
         ...{
@@ -121,7 +136,7 @@ export default function VersionManage() {
       };
       const res = await coporationApi.addVersion(data);
       if (res.success) {
-        setModalVisible(false);
+        setAddModalVisible(false);
         message.success("Thêm phiên bản thành công!", 2);
       } else {
         message.error("Dường như có lỗi gì đó!", 2);
@@ -141,35 +156,33 @@ export default function VersionManage() {
       >
         <CustomTable columns={columns} dataSource={dataSource} />
       </PageContent>
-      <CustomModal
-        open={modalVisible}
-        onOk={handleSave}
-        onCancel={() => setModalVisible(false)}
-        title="Thêm phiên bản"
-      >
-        <VersionForm form={form} errorPanelKey={errorPanelKey} />
-      </CustomModal>
-      {isModalOpen && (
+      {viewModalVisible && (
         <ModalViewVersion
-          isModalOpen={isModalOpen}
+          isModalOpen={viewModalVisible}
           handleOk={handleOk}
           handleCancel={handleCancel}
-          idVersion={idVersion}
+          idVersion={versionId}
         />
       )}
-      <CustomModal
-        open={modalVisible}
-        onOk={handleSave}
-        onCancel={() => setModalVisible(false)}
-        title="Thêm phiên bản"
-      >
-        <VersionForm form={form} errorPanelKey={errorPanelKey} />
-      </CustomModal>
-      {modalVisible && (
+      {editModalVisible && (
         <CustomModal
-          open={modalVisible}
+          open={editModalVisible}
           onOk={handleSave}
-          onCancel={() => setModalVisible(false)}
+          onCancel={() => setEditModalVisible(false)}
+          title="Sửa phiên bản"
+        >
+          <VersionForm
+            form={form}
+            errorPanelKey={errorPanelKey}
+            versionId={versionId}
+          />
+        </CustomModal>
+      )}
+      {addModalVisible && (
+        <CustomModal
+          open={addModalVisible}
+          onOk={handleSave}
+          onCancel={() => setAddModalVisible(false)}
           title="Thêm phiên bản"
         >
           <VersionForm form={form} errorPanelKey={errorPanelKey} />
