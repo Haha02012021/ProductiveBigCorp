@@ -19,4 +19,5 @@ export const errorMessages = {
     colors: "Hãy chọn ít nhất 1 màu!",
     nameLength: "Chỉ được nhập dưới 40 kí tự!",
   },
+  versionForm: {},
 };

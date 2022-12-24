@@ -6,11 +6,21 @@ import { errorMessages } from "../../../../const";
 
 export default function LineForm({ form, lineId }) {
   const [lineInfo, setLineInfo] = useState([]);
+  const [colors, setAllColors] = useState([]);
   useEffect(() => {
     if (lineId) {
       getModel();
     }
   }, [lineId]);
+
+  useEffect(() => {
+    getAllColors();
+  }, []);
+
+  const getAllColors = async () => {
+    const res = await indexApi.getAllColors();
+    setAllColors(res.data);
+  };
 
   const getModel = async () => {
     const res = await indexApi.getModelById(lineId);
@@ -26,7 +36,7 @@ export default function LineForm({ form, lineId }) {
       event.preventDefault();
       event.stopPropagation();
     };
-    const color = lineInfo.colors.find((color) => color.id === value);
+    const color = colors.find((color) => color.id === value);
     return (
       <Tag
         color={color.code}
@@ -81,7 +91,7 @@ export default function LineForm({ form, lineId }) {
             width: "100%",
           }}
           showSearch={false}
-          options={lineInfo?.colors?.map((color) => {
+          options={colors.map((color) => {
             return {
               value: color.id,
               label: (

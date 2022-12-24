@@ -10,6 +10,9 @@ const coporationApi = {
   getProducts() {
     return axios.get(`/coporation/products/all`);
   },
+  addModel(modelInfo) {
+    return axios.post("/coporation/newModel", modelInfo);
+  },
 };
 
 export default coporationApi;

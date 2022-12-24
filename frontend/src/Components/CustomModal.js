@@ -19,6 +19,7 @@ export default function CustomModal({
       cancelText="Bỏ qua"
       width={width}
       footer={footer}
+      centered={true}
     >
       {children}
     </Modal>

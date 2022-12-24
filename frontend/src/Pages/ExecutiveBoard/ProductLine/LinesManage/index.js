@@ -1,6 +1,7 @@
-import { Form } from "antd";
+import { Form, message } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import indexApi from "../../../../apis";
+import coporationApi from "../../../../apis/coporation";
 import CustomModal from "../../../../Components/CustomModal";
 import PageContent from "../../../../Components/PageContent";
 import ActionsCell from "../../../../Components/Table/ActionsCell";
@@ -76,9 +77,15 @@ export default function LineManage() {
     setSelectedLineId(productLineInfo.id);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     form.submit();
-    console.log(form.getFieldsValue());
+    const res = await coporationApi.addModel(form.getFieldsValue());
+    if (res.success) {
+      message.success("Thêm dòng sản phẩm thành công!", 2);
+      setAddModalVisible(false);
+    } else {
+      message.error("Dường như có lỗi gì đó!", 2);
+    }
   };
 
   return (
@@ -96,6 +103,7 @@ export default function LineManage() {
           title="Thêm dòng sản phẩm"
           open={addModalVisible}
           onCancel={() => setAddModalVisible(false)}
+          onOk={() => handleSave()}
           okText="Lưu"
           cancelText="Bỏ qua"
         >
