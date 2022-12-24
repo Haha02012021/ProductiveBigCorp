@@ -1,4 +1,4 @@
-const {db, Version, Size, Safety, Interior, I_ACTIVSENSE, Exterior, Chassis, Engine, MODEL} = require('../models');
+const {db, Version, Size, Safety, Interior, I_ACTIVSENSE, Exterior, Chassis, Engine, MODEL, Color, Image} = require('../models');
 
 var addVersion = async (data) => {
     try {
@@ -128,7 +128,26 @@ const getInfo = async (id) => {
         'i_activesense',
         'safety',
         'size',
-        'model',]});
+        {
+            model: MODEL,
+            as: 'model',
+            attributes: ['id', 'name'],
+            include: [
+                {
+                    model: Color,
+                    as: 'colors',
+                    through: {
+                        attributes: ['image']
+                    },
+                    attributes: ['id', 'name', 'code'],
+                },
+                {
+                    model: Image,
+                    as: 'images',
+                    attributes: ['id', 'link'],
+                }
+            ]
+        },]});
         return versionInfo;
     } catch (err) {
         console.log(err);
@@ -142,8 +161,8 @@ const getAllVers = async () => {
                 {
                     model: MODEL,
                     as: 'model',
-                    attributes: ['id', 'name']
-                }
+                    attributes: ['id', 'name'],
+                },
             ]
         });
         return versions;
