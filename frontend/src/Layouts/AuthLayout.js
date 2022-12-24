@@ -6,6 +6,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
 import authApi from "../apis/auth";
+import { ThemeContext } from "../Provider/ThemeProvider";
 
 const { Header, Content } = Layout;
 
@@ -25,7 +26,7 @@ const dropdownMenu = [
 export default function AuthLayout({ menuProps = {}, children }) {
   const navigate = useNavigate();
   const { authUser, setAuthUser } = useContext(AuthContext);
-  const [isMobile, setIsMobile] = useState(false);
+  const { isMobile, setIsMobile } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {

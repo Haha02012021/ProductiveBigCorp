@@ -8,13 +8,15 @@ import CustomTable from "../../../Components/Table/CustomTable";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import ProductLotForm from "./ProductLotForm";
 import invertColor from "../../../utils/invertColor";
+import { ThemeContext } from "../../../Provider/ThemeProvider";
 
 export default function ProductLot() {
   const { authUser } = useContext(AuthContext);
+  const { isMobile } = useContext(ThemeContext);
   const [dataSource, setDataSource] = useState([]);
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
-  const [selectedBatchId, setSelectedBatchId] = useState();
+  const [selectedBatch, setSelectedBatch] = useState();
   const [form] = Form.useForm();
   const columns = [
     {
@@ -74,6 +76,8 @@ export default function ProductLot() {
 
   const handleEdit = (data) => {
     console.log(data);
+    setSelectedBatch(data);
+    setEditModalVisible(true);
   };
 
   const getBatches = async () => {
@@ -87,10 +91,12 @@ export default function ProductLot() {
           key: batch.id,
           factory_id: batch.factory_id,
           time,
+          model_id: batch.model_id,
           model: batch.model.name,
           version: batch.version.name,
+          version_id: batch.version_id,
           amount: batch.amount,
-          color: batch.color,
+          color: { ...batch.color, id: batch.color_id },
         };
       });
       setDataSource(ds);
@@ -129,9 +135,20 @@ export default function ProductLot() {
           onCancel={() => setAddModalVisible(false)}
           onOk={() => handleSave()}
           title="Thêm lô sản phẩm"
-          width="40%"
+          width={isMobile ? "80%" : "40%"}
         >
           <ProductLotForm form={form} />
+        </CustomModal>
+      )}
+      {editModalVisible && (
+        <CustomModal
+          open={editModalVisible}
+          onCancel={() => setEditModalVisible(false)}
+          onOk={() => handleSave()}
+          title="Sửa lô sản phẩm"
+          width={isMobile ? "80%" : "40%"}
+        >
+          <ProductLotForm form={form} batch={selectedBatch} />
         </CustomModal>
       )}
     </>

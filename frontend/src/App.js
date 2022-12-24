@@ -6,6 +6,7 @@ import ExecutiveBoard from "./Pages/ExecutiveBoard";
 import Store from "./Pages/Store";
 import Factory from "./Pages/Factory";
 import AuthProvider from "./Provider/AuthProvider";
+import ThemeProvider from "./Provider/ThemeProvider";
 
 function App() {
   return (
@@ -18,16 +19,18 @@ function App() {
         },
       }}
     >
-      <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="executive-board/*" element={<ExecutiveBoard />} />
-            <Route path="factory/*" element={<Factory />} />
-            <Route path="store/*" element={<Store />} />
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="executive-board/*" element={<ExecutiveBoard />} />
+              <Route path="factory/*" element={<Factory />} />
+              <Route path="store/*" element={<Store />} />
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
+      </ThemeProvider>
     </ConfigProvider>
   );
 }

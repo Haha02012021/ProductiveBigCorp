@@ -3,18 +3,14 @@ import { useEffect, useState } from "react";
 import indexApi from "../../../apis";
 import invertColor from "../../../utils/invertColor";
 
-export default function ProductLotForm({ form, batchId }) {
+export default function ProductLotForm({ form, batch }) {
   const [allModels, setAllModels] = useState([]);
   const [colors, setColors] = useState();
   const [versions, setVersions] = useState();
-  const [selectedModelId, setSelectedModelId] = useState();
-  const [optionsSelected, setOptionsSelected] = useState([]);
-
-  useEffect(() => {
-    if (batchId) {
-      getBatchById();
-    }
-  }, [batchId]);
+  const [selectedModelId, setSelectedModelId] = useState(batch?.model_id);
+  const [optionsSelected, setOptionsSelected] = useState(
+    batch ? [batch.color.id] : []
+  );
 
   useEffect(() => {
     getAllModels();
@@ -29,10 +25,6 @@ export default function ProductLotForm({ form, batchId }) {
       getColorsVersionsByModel();
     }
   }, [selectedModelId]);
-
-  const getBatchById = async () => {
-    const res = await getBatchById(batchId);
-  };
 
   const getAllModels = async () => {
     const res = await indexApi.getAllModels();
@@ -85,6 +77,7 @@ export default function ProductLotForm({ form, batchId }) {
       <Form.Item label="Dòng sản phẩm" required name="model_id">
         <Select
           placeholder="Chọn dòng sản phẩm"
+          defaultValue={batch?.model_id}
           options={allModels.map((model) => {
             return {
               value: model.id,
@@ -97,6 +90,7 @@ export default function ProductLotForm({ form, batchId }) {
       <Form.Item label="Phiên bản" required name="version_id">
         <Select
           placeholder="Chọn phiên bản"
+          defaultValue={batch?.version_id}
           style={{ width: "100%" }}
           options={versions?.map((version) => {
             return {
@@ -119,7 +113,7 @@ export default function ProductLotForm({ form, batchId }) {
               placeholder="Chọn màu"
               showArrow
               tagRender={tagRender}
-              defaultValue={[]}
+              defaultValue={[batch?.color.id]}
               style={{
                 width: "100%",
               }}
@@ -161,6 +155,7 @@ export default function ProductLotForm({ form, batchId }) {
             label="Số lượng"
             required
             name="amount"
+            initialValue={batch?.amount}
           >
             <InputNumber
               placeholder="Nhập số lượng"

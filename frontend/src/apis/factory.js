@@ -8,8 +8,4 @@ const addNewProducts = (data) => {
   return instance.post("/factory/newProducts", data);
 };
 
-const getBatchById = (batchId) => {
-  return;
-};
-
-export { getBatchesByFactoryId, addNewProducts, getBatchById };
+export { getBatchesByFactoryId, addNewProducts };
