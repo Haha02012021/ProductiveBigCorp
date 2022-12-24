@@ -104,11 +104,11 @@ export default function VersionManage() {
       const i_activesense = values["i_activesense"];
       const data = {
         ...{
+          ...kich_thuoc_khoi_luong,
           kich_thuoc_tong_the:
             kich_thuoc_khoi_luong.kich_thuoc_tong_the.length +
             kich_thuoc_khoi_luong.kich_thuoc_tong_the.width +
             kich_thuoc_khoi_luong.kich_thuoc_tong_the.height,
-          ...kich_thuoc_khoi_luong,
         },
         ...dong_co_hop_so,
         ...khung_gam,
