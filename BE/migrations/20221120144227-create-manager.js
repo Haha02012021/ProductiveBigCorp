@@ -12,6 +12,7 @@ module.exports = {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true
       },
       place: {
         type: DataTypes.STRING,
@@ -20,6 +21,7 @@ module.exports = {
       account: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
       password: {
         type: DataTypes.STRING,

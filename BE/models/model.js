@@ -37,6 +37,8 @@ module.exports = (sequelize, DataTypes) => {
   MODEL.init(
     {
       name: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
     },
     {
       sequelize,
