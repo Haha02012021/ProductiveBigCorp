@@ -1,4 +1,4 @@
-const {db, MODEL, Model_Color, Color, sequelize} = require('../models');
+const {db, MODEL, Model_Color, Color, sequelize, Image} = require('../models');
 const {QueryTypes} = require('sequelize');
 
 var addModel = async (name, colors) => {
@@ -39,7 +39,12 @@ var info = async (id) => {
             through: {
                 attributes: [],
             },
-        }, 'versions', 'images']});
+        }, 'versions', {
+            model: Image,
+            as: 'images',
+            attributes: ['id', 'link'],
+        }
+        ]});
         return model;
     } catch (err) {
         console.log(err);
