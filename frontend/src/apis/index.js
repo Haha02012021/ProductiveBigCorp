@@ -16,6 +16,9 @@ const indexApi = {
   getProductsByManagerId(managerId) {
     return axios.get(`/products/manager/${managerId}`);
   },
+  getAllColors() {
+    return axios.get("/colors/all");
+  },
 };
 
 export default indexApi;

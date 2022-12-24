@@ -4,6 +4,7 @@ import indexApi from "../../../../apis";
 
 export default function VersionForm({ form, errorPanelKey }) {
   const [allModels, setAllModels] = useState([]);
+  const [colors, setAllColors] = useState([]);
   const [selectedPanelKey, setSelectedPanelKey] = useState([
     "kich_thuoc_khoi_luong",
     "dong_co_hop_so",
@@ -19,6 +20,15 @@ export default function VersionForm({ form, errorPanelKey }) {
       setSelectedPanelKey((prev) => [...prev, errorPanelKey]);
     }
   }, [errorPanelKey]);
+
+  useEffect(() => {
+    getAllColors();
+  }, []);
+
+  const getAllColors = async () => {
+    const res = await indexApi.getAllColors();
+    console.log(res);
+  };
 
   const handleChange = (selectedPanelKey) => {
     setSelectedPanelKey(selectedPanelKey);
