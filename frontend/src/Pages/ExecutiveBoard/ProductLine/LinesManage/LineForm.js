@@ -81,6 +81,7 @@ export default function LineForm({ form, lineId }) {
         rules={[{ required: true, message: errorMessages.lineForm.colors }]}
       >
         <Select
+          placeholder="Chọn màu"
           mode="multiple"
           showArrow
           tagRender={tagRender}

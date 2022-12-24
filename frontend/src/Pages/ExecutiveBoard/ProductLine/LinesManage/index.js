@@ -17,7 +17,7 @@ export default function LineManage() {
 
   useEffect(() => {
     getAllModels();
-  }, []);
+  }, [addModalVisible, editModalVisible]);
 
   const getAllModels = async () => {
     const res = await indexApi.getAllModels();
@@ -79,6 +79,7 @@ export default function LineManage() {
 
   const handleSave = async () => {
     form.submit();
+    console.log(form.getFieldsValue());
     const res = await coporationApi.addModel(form.getFieldsValue());
     if (res.success) {
       message.success("Thêm dòng sản phẩm thành công!", 2);
