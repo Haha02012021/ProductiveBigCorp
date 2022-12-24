@@ -1,11 +1,14 @@
-import instance from "./axios";
+import axios from "./axios";
 
 const coporationApi = {
   addManager(managerInfo) {
-    return instance.post("/coporation/addManager", managerInfo);
+    return axios.post("/coporation/addManager", managerInfo);
   },
   addVersion(versionInfo) {
-    return instance.post("/coporation/newVersion", versionInfo);
+    return axios.post("/coporation/newVersion", versionInfo);
+  },
+  getProducts() {
+    return axios.get(`/coporation/products/all`);
   },
 };
 
