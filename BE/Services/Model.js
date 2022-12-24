@@ -39,7 +39,7 @@ var info = async (id) => {
             through: {
                 attributes: [],
             },
-        }, 'versions']});
+        }, 'versions', 'images']});
         return model;
     } catch (err) {
         console.log(err);

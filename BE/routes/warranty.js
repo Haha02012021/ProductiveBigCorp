@@ -11,27 +11,7 @@ const {
 } = require('../Controllers/WarrantyController');
 const { route } = require('./factory');
 
-function validateWarranty(req, res, next) {
-    const bearer = req.headers['authorization'];
-    if(!bearer) {
-      res.sendStatus(401);
-    }
-    const token = bearer.split(" ")[1];
-    if(!token) {
-      res.sendStatus(401);
-    }
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
-      console.log(typeof data.role);
-      if(err) {
-        res.status(403).json({success: false, message: 'token invalidated'});
-      }
-      if(data.role == 3) {
-        next();
-      } else {
-        res.status(403).json({success: false, message: 'not able for this role'});
-      }
-    });
-}
+const validateWarranty = require('../Middlewares/roleValidator');
 
 router.post("/maintain", receiveRequest)
 

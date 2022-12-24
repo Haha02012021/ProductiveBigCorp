@@ -52,7 +52,8 @@ var productInfo = async (id) => {
               attributes: ['image'],
             },
             attributes: ['id', 'name', 'code']
-          }
+          },
+          'images',
         ]
       },
       {
@@ -67,7 +68,6 @@ var productInfo = async (id) => {
           'i_activesense',
           'safety',
           'size',
-          'model'
         ]
       },
       {
@@ -121,6 +121,14 @@ var allProducts = async (condition) => {
         as: 'color',
         attributes: ['id', 'name', 'code'],
       },
+      {
+        model: Status,
+        as: 'status',
+        attributes: ['id', 'context']
+      },
+      {
+        model 
+      }
     ]});
     return products
   } catch (err) {
