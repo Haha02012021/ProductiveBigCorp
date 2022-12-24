@@ -1,4 +1,4 @@
-const {db, Product, Manager, MODEL, Version, Batch, Color, Status, History} = require('../models');
+const {db, Product, Manager, MODEL, Version, Batch, Color, Status, History, Image} = require('../models');
 
 var addProducts = async (amount, color_id, model_id, version_id, batch_id) => {
   try {
@@ -52,7 +52,12 @@ var productInfo = async (id) => {
               attributes: ['image'],
             },
             attributes: ['id', 'name', 'code']
-          }
+          },
+          {
+            model: Image,
+            as: 'images',
+            attributes: ['id', 'link'],
+          },
         ]
       },
       {
@@ -120,6 +125,14 @@ var allProducts = async (condition) => {
         as: 'color',
         attributes: ['id', 'name', 'code'],
       },
+      {
+        model: Status,
+        as: 'status',
+        attributes: ['id', 'context']
+      },
+      {
+        model 
+      }
     ]});
     return products
   } catch (err) {
