@@ -3,7 +3,7 @@ var router = express.Router();
 
 var {getVersionInfo, getModelInfo, getAllModels, getAllProducts, 
     getAllVersions, getAllColors, getProductInfo, getAllManagers, 
-    getRequestInfo, getAllRequests} = require('../Controllers/index'); 
+    getRequestInfo, getAllRequests, getAllStatuses} = require('../Controllers/index'); 
 var {param, query, validationResult} = require('express-validator');
 
 const {authenToken} = require('../Middlewares/roleValidator');
@@ -38,5 +38,7 @@ getAllManagers);
 router.get('/request/:id', getRequestInfo);
 
 router.get('/requests/all/:manager_id', getAllRequests);
+
+router.get('/statuses/all', getAllStatuses);
 
 module.exports = router;
