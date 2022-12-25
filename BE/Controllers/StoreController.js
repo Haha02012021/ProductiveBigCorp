@@ -2,13 +2,15 @@ const {updateOneProduct, updateProducts} = require('../Services/Product');
 const {addOneHistory, addHistory, productsByStatus} = require('../Services/History');
 const {createCustomer} = require('../Services/User');
 const {findCustomerByEmail} = require('../Services/User');
-const {makeRequests} = require('../Services/Request');
+const {makeRequests, destroy} = require('../Services/Request');
+const { addError } = require('../Services/Error');
 
 var requestWarranty = async (req, res) => {
     try {
         const product = await updateOneProduct({status_id: 6}, req.body.product_id);
         const history = await addOneHistory(req.body.product_id, 6, 'yêu cầu được bảo hành', req.body.store_id);
-        res.json({success: true, message: 'request sent', data: {product, history}});
+        const error = await addError(product.id, req.body.content);
+        res.json({success: true, message: 'request sent', data: {product, history, error}});
     } catch (err) {
         res.status(500).json({error: err, success: false, message: 'error from warrantyRequest'});
     }
@@ -98,6 +100,19 @@ var createRequest = async (req, res) => {
     }
 }
 
+var deleteRequest = async (req, res) => {
+    try {
+        const check = destroy(req.params.id);
+        if(!check) {
+            res.status(500).json({success: false, message: 'delete failed'});
+        } else {
+            res.json({success: true, message: 'request deleted'});
+        }
+    } catch (err) {
+        res.status(500).json({error: err, success: false, message: 'error from deleting request'});
+    }
+}
+
 module.exports = {
     requestWarranty,
     sendToWarranty,
@@ -107,4 +122,5 @@ module.exports = {
     addCustomer,
     analizeProducts,
     createRequest,
+    deleteRequest,
 }
