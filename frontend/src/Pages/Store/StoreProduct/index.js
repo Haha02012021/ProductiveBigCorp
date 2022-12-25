@@ -78,32 +78,10 @@ const StoreProduct = () => {
       key: "actions",
       width: 80,
       render: () => (
-        <ActionsCell hasDelete={false} hasView={false} hasConfirm={false} />
+        <ActionsCell hasEdit={false} hasView={false} hasConfirm={false} />
       ),
     },
   ];
-
-  const showModal = (data) => {
-    if (data.id !== idProduct) {
-      setIdProduct(data.id);
-    }
-    if (isModalOpen === false) {
-      setIsModalOpen(true);
-    }
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleRequestOk = () => {
-    setIsModalRequest(false);
-  };
-  const handleRequestCancel = () => {
-    setIsModalRequest(false);
-  };
 
   const productColumns = [
     {
@@ -151,12 +129,34 @@ const StoreProduct = () => {
         <ActionsCell
           hasConfirm={false}
           hasDelete={false}
-          hasEdit={false}
           onView={() => showModal(record)}
         />
       ),
     },
   ];
+
+  const showModal = (data) => {
+    if (data.id !== idProduct) {
+      setIdProduct(data.id);
+    }
+    if (isModalOpen === false) {
+      setIsModalOpen(true);
+    }
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleRequestOk = () => {
+    setIsModalRequest(false);
+  };
+  const handleRequestCancel = () => {
+    setIsModalRequest(false);
+  };
+
   const { authUser } = useContext(AuthContext);
 
   const changeData = useCallback(() => {
@@ -173,7 +173,8 @@ const StoreProduct = () => {
   const getProductsStore = async (id) => {
     const condition = {
       condition: {
-        idSold: 0,
+        isSold: 0,
+        status_id: 4,
       },
     };
     const res = await indexApi.getProductsByManagerId(authUser.id, condition);
