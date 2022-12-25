@@ -1,6 +1,6 @@
 const {getInfo, getAllVers} = require('../Services/Version');
 const {info, getAll} = require('../Services/Model');
-const {getProducts, allManagers} = require('../Services/User');
+const {getProducts, allManagers, getRequests} = require('../Services/User');
 const {allColors} = require('../Services/Color');
 const {productInfo} = require('../Services/Product');
 const {getDetail} = require('../Services/Request');
@@ -113,9 +113,22 @@ var getAllManagers = async (req, res) => {
 var getRequestInfo = async (req, res) => {
     try {
         const request = await getDetail(req.params.id);
-        res.json({data: request});
+        res.json({success: true, data: request, message: 'get request info success'});
     } catch (err) {
         res.status(500).json({error: err, success: false, message: 'error from get request info'});
+    }
+}
+
+var getAllRequests = async (req, res) => {
+    try {
+        const requests = await getRequests(req.params.manager_id, req.body.condition, req.body.role);
+        if(requests) {
+            res.json({success: true, data: requests, message: 'get all request success'});
+        } else {
+            res.json({success: false, message: 'requests not found'})
+        }
+    } catch (err) {
+        res.status(500).json({error: err, success: false, message: 'error from get all requests'});
     }
 }
 
@@ -129,4 +142,5 @@ module.exports = {
     getProductInfo,
     getAllManagers,
     getRequestInfo,
+    getAllRequests,
 }

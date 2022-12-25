@@ -1,4 +1,4 @@
-const {db, Manager, Customer, sequelize, Product, MODEL, Version, Color, Status} = require('../models');
+const {db, Manager, Customer, sequelize, Product, MODEL, Version, Color, Status, Request} = require('../models');
 const {QueryTypes} = require('sequelize');
 
 var findByAccount = async (account) => {
@@ -160,6 +160,54 @@ var getProducts = async (id, condition) => {
   }
 }
 
+var getRequests = async (id, condition, role) => {
+  try {
+    const requests = await Manager.findByPk(id, {
+      include: [{
+        model: Request,
+        as: role === 4 ? 'sentRequests': 'receivedRequests',
+        include: [
+          {
+            model: MODEL,
+            as: 'model',
+            attributes: ['id', 'name']
+          },
+          {
+            model: Version,
+            as: 'version',
+            attributes: ['id', 'name', 'price'],
+          },
+          {
+            model: Color,
+            as: 'color',
+            attributes: ['id', 'name', 'code'],
+          },
+          {
+            model: Manager,
+            as: "factory",
+            attributes: ["id", "name"],
+          },
+          {
+            model: Manager,
+            as: "store",
+            attributes: ["id", "name"],
+          },
+        ],
+        where: condition,
+      },
+    ],
+    });
+    if(!requests) {
+      throw "controller error, can not get requests"
+    } else {
+      return requests;
+    }
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
 var updateCustomer = async (updateInfo, id) => {
   try {
     const customer = Customer.findByPk(id);
@@ -233,4 +281,5 @@ module.exports = {
   findCustomerByEmail,
   updateCustomer,
   allManagers,
+  getRequests,
 }

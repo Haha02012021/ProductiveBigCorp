@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(Batch, {foreignKey: 'factory_id', as: 'batches', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
       this.hasMany(History, {foreignKey: 'manager_id', as: 'history', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
       this.hasMany(Request, {foreignKey: 'factory_id', as: 'receivedRequests', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
-      this.hasMany(Request, {foreignKey: 'store_id', as: 'sentRequest', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
+      this.hasMany(Request, {foreignKey: 'store_id', as: 'sentRequests', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
     }
   }
   Manager.init({
