@@ -3,7 +3,8 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 
-const {requestWarranty, sendToWarranty, receiveWarranty, getCustomer, sell, addCustomer, analizeProducts} = require('../Controllers/StoreController');
+const {requestWarranty, sendToWarranty, receiveWarranty, getCustomer, 
+    sell, addCustomer, analizeProducts, createRequest} = require('../Controllers/StoreController');
 
 const {validateStore} = require('../Middlewares/roleValidator');
 
@@ -21,6 +22,7 @@ router.post('/sell', sell);
 
 router.get('/analize/status/:manager_id', analizeProducts);
 
+router.post('/request/new', createRequest);
 
 module.exports = router
 

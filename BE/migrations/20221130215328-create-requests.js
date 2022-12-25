@@ -17,9 +17,26 @@ module.exports = {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      content: {
-        type: DataTypes.STRING,
+      version_id: {
+        type: DataTypes.INTEGER,
         allowNull: false
+      },
+      model_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      color_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      amount: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      progress: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,

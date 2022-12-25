@@ -124,7 +124,6 @@ var productInfo = async (id) => {
               attributes: ['id', 'name'],
             }
           ],
-          attributes: ['content'],
         },
       ],
     });
