@@ -16,20 +16,13 @@ const {
     return detail;
   }
 
-  var makeRequest = async (store_id, factory_id, version_id, model_id, color_id, amount) => {
+  var makeRequests = async (requests) => {
     try {
-      const newRequest = await Request.create({
-        store_id,
-        factory_id,
-        version_id,
-        model_id,
-        color_id,
-        amount,
-      });
-      if(!newRequest) {
+      const newRequests = await Request.bulkCreate(requests);
+      if(!newRequests) {
         throw "error in creating new request";
       } else {
-        return newRequest;
+        return newRequests;
       }
     } catch (err) {
       console.log(err);
@@ -39,5 +32,5 @@ const {
 
   module.exports = {
     getDetail,
-    makeRequest,
+    makeRequests,
   }
