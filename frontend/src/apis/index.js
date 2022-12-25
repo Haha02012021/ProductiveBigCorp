@@ -22,6 +22,14 @@ const indexApi = {
   getVersionById(id) {
     return axios.get(`/version/${id}`);
   },
+
+  getManagerByRole(roleId) {
+    return axios.get(`/managers/all?role=${roleId}`);
+  },
+
+  getRequestById(Id, data) {
+    return axios.post(`/requests/all/${Id}`, data);
+  },
 };
 
 export default indexApi;
