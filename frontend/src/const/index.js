@@ -21,3 +21,22 @@ export const errorMessages = {
   },
   versionForm: {},
 };
+
+export const progress = {
+  "-1": {
+    context: "Đã hủy",
+    color: "red",
+  },
+  0: {
+    context: "Chuẩn bị hàng",
+    color: "grey",
+  },
+  1: {
+    context: "Đang giao hàng",
+    color: "lightblue",
+  },
+  2: {
+    context: "Đã nhận hàng",
+    color: "blue",
+  },
+};

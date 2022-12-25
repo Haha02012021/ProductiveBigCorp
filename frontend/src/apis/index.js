@@ -30,8 +30,11 @@ const indexApi = {
     return axios.get(`/managers/all?role=${roleId}`);
   },
 
-  getRequestById(Id, data) {
+  getRequestsByManagerId(Id, data) {
     return axios.post(`/requests/all/${Id}`, data);
+  },
+  getRequestById(id) {
+    return axios.get(`/request/${id}`);
   },
 };
 

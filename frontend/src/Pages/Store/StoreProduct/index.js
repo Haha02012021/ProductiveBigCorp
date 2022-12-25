@@ -189,7 +189,7 @@ const StoreProduct = () => {
       },
       role: 4,
     };
-    const res = await indexApi.getRequestById(id, condition);
+    const res = await indexApi.getRequestsByManagerId(id, condition);
     console.log(res);
     if (res.data && res.data.sentRequests) {
       setRequests(buildDataRequest(res.data.sentRequests));

@@ -8,4 +8,8 @@ const addNewProducts = (data) => {
   return instance.post("/factory/newProducts", data);
 };
 
-export { getBatchesByFactoryId, addNewProducts };
+const refuseRequestById = (id, data) => {
+  return instance.get(`/factory/request/refuse/${id}`);
+};
+
+export { getBatchesByFactoryId, addNewProducts, refuseRequestById };

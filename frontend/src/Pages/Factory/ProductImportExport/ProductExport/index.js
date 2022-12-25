@@ -1,27 +1,23 @@
-import { Badge, Form, Select, Tabs } from "antd";
-import { useMemo, useState } from "react";
+import { Badge, Form, message, Modal, Select, Tabs } from "antd";
+import { useContext, useEffect, useMemo, useState } from "react";
+import indexApi from "../../../../apis";
+import { refuseRequestById } from "../../../../apis/factory";
 import CustomModal from "../../../../Components/CustomModal";
 import PageContent from "../../../../Components/PageContent";
 import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
+import { progress } from "../../../../const";
+import { AuthContext } from "../../../../Provider/AuthProvider";
+import CancelForm from "./CancelForm";
 import ExportForm from "./ExportForm";
 
-const dataSource = [
-  {
-    model: "Model",
-    version: "Version",
-    amount: 100,
-    store: "Store1",
-    state: {
-      id: 1,
-      name: "created",
-    },
-    inExportDate: "25/12/2022 ~ ",
-  },
-];
-
 export default function ProductExport() {
+  const { authUser } = useContext(AuthContext);
   const [editModalVisible, setEditModalVisible] = useState(false);
+  const [cancelModalVisible, setCancelModalVisible] = useState(false);
+  const [reqDataSource, setReqDataSource] = useState([]);
+  const [canceledReqDataSource, setCanceledReqDataSource] = useState([]);
+  const [selectedReqId, setSelectedReqId] = useState();
   const [form] = Form.useForm();
   const columns = useMemo(() => {
     return [
@@ -47,10 +43,15 @@ export default function ProductExport() {
       },
       {
         title: "Trạng thái",
-        dataIndex: "state",
-        key: "state",
+        dataIndex: "progress",
+        key: "progress",
         render: (_, record) => {
-          return <Badge status="success" text={record.state.name} />;
+          return (
+            <Badge
+              text={progress[record.progress].context}
+              color={progress[record.progress].color}
+            />
+          );
         },
       },
       {
@@ -75,19 +76,106 @@ export default function ProductExport() {
         render: (_, record) => (
           <ActionsCell
             hasView={false}
+            hasEdit={record.progress !== 0}
+            hasConfirm={record.progress === 0}
             onEdit={() => handleEdit(record)}
             onConfirm={() => handleConfirm(record)}
+            onDelete={() => handleCancel(record)}
           />
         ),
       },
     ];
   }, []);
 
+  useEffect(() => {
+    getRequestsByManagerId();
+    getCanceledReqsByManagerId();
+  }, []);
+
+  const getRequestsByManagerId = async () => {
+    const condition = {
+      condition: {
+        progress: 0,
+      },
+      role: 2,
+    };
+    const res = await indexApi.getRequestsByManagerId(authUser.id, condition);
+
+    if (res.success) {
+      setReqDataSource(buildData(res.data.receivedRequests));
+    }
+  };
+
+  const getCanceledReqsByManagerId = async () => {
+    const condition = {
+      condition: {
+        progress: -1,
+      },
+      role: 2,
+    };
+    const res = await indexApi.getRequestsByManagerId(authUser.id, condition);
+
+    if (res.success) {
+      setCanceledReqDataSource(buildData(res.data.receivedRequests));
+    }
+  };
+
+  const buildData = (data) => {
+    const builtData = data.map((req) => {
+      const acceptedAt = req.acceptedAt
+        ? new Date(req.acceptedAt).toLocaleString().split(",")[0]
+        : "-";
+
+      return {
+        key: req.id,
+        model: req.model.name,
+        version: req.version.name,
+        amount: req.amount,
+        store: req.store.name,
+        progress: req.progress,
+        inExportDate: acceptedAt + " ~ -",
+        canceledPerson: req.canceledPerson,
+        canceledDate: new Date(req.canceledAt).toLocaleString().split(",")[0],
+        cancelReason: req.canceledReason,
+      };
+    });
+
+    return builtData;
+  };
+
   const handleEdit = (data) => {
+    setSelectedReqId(data.key);
     setEditModalVisible(true);
   };
 
   const handleConfirm = (data) => {};
+
+  const handleCancel = (data) => {
+    setSelectedReqId(data.key);
+    setCancelModalVisible(true);
+  };
+
+  const handleAcceptCancel = () => {
+    Modal.confirm({
+      content: "Bạn có chắc muốn hủy đơn hàng này không?",
+      cancelText: "Không",
+      okText: "Có",
+      onCancel: () => {},
+      onOk: async () => {
+        const res = await refuseRequestById(
+          selectedReqId,
+          form.getFieldValue()
+        );
+
+        if (res.success) {
+          setCancelModalVisible(false);
+          message.success("Hủy đơn hàng thành công!", 2);
+        } else {
+          message.error(res.message, 2);
+        }
+      },
+    });
+  };
 
   const tabItems = [
     {
@@ -96,7 +184,7 @@ export default function ProductExport() {
       children: (
         <PageContent>
           <CustomTable
-            dataSource={dataSource}
+            dataSource={reqDataSource}
             columns={columns.filter(
               (column) =>
                 column.key !== "canceledPerson" && column.key !== "cancelReason"
@@ -111,7 +199,7 @@ export default function ProductExport() {
       children: (
         <PageContent>
           <CustomTable
-            dataSource={[]}
+            dataSource={canceledReqDataSource}
             columns={columns.filter((column) => column.key !== "actions")}
           />
         </PageContent>
@@ -135,8 +223,20 @@ export default function ProductExport() {
           open={editModalVisible}
           title="Sửa trạng thái đơn hàng"
           onCancel={() => setEditModalVisible(false)}
+          width="40%"
         >
-          <ExportForm form={form} />
+          <ExportForm form={form} reqId={selectedReqId} />
+        </CustomModal>
+      )}
+      {cancelModalVisible && (
+        <CustomModal
+          open={cancelModalVisible}
+          title="Sửa trạng thái đơn hàng"
+          onCancel={() => setCancelModalVisible(false)}
+          onOk={() => handleAcceptCancel()}
+          width="40%"
+        >
+          <CancelForm form={form} reqId={selectedReqId} />
         </CustomModal>
       )}
     </>

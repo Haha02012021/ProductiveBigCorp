@@ -1,29 +1,53 @@
 import { DatePicker, Form, Select } from "antd";
 import { useEffect, useState } from "react";
 import indexApi from "../../../../apis";
+import { progress } from "../../../../const";
 
-export default function ExportForm({ form }) {
-  const [statuses, setStatuses] = useState([]);
+export default function ExportForm({ form, reqId }) {
+  const [initialValues, setInitialValues] = useState();
 
   useEffect(() => {
-    getAllStatuses();
+    return () => {
+      form.resetFields();
+    };
   }, []);
 
-  const getAllStatuses = async () => {
-    const res = await indexApi.getAllStatuses();
+  useEffect(() => {
+    if (reqId) {
+      getReqById();
+    }
+  }, [reqId]);
+
+  const getReqById = async () => {
+    const res = await indexApi.getRequestById(reqId);
 
     if (res.success) {
-      console.log(res.data);
+      const values = {
+        exportDate: res.data.exportDate,
+        progress: progress[res.progress],
+      };
+      setInitialValues(values);
+    }
+  };
+  const buildProgress = () => {
+    const builtProgress = new Array();
+
+    for (const key in progress) {
+      const option = {
+        label: progress[key].context,
+        value: key,
+      };
+      builtProgress.push(option);
     }
   };
 
   return (
-    <Form form={form}>
-      <Form.Item label="Ngày xuất">
-        <DatePicker />
+    <Form form={form} style={{ paddingTop: 16 }} initialValues={initialValues}>
+      <Form.Item label="Ngày xuất" name="exportDate">
+        <DatePicker style={{ width: "100%" }} />
       </Form.Item>
-      <Form.Item label="Trạng thái">
-        <Select options={statuses} />
+      <Form.Item label="Trạng thái" name="progress">
+        <Select placeholder="Chọn trạng thái" options={buildProgress()} />
       </Form.Item>
     </Form>
   );
