@@ -112,6 +112,7 @@ export const buildData = (data) => {
   for (let i = 0; i < data.length; i++) {
     const o = {};
     if (data[i]) {
+      o.id = data[i]?.id;
       o.key = i;
       o.code = data[i]?.id;
       o.version = data[i]?.version?.name;
