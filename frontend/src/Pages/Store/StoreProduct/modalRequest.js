@@ -46,12 +46,12 @@ const ModalRequest = (props) => {
       const data = requests;
       for (let i = 0; i < data.length; i++) {
         if (
-          data[i].idModel === idModel &&
-          data[i].idVersion === idVersion &&
-          data[i].idColor === idColor &&
-          data[i].idFactory === idFactory
+          data[i].model_id === idModel &&
+          data[i].version_id === idVersion &&
+          data[i].color_id === idColor &&
+          data[i].factory_id === idFactory
         ) {
-          data[i].mount += mount;
+          data[i].amount += mount;
           setRequests(data);
           setChangeRequest(!changeRequest);
           return;
@@ -277,7 +277,6 @@ const ModalRequest = (props) => {
           </Button>
         </Col>
       </Row>
-      <hr />
       <div style={{ width: "100%", padding: "20px 0 20px 0" }}>
         {requests.length > 0 ? renderRequest : <></>}
       </div>
