@@ -6,11 +6,31 @@ import { createDataTable } from "../../../Components/Table/createDataTable";
 import PageContent from "../../../Components/PageContent";
 import indexApi from "../../../apis";
 import { AuthContext } from "../../../Provider/AuthProvider";
+import ModalViewProduct from "../../ExecutiveBoard/Product/modalViewProduct";
 
+import moment from "moment";
 const ProductWarranty = () => {
   const [currentTab, setCurrentTab] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { authUser } = useContext(AuthContext);
   const [selledProducts, setSelledProducts] = useState([]);
+  const [warrantyProducts, setWarrantyProducts] = useState([]);
+  const [idProduct, setIdProduct] = useState(0);
+
+  const showModal = (data) => {
+    if (data.id !== idProduct) {
+      setIdProduct(data.id);
+    }
+    if (isModalOpen === false) {
+      setIsModalOpen(true);
+    }
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   const productWarrantyColumns = [
     {
@@ -19,6 +39,11 @@ const ProductWarranty = () => {
       key: "code",
       width: 100,
       height: 56,
+    },
+    {
+      title: "Dòng sản phẩm",
+      dataIndex: "model",
+      key: "model",
     },
     {
       title: "Phiên bản",
@@ -49,7 +74,65 @@ const ProductWarranty = () => {
       dataIndex: "actions",
       key: "actions",
       width: 150,
-      render: () => <ActionsCell hasDelete={false} hasEdit={false} />,
+      render: (text, record, index) => (
+        <ActionsCell
+          hasDelete={false}
+          hasEdit={false}
+          onView={() => showModal(record)}
+        />
+      ),
+    },
+  ];
+
+  const productSelledColumns = [
+    {
+      title: "Mã",
+      dataIndex: "code",
+      key: "code",
+      width: 100,
+      height: 56,
+    },
+    {
+      title: "Dòng sản phẩm",
+      dataIndex: "model",
+      key: "model",
+    },
+    {
+      title: "Phiên bản",
+      dataIndex: "version",
+      key: "version",
+    },
+    {
+      title: "Ngày bán",
+      dataIndex: "sellDate",
+      key: "sellDate",
+      width: 150,
+    },
+    {
+      title: "Cơ sở sản xuất",
+      dataIndex: "factory",
+      key: "factory",
+      width: 150,
+    },
+    {
+      title: "Màu sản phẩm",
+      dataIndex: "color",
+      key: "color",
+      width: 150,
+      height: 56,
+    },
+    {
+      title: "Thao tác",
+      dataIndex: "actions",
+      key: "actions",
+      width: 150,
+      render: (text, record, index) => (
+        <ActionsCell
+          hasDelete={false}
+          hasEdit={false}
+          onView={() => showModal(record)}
+        />
+      ),
     },
   ];
 
@@ -104,7 +187,13 @@ const ProductWarranty = () => {
   );
 
   useEffect(() => {
-    getProductsStore();
+    getProductsStore({
+      idSold: 1,
+    });
+    getWarrantyProductsStore({
+      idSold: 1,
+      status_id: 6,
+    });
   }, []);
 
   const buildData = (data) => {
@@ -112,30 +201,36 @@ const ProductWarranty = () => {
     for (let i = 0; i < data.length; i++) {
       const o = {};
       if (data[i]) {
-        o.key = i;
+        o.key = data[i]?.id;
         o.code = data[i]?.id;
         o.version = data[i]?.version?.name;
-        o.sellDate = data[i]?.sellDate;
+        o.sellDate = moment(data[i]?.soldAt).calendar();
         o.factory = data[i]?.managers[0]?.name;
         o.status = data[i]?.status?.context;
         o.statusWarranty = data[i]?.statusWarranty;
+        o.model = data[i]?.model?.name;
+        o.color = data[i]?.color?.name;
+        o.id = data[i]?.id;
       }
       result.push(o);
     }
     return result;
   };
 
-  const getProductsStore = async (id) => {
-    const condition = {
-      idSold: 1,
-    };
+  const getProductsStore = async (condition) => {
     const res = await indexApi.getProductsByManagerId(authUser.id, condition);
     if (res.data && res.data.products) {
       setSelledProducts(buildData(res.data.products));
     }
   };
 
-  const warrantyDataSource = createDataTable(productWarrantyColumns, 5);
+  const getWarrantyProductsStore = async (condition) => {
+    const res = await indexApi.getProductsByManagerId(authUser.id, condition);
+    if (res.data && res.data.products) {
+      setWarrantyProducts(buildData(res.data.products));
+    }
+  };
+
   const recallDataSource = createDataTable(recallProductColumns, 5);
 
   const tabItems = [
@@ -145,7 +240,7 @@ const ProductWarranty = () => {
       children: (
         <CustomTable
           dataSource={selledProducts}
-          columns={productWarrantyColumns}
+          columns={productSelledColumns}
         />
       ),
     },
@@ -154,7 +249,7 @@ const ProductWarranty = () => {
       key: "2",
       children: (
         <CustomTable
-          dataSource={warrantyDataSource}
+          dataSource={warrantyProducts}
           columns={productWarrantyColumns}
         />
       ),
@@ -185,6 +280,14 @@ const ProductWarranty = () => {
           setCurrentTab(key);
         }}
       />
+      {isModalOpen && (
+        <ModalViewProduct
+          isModalOpen={isModalOpen}
+          handleOk={handleOk}
+          handleCancel={handleCancel}
+          idProduct={idProduct}
+        />
+      )}
     </PageContent>
   );
 };
