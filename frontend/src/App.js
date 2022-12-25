@@ -8,6 +8,7 @@ import Factory from "./Pages/Factory";
 import AuthProvider from "./Provider/AuthProvider";
 import ThemeProvider from "./Provider/ThemeProvider";
 import locale from "antd/locale/vi_VN";
+import Maintainer from "./Pages/Maintainer";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
               <Route path="executive-board/*" element={<ExecutiveBoard />} />
               <Route path="factory/*" element={<Factory />} />
               <Route path="store/*" element={<Store />} />
+              <Route path="maintainer/*" element={<Maintainer />} />
             </Routes>
           </BrowserRouter>
         </AuthProvider>
