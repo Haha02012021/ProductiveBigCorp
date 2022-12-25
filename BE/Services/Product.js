@@ -101,10 +101,10 @@ var productInfo = async (id) => {
           model: Manager,
           as: "managers",
           through: {
-            attributes: [],
+            attributes: ['manager_id', 'product_id'],
           },
           attributes: ["id", "name"],
-          where: { role: 2 },
+          //where: { role: 2 },
         },
         "batch",
         "request",
@@ -112,6 +112,7 @@ var productInfo = async (id) => {
         "hasStatuses",
       ],
     });
+    console.log(product);
     return product;
   } catch (err) {
     console.log(err);
@@ -129,8 +130,19 @@ var getCustomerInfo = async (id) => {
   }
 };
 
-var allProducts = async (condition) => {
+var allProducts = async (condition, managers) => {
   try {
+    if(managers) {
+      if(managers.factory_id) {
+        condition.factory_id = managers.factory_id
+      }
+      if(managers.warranty_id) {
+        condition.warranty_id = managers.warranty_id
+      }
+      if(managers.store_id) {
+        condition.store_id = managers.store_id
+      }
+    }
     const products = await Product.findAll({
       where: condition,
       include: [

@@ -1,6 +1,6 @@
 const {getInfo, getAllVers} = require('../Services/Version');
 const {info, getAll} = require('../Services/Model');
-const {getProducts} = require('../Services/User');
+const {getProducts, allManagers} = require('../Services/User');
 const {allColors} = require('../Services/Color');
 const {productInfo} = require('../Services/Product');
 
@@ -96,6 +96,19 @@ var getAllColors = async (req, res) => {
     }
 }
 
+var getAllManagers = async (req, res) => {
+    try {
+        const data = await allManagers(req.query.role, req.query.page);
+        if(!data) {
+            res.status(404).json({success: false, message: 'not found'});
+        } else {
+            res.json({success: true, data: data, message: `get all managers with role ${req.query.role}`});
+        }
+    } catch (err) {
+        res.status(500).json({success: false, message: 'error from get all managers', error: err});
+    }
+}
+
 module.exports = {
     getVersionInfo,
     getModelInfo,
@@ -104,4 +117,5 @@ module.exports = {
     getAllVersions,
     getAllColors,
     getProductInfo,
+    getAllManagers,
 }

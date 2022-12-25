@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-var {getVersionInfo, getModelInfo, getAllModels, getAllProducts, getAllVersions, getAllColors, getProductInfo} = require('../Controllers/index');
+var {getVersionInfo, getModelInfo, getAllModels, getAllProducts, getAllVersions, getAllColors, getProductInfo, getAllManagers} = require('../Controllers/index');
+var {param, query, validationResult} = require('express-validator');
 
 const {authenToken} = require('../Middlewares/roleValidator');
 
@@ -17,6 +18,19 @@ router.get('/models/all', getAllModels);
 
 router.get('/colors/all', getAllColors);
 
-router.get('/product/detail/:id', getProductInfo)
+router.get('/product/detail/:id', getProductInfo);
+
+router.get('/managers/all', 
+query('role').exists().withMessage('need a role').isIn([2, 3, 4]).withMessage('need a role, must be in 4 role'),
+query('page').optional({checkFalsy: null}).isInt().withMessage('must be integer'),
+(req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        res.status(400).json({errors: errors.array()});
+    } else {
+        next();
+    }
+},
+getAllManagers);
 
 module.exports = router;

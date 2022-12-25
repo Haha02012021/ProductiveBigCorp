@@ -1,4 +1,4 @@
-const {createManager, allManagers} = require('../Services/User');
+const {createManager} = require('../Services/User');
 const {addModel} = require('../Services/Model');
 const {addVersion} = require('../Services/Version');
 const {allProducts} = require('../Services/Product');
@@ -49,23 +49,9 @@ var getAllProducts = async (req, res) => {
     }
 }
 
-var getAllManagers = async (req, res) => {
-    try {
-        const data = await allManagers(req.query.role, req.query.page);
-        if(!data) {
-            res.status(404).json({success: false, message: 'not found'});
-        } else {
-            res.json({success: true, data: data, message: `get all managers with role ${req.query.role}`});
-        }
-    } catch (err) {
-        res.status(500).json({success: false, message: 'error from get all managers', error: err});
-    }
-}
-
 module.exports = {
     addManager,
     createModel,
     createVersion,
     getAllProducts,
-    getAllManagers,
 }
