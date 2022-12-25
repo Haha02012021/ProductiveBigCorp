@@ -2,7 +2,7 @@ const {addBatch, findByFactoryId} = require('../Services/Batch');
 const {addProducts, updateProducts} = require('../Services/Product');
 const {addHistory} = require('../Services/History');
 const {addRelation} = require('../Services/Manager_Product');
-
+const {refuse} = require('../Services/Request');
 var createProducts = async (req, res) => {
     try {
         const batch = await addBatch(
@@ -54,9 +54,23 @@ var provide = async (req, res) => {
     }
 }
 
+var refuseRequest = async (req, res) => {
+    try {
+        const check = refuse(req.params.id);
+        if(!check) {
+            res.status(500).json({success: false, message: 'refuse failed'});
+        } else {
+            res.json({success: true, message: 'request refused'});
+        }
+    } catch (err) {
+        res.status(500).json({error: err, success: false, message: 'error from deleting request'});
+    }
+}
+
 module.exports = {
     createProducts,
     getBatches,
     receiveBrokenProducts,
     provide,
+    refuseRequest,
 }

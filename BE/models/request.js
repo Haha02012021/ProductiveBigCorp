@@ -48,7 +48,17 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
-    }
+    },
+    acceptedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    canceledAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   }, {
     sequelize,
     modelName: 'Request',

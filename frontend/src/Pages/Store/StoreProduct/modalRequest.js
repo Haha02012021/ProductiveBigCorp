@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import { Modal, Select, Row, Col, Radio, ConfigProvider } from "antd";
 import { InputNumber, Button } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import indexApi from "../../../apis";
+import { sendRequest } from "../../../apis/store";
+import { AuthContext } from "../../../Provider/AuthProvider";
 
 const ModalRequest = (props) => {
   const [versions, setVersions] = useState([]);
@@ -16,6 +18,7 @@ const ModalRequest = (props) => {
   const [factories, setFactories] = useState([]);
   const [idFactory, setIdFactory] = useState(0);
   const [changeRequest, setChangeRequest] = useState(false);
+  const { authUser } = useContext(AuthContext);
 
   const onSearch = (value) => {
     console.log("search:", value);
@@ -31,7 +34,7 @@ const ModalRequest = (props) => {
   };
 
   const onChangeFactory = (value) => {
-    setIdVersion(value);
+    setIdFactory(value);
   };
 
   const onChangeMount = (value) => {
@@ -43,21 +46,24 @@ const ModalRequest = (props) => {
       const data = requests;
       for (let i = 0; i < data.length; i++) {
         if (
-          data[i].idModel === idModel &&
-          data[i].idVersion === idVersion &&
-          data[i].idColor === idColor
+          data[i].model_id === idModel &&
+          data[i].version_id === idVersion &&
+          data[i].color_id === idColor &&
+          data[i].factory_id === idFactory
         ) {
-          data[i].mount += mount;
+          data[i].amount += mount;
           setRequests(data);
           setChangeRequest(!changeRequest);
           return;
         }
       }
       data.push({
-        idModel: idModel,
-        idVersion: idVersion,
-        idColor: idColor,
-        mount: mount,
+        model_id: idModel,
+        version_id: idVersion,
+        color_id: idColor,
+        amount: mount,
+        factory_id: idFactory,
+        store_id: authUser.id,
       });
       setRequests(data);
       setChangeRequest(!changeRequest);
@@ -67,17 +73,22 @@ const ModalRequest = (props) => {
   const deleteRequest = (i) => {
     let data = requests;
     data = data.filter((request, index) => index !== i);
-    console.log(data);
     setRequests(data);
     setChangeRequest(!changeRequest);
   };
 
-  const sendRequest = () => {
-    console.log(requests);
+  const sendRequestToDb = async () => {
+    const res = await sendRequest({ requests: requests });
+    if (res.success === true) {
+      setRequests([]);
+      props.addRequest();
+      props.handleOk();
+    }
   };
 
   useEffect(() => {
     getAllModels();
+    getFactories();
   }, []);
 
   useEffect(() => {
@@ -99,16 +110,24 @@ const ModalRequest = (props) => {
     }
   };
 
+  const getFactories = async (id) => {
+    const res = await indexApi.getManagerByRole(2);
+    if (res.data) {
+      setFactories(buildDataModel(res.data));
+    }
+  };
+
   const buildDataModel = (data) => {
     const results = new Array();
     for (let i = 0; i < data.length; i++) {
-      results.push({ value: data[i].id, label: data[i].name });
+      results.push({ value: data[i].id, label: data[i].name, index: i });
     }
     return results;
   };
 
   const renderRequest = useMemo(() => {
     const node = requests.map((request, index) => {
+      console.log(request);
       return (
         <Row
           key={index}
@@ -118,16 +137,16 @@ const ModalRequest = (props) => {
           }}
         >
           <Col span={7}>
-            <div>Model: {request.idModel}</div>
+            <div>Model: {request.model_id}</div>
           </Col>
           <Col span={7}>
-            <div>Version: {request.idVersion}</div>
+            <div>Version: {request.version_id}</div>
           </Col>
           <Col span={4}>
-            <div>Color: {request.idColor}</div>
+            <div>Color: {request.color_id}</div>
           </Col>
           <Col span={4}>
-            <div>Mount: {request.mount}</div>
+            <div>Amount: {request.amount}</div>
           </Col>
           <Col span={2}>
             <div className="hoverRed" onClick={() => deleteRequest(index)}>
@@ -258,12 +277,11 @@ const ModalRequest = (props) => {
           </Button>
         </Col>
       </Row>
-      <hr />
       <div style={{ width: "100%", padding: "20px 0 20px 0" }}>
         {requests.length > 0 ? renderRequest : <></>}
       </div>
       <Row>
-        <Button type="primary" onClick={() => sendRequest()}>
+        <Button type="primary" onClick={() => sendRequestToDb()}>
           Gửi yêu cầu
         </Button>
       </Row>

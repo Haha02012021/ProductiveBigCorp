@@ -1,14 +1,14 @@
-import React, { useState, useMemo, useEffect, useContext } from "react";
+import React, { useState, useCallback, useEffect, useContext } from "react";
 import { Tabs } from "antd";
 import CustomTable from "../../../Components/Table/CustomTable";
 import ActionsCell from "../../../Components/Table/ActionsCell";
-import { createDataTable } from "../../../Components/Table/createDataTable";
 import PageContent from "../../../Components/PageContent";
 import indexApi from "../../../apis";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import { buildData } from "../../../const/tableProduct";
 import ModalViewProduct from "../../ExecutiveBoard/Product/modalViewProduct";
 import ModalRequest from "./modalRequest";
+import moment from "moment";
 
 const StoreProduct = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,46 +16,61 @@ const StoreProduct = () => {
   const [currentTab, setCurrentTab] = useState(1);
   const [productStore, setProductStore] = useState([]);
   const [isModalRequest, setIsModalRequest] = useState(false);
+  const [addRequest, setAddRequest] = useState(false);
+  const [requests, setRequests] = useState([]);
 
   const requestProductColumns = [
     {
       title: "Mã",
       dataIndex: "code",
       key: "code",
-      width: 64,
+      width: 100,
       height: 56,
+      align: "center",
     },
-    {
-      title: "Dòng sản phẩm",
-      dataIndex: "productLine",
-      key: "productLine",
-      width: 150,
-      height: 56,
-    },
+
     {
       title: "Phiên bản",
       dataIndex: "version",
       key: "version",
       width: 182,
       height: 56,
+      align: "center",
+    },
+    {
+      title: "Cơ sở sản xuất",
+      dataIndex: "factory",
+      key: "factory",
+      width: 140,
+      height: 56,
+      align: "center",
     },
     {
       title: "Số lượng",
       dataIndex: "amount",
       key: "amount",
-      width: 182,
+      width: 100,
+      align: "center",
     },
     {
       title: "Giá",
       dataIndex: "price",
       key: "price",
       width: 182,
+      align: "center",
     },
     {
       title: "Trạng thấi",
       dataIndex: "status",
       key: "status",
       width: 104,
+    },
+    {
+      title: "Thời gian yêu cầu",
+      dataIndex: "time",
+      key: "time",
+      with: 100,
+      align: "center",
     },
     {
       title: "Thao tác",
@@ -144,13 +159,22 @@ const StoreProduct = () => {
   ];
   const { authUser } = useContext(AuthContext);
 
+  const changeData = useCallback(() => {
+    setAddRequest(!addRequest);
+  }, []);
+
   useEffect(() => {
     getProductsStore();
-  }, []);
+    if (authUser && authUser.id) {
+      getRequest(authUser.id);
+    }
+  }, [addRequest]);
 
   const getProductsStore = async (id) => {
     const condition = {
-      idSold: 0,
+      condition: {
+        idSold: 0,
+      },
     };
     const res = await indexApi.getProductsByManagerId(authUser.id, condition);
     if (res.data && res.data.products) {
@@ -158,24 +182,56 @@ const StoreProduct = () => {
     }
   };
 
-  const newProductDataSource = createDataTable(requestProductColumns, 3);
+  const getRequest = async (id) => {
+    const condition = {
+      condition: {
+        progress: 0,
+      },
+      role: 4,
+    };
+    const res = await indexApi.getRequestById(id, condition);
+    console.log(res);
+    if (res.data && res.data.sentRequests) {
+      setRequests(buildDataRequest(res.data.sentRequests));
+    }
+  };
+
+  const buildDataRequest = (data) => {
+    const result = new Array();
+    for (let i = 0; i < data.length; i++) {
+      const o = {};
+      if (data[i]) {
+        o.id = data[i]?.id;
+        o.key = i;
+        o.code = data[i]?.id;
+        o.version = data[i]?.version?.name;
+        o.model = data[i]?.model?.name;
+        o.color = data[i]?.color?.name;
+        o.factory = data[i]?.factory?.name;
+        o.price = data[i]?.version?.price + " VND";
+        o.status = data[i]?.status?.context;
+        o.amount = data[i]?.amount;
+        o.time = moment(data[i]?.createdAt).calendar();
+      }
+      result.push(o);
+    }
+    if (result.length === 0) return [];
+    return result;
+  };
 
   const tabItems = [
     {
-      label: `Sản phẩm trong kho`,
+      label: `Yêu cầu tới nhà máy`,
       key: "1",
       children: (
-        <CustomTable dataSource={productStore} columns={productColumns} />
+        <CustomTable dataSource={requests} columns={requestProductColumns} />
       ),
     },
     {
-      label: `Yêu cầu tới nhà máy`,
+      label: `Sản phẩm trong kho`,
       key: "2",
       children: (
-        <CustomTable
-          dataSource={newProductDataSource}
-          columns={requestProductColumns}
-        />
+        <CustomTable dataSource={productStore} columns={productColumns} />
       ),
     },
   ];
@@ -201,6 +257,7 @@ const StoreProduct = () => {
           isModalOpen={isModalRequest}
           handleOk={handleRequestOk}
           handleCancel={handleRequestCancel}
+          addRequest={changeData}
         />
       )}
       {isModalOpen && (

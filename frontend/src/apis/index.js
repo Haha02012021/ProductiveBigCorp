@@ -25,6 +25,14 @@ const indexApi = {
   getAllStatuses() {
     return axios.get("/statuses/all");
   },
+
+  getManagerByRole(roleId) {
+    return axios.get(`/managers/all?role=${roleId}`);
+  },
+
+  getRequestById(Id, data) {
+    return axios.post(`/requests/all/${Id}`, data);
+  },
 };
 
 export default indexApi;

@@ -6,6 +6,7 @@ var {body, validationResult} = require('express-validator');
 const {createProducts, getBatches, receiveBrokenProducts} = require('../Controllers/FactoryController');
 
 const {validateFactory} = require('../Middlewares/roleValidator');
+const {refuseRequest} = require('../Controllers/FactoryController');
 
 router.post('/newProducts',
 body('factory_id').exists().withMessage('need factory_id').isInt().withMessage('must be integer'),
@@ -22,5 +23,7 @@ createProducts);
 router.get('/batches/:factory_id', getBatches);
 
 router.post('/receiveBrokenProducts', receiveBrokenProducts);
+
+router.get('/request/refuse/:id', refuseRequest);
 
 module.exports = router;
