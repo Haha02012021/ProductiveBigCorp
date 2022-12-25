@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(Batch, {foreignKey: 'batch_id', as: 'batch', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
       this.belongsTo(Request, {foreignKey: 'request_id', as: 'request', onDelete: 'CASCADE', onUpdate: 'CASCADE'})
       this.belongsTo(Customer, {foreignKey: 'customer_id', as: 'customer'});
+      this.hasMany(History, {foreignKey: 'product_id', as: 'histories', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
     }
   }
   Product.init({

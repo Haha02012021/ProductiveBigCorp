@@ -104,12 +104,28 @@ var productInfo = async (id) => {
             attributes: ['manager_id', 'product_id'],
           },
           attributes: ["id", "name"],
-          //where: { role: 2 },
+          where: { role: 2 },
         },
         "batch",
         "request",
         "customer",
-        "hasStatuses",
+        {
+          model: History,
+          as: 'histories',
+          include: [
+            {
+              model: Status,
+              as: 'status',
+              attributes: ['id', 'context'],
+            },
+            {
+              model: Manager,
+              as: 'manager',
+              attributes: ['id', 'name'],
+            }
+          ],
+          attributes: ['content'],
+        },
       ],
     });
     console.log(product);
