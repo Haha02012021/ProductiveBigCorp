@@ -122,6 +122,7 @@ var getRequestInfo = async (req, res) => {
 
 var getAllRequests = async (req, res) => {
     try {
+        console.log(req.body);
         const requests = await getRequests(req.params.manager_id, req.body.condition, req.body.role);
         if(requests) {
             res.json({success: true, data: requests, message: 'get all request success'});

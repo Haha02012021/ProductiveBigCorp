@@ -37,7 +37,7 @@ getAllManagers);
 
 router.get('/request/:id', getRequestInfo);
 
-router.get('/requests/all/:manager_id', getAllRequests);
+router.post('/requests/all/:manager_id', getAllRequests);
 
 router.get('/statuses/all', getAllStatuses);
 
