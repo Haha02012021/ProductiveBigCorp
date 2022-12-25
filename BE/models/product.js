@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({Manager, Color, Manager_Product, Version, MODEL, Status, History, Batch, Request, Customer}) {
+    static associate({Manager, Color, Manager_Product, Version, MODEL, Status, History, Batch, Request, Customer, Error}) {
       this.belongsToMany(Status, {as: 'hasStatuses', through: History, foreignKey: 'product_id', otherKey: 'status_id'})
       this.belongsTo(Status, {foreignKey: 'status_id', as: 'status', onDelete: 'CASCADE', onUpdate: 'CASCADE'})
       this.belongsTo(Version, {foreignKey: 'version_id', as: 'version', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(Request, {foreignKey: 'request_id', as: 'request', onDelete: 'CASCADE', onUpdate: 'CASCADE'})
       this.belongsTo(Customer, {foreignKey: 'customer_id', as: 'customer'});
       this.hasMany(History, {foreignKey: 'product_id', as: 'histories', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
+      this.hasMany(Error, {foreignKey: 'product_id', as: 'errors', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
     }
   }
   Product.init({

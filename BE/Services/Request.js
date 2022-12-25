@@ -30,7 +30,41 @@ const {
     }
   }
 
+  //var accepRequest = async (id) => {
+  //  const request = await Request.findByPk(id);
+  //  request.progress = 1;
+  //  request.acceptedAt = new Date();
+  //  request.save();
+
+  //  const products = 
+  //}
+
+  var destroy = async (id) => {
+    try {
+      const request = await Request.findByPk(id);
+      await request.destroy();
+      return true
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  }
+
+  var refuse = async (id) => {
+    try {
+      const request = await Request.findByPk(id);
+      request.progress = -1;
+      await request.save();
+      return true
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  }
+
   module.exports = {
     getDetail,
     makeRequests,
+    destroy,
+    refuse,
   }
