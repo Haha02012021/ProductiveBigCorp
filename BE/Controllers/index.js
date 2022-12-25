@@ -3,6 +3,7 @@ const {info, getAll} = require('../Services/Model');
 const {getProducts, allManagers} = require('../Services/User');
 const {allColors} = require('../Services/Color');
 const {productInfo} = require('../Services/Product');
+const {getDetail} = require('../Services/Request');
 
 var getVersionInfo = async (req, res) => {
     try {
@@ -109,6 +110,15 @@ var getAllManagers = async (req, res) => {
     }
 }
 
+var getRequestInfo = async (req, res) => {
+    try {
+        const request = await getDetail(req.params.id);
+        res.json({data: request});
+    } catch (err) {
+        res.status(500).json({error: err, success: false, message: 'error from get request info'});
+    }
+}
+
 module.exports = {
     getVersionInfo,
     getModelInfo,
@@ -118,4 +128,5 @@ module.exports = {
     getAllColors,
     getProductInfo,
     getAllManagers,
+    getRequestInfo,
 }

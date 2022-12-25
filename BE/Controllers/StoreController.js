@@ -2,6 +2,7 @@ const {updateOneProduct, updateProducts} = require('../Services/Product');
 const {addOneHistory, addHistory, productsByStatus} = require('../Services/History');
 const {createCustomer} = require('../Services/User');
 const {findCustomerByEmail} = require('../Services/User');
+const {makeRequest} = require('../Services/Request');
 
 var requestWarranty = async (req, res) => {
     try {
@@ -84,6 +85,20 @@ var analizeProducts = async (req, res) => {
     }
 }
 
+var createRequest = async (req, res) => {
+    try {
+        const request = await makeRequest(req.body.store_id, req.body.factory_id, req.body.version_id,
+            req.body.model_id, req.body.color_id, req.body.amount);
+       if (request) {
+           res.json({success: true, message: 'request sent'})
+       } else {
+           res.json({success: false, message: 'error in make request controller'});
+       }
+    } catch (err) {
+        res.status(500).json({error: err, success: false, message: 'error from creating request'});
+    }
+}
+
 module.exports = {
     requestWarranty,
     sendToWarranty,
@@ -91,5 +106,6 @@ module.exports = {
     getCustomer,
     sell,
     addCustomer,
-    analizeProducts
+    analizeProducts,
+    createRequest,
 }

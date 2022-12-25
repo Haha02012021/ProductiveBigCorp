@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-var {getVersionInfo, getModelInfo, getAllModels, getAllProducts, getAllVersions, getAllColors, getProductInfo, getAllManagers} = require('../Controllers/index');
+var {getVersionInfo, getModelInfo, getAllModels, getAllProducts, 
+    getAllVersions, getAllColors, getProductInfo, getAllManagers, getRequestInfo} = require('../Controllers/index'); 
 var {param, query, validationResult} = require('express-validator');
 
 const {authenToken} = require('../Middlewares/roleValidator');
@@ -32,5 +33,7 @@ query('page').optional({checkFalsy: null}).isInt().withMessage('must be integer'
     }
 },
 getAllManagers);
+
+router.get('/request/:id', getRequestInfo);
 
 module.exports = router;
