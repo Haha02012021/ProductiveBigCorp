@@ -2,20 +2,24 @@ import React, { useState, useMemo, useContext, useEffect } from "react";
 import CustomTable from "../../../Components/Table/CustomTable";
 import ActionsCell from "../../../Components/Table/ActionsCell";
 import { Tabs } from "antd";
-import { createDataTable } from "../../../Components/Table/createDataTable";
 import PageContent from "../../../Components/PageContent";
 import indexApi from "../../../apis";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import ModalViewProduct from "../../ExecutiveBoard/Product/modalViewProduct";
+import ModelSendWarranty from "./modelSendWarranty";
 
 import moment from "moment";
 const ProductWarranty = () => {
   const [currentTab, setCurrentTab] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalWarrantyOpen, setIsModalWarrantyOpen] = useState(false);
   const { authUser } = useContext(AuthContext);
   const [selledProducts, setSelledProducts] = useState([]);
   const [warrantyProducts, setWarrantyProducts] = useState([]);
   const [idProduct, setIdProduct] = useState(0);
+  const [idProductWarranty, setIdProductWarranty] = useState(1);
+  const [summonProducts, setSummonProducts] = useState([]);
+  const [idSummonProducts, setIdSummonProducts] = useState(0);
 
   const showModal = (data) => {
     if (data.id !== idProduct) {
@@ -39,11 +43,7 @@ const ProductWarranty = () => {
       key: "code",
       width: 100,
       height: 56,
-    },
-    {
-      title: "Dòng sản phẩm",
-      dataIndex: "model",
-      key: "model",
+      align: "center",
     },
     {
       title: "Phiên bản",
@@ -51,32 +51,40 @@ const ProductWarranty = () => {
       key: "version",
     },
     {
-      title: "Ngày bán",
-      dataIndex: "sellDate",
-      key: "sellDate",
+      title: "Lỗi cần xử lý",
+      dataIndex: "error",
+      key: "error",
       width: 150,
     },
     {
-      title: "Cơ sở sản xuất",
+      title: "Ngày yêu cầu",
+      dataIndex: "requestDate",
+      key: "requestDate",
+      width: 150,
+    },
+    {
+      title: "Cơ sở bảo hành",
       dataIndex: "factory",
       key: "factory",
       width: 150,
     },
     {
       title: "Trạng thái bảo hành",
-      dataIndex: "statusWarranty",
-      key: "statusWarranty",
+      dataIndex: "status",
+      key: "status",
       width: 170,
+      align: "center",
     },
 
     {
       title: "Thao tác",
       dataIndex: "actions",
       key: "actions",
-      width: 150,
+      width: 80,
       render: (text, record, index) => (
         <ActionsCell
           hasDelete={false}
+          hasConfirm={false}
           hasEdit={false}
           onView={() => showModal(record)}
         />
@@ -91,6 +99,7 @@ const ProductWarranty = () => {
       key: "code",
       width: 100,
       height: 56,
+      align: "center",
     },
     {
       title: "Dòng sản phẩm",
@@ -129,33 +138,43 @@ const ProductWarranty = () => {
       render: (text, record, index) => (
         <ActionsCell
           hasDelete={false}
-          hasEdit={false}
+          hasConfirm={false}
           onView={() => showModal(record)}
+          onEdit={() => {
+            if (record.id !== idProductWarranty) {
+              setIdProductWarranty(record.id);
+            }
+            if (isModalOpen === false) {
+              setIsModalWarrantyOpen(true);
+            }
+          }}
         />
       ),
+      align: "center",
     },
   ];
 
-  const recallProductColumns = useMemo(
+  const summonProductColumns = useMemo(
     () => [
       {
-        title: "Mã sản phẩm",
-        dataIndex: "productCode",
-        key: "productCode",
-        fixed: true,
-        width: 140,
+        title: "Mã",
+        dataIndex: "code",
+        key: "code",
+        width: 50,
         height: 56,
+        align: "center",
       },
       {
-        title: "Sản phẩm",
-        dataIndex: "product",
-        key: "product",
+        title: "Phiên bản",
+        dataIndex: "version",
+        key: "version",
+        width: 200,
+        align: "center",
       },
       {
         title: "Lỗi",
         dataIndex: "error",
         key: "error",
-        width: 100,
       },
       {
         title: "Trạng thái",
@@ -170,17 +189,13 @@ const ProductWarranty = () => {
         width: 140,
       },
       {
-        title: "Ngày xử lý xong",
-        dataIndex: "finishedDate",
-        key: "finishedDate",
-        width: 140,
-      },
-      {
         title: "Thao tác",
         dataIndex: "actions",
         key: "actions",
-        width: 150,
-        render: () => <ActionsCell hasConfirm={false} hasView={false} />,
+        width: 60,
+        render: () => (
+          <ActionsCell hasConfirm={false} hasDelete={false} hasEdit={false} />
+        ),
       },
     ],
     []
@@ -188,11 +203,21 @@ const ProductWarranty = () => {
 
   useEffect(() => {
     getProductsStore({
-      idSold: 1,
+      condition: {
+        isSold: 1,
+      },
     });
     getWarrantyProductsStore({
-      idSold: 1,
-      status_id: 6,
+      condition: {
+        isSold: 1,
+        status_id: 6,
+      },
+    });
+
+    getSummonProducts({
+      condition: {
+        status_id: 16,
+      },
     });
   }, []);
 
@@ -231,7 +256,12 @@ const ProductWarranty = () => {
     }
   };
 
-  const recallDataSource = createDataTable(recallProductColumns, 5);
+  const getSummonProducts = async (condition) => {
+    const res = await indexApi.getProductsByManagerId(authUser.id, condition);
+    if (res.data && res.data.products) {
+      setSummonProducts(buildData(res.data.products));
+    }
+  };
 
   const tabItems = [
     {
@@ -259,8 +289,8 @@ const ProductWarranty = () => {
       key: "3",
       children: (
         <CustomTable
-          dataSource={recallDataSource}
-          columns={recallProductColumns}
+          dataSource={summonProducts}
+          columns={summonProductColumns}
         />
       ),
     },
@@ -286,6 +316,14 @@ const ProductWarranty = () => {
           handleOk={handleOk}
           handleCancel={handleCancel}
           idProduct={idProduct}
+        />
+      )}
+      {isModalWarrantyOpen && (
+        <ModelSendWarranty
+          isModalOpen={isModalWarrantyOpen}
+          handleOk={() => setIsModalWarrantyOpen(false)}
+          handleCancel={() => setIsModalWarrantyOpen(false)}
+          idProductWarranty={idProductWarranty}
         />
       )}
     </PageContent>

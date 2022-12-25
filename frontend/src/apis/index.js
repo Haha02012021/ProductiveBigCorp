@@ -14,7 +14,7 @@ const indexApi = {
     return axios.get(`/product/detail/${productId}`);
   },
   getProductsByManagerId(managerId, condition) {
-    return axios.get(`/products/manager/${managerId}`, condition);
+    return axios.post(`/products/manager/${managerId}`, condition);
   },
   getAllColors() {
     return axios.get("/colors/all");
