@@ -184,23 +184,38 @@ var updateManagerInfo = async (id, updateInfo) => {
 
 var allManagers = async (role, page) => {
   try {
-    if(!page || !role) {
-      throw "params not defined"
+    if(page) {
+      if(!role) {
+        throw "role not defined"
+      } else {
+        const limit = 5;
+        const offset = 0 + (page - 1) * limit;
+        let count = await Manager.count({where: {role}});
+        count = count % limit === 0 ? count / limit : parseInt(count / limit) + 1;
+        const managers = await Manager.findAll({
+          where: {role},
+          attributes: {
+            exclude: ["createdAt", "updatedAt"],
+          },
+          order: [["createdAt", "desc"]],
+          offset: offset,
+          limit: limit,
+        })
+        return {managers, totalPages: count, currentPage: parseInt(page)};
+      }
     } else {
-      const limit = 5;
-      const offset = 0 + (page - 1) * limit;
-      let count = await Manager.count({where: {role}});
-      count = count % limit === 0 ? count / limit : parseInt(count / limit) + 1;
-      const managers = await Manager.findAll({
-        where: {role},
-        attributes: {
-          exclude: ["createdAt", "updatedAt"],
-        },
-        order: [["createdAt", "desc"]],
-        offset: offset,
-        limit: limit,
-      })
-      return {managers, totalPages: count, currentPage: parseInt(page)};
+      if(!role) {
+        throw "role not defined"
+      } else {
+        const managers = await Manager.findAll({
+          where: {role},
+          attributes: {
+            exclude: ["createdAt", "updatedAt"],
+          },
+          order: [["createdAt", "desc"]],
+        })
+        return managers;
+      }
     }
   } catch (err) {
     console.log(err);
