@@ -22,6 +22,9 @@ const indexApi = {
   getVersionById(id) {
     return axios.get(`/version/${id}`);
   },
+  getAllStatuses() {
+    return axios.get("/statuses/all");
+  },
 };
 
 export default indexApi;
