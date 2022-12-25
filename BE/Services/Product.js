@@ -76,7 +76,7 @@ var productInfo = async (id) => {
         {
           model: Version,
           as: "version",
-          attributes: ["id", "name", 'price'],
+          attributes: ["id", "name", "price"],
           include: [
             "chassis",
             "engine",
@@ -101,7 +101,7 @@ var productInfo = async (id) => {
           model: Manager,
           as: "managers",
           through: {
-            attributes: ['manager_id', 'product_id'],
+            attributes: ["manager_id", "product_id"],
           },
           attributes: ["id", "name"],
           where: { role: 2 },
@@ -111,20 +111,20 @@ var productInfo = async (id) => {
         "customer",
         {
           model: History,
-          as: 'histories',
+          as: "histories",
           include: [
             {
               model: Status,
-              as: 'status',
-              attributes: ['id', 'context'],
+              as: "status",
+              attributes: ["id", "context"],
             },
             {
               model: Manager,
-              as: 'manager',
-              attributes: ['id', 'name'],
-            }
+              as: "manager",
+              attributes: ["id", "name"],
+            },
           ],
-          attributes: ['content'],
+          attributes: ["content", "createdAt"],
         },
       ],
     });
@@ -148,15 +148,15 @@ var getCustomerInfo = async (id) => {
 
 var allProducts = async (condition, managers) => {
   try {
-    if(managers) {
-      if(managers.factory_id) {
-        condition.factory_id = managers.factory_id
+    if (managers) {
+      if (managers.factory_id) {
+        condition.factory_id = managers.factory_id;
       }
-      if(managers.warranty_id) {
-        condition.warranty_id = managers.warranty_id
+      if (managers.warranty_id) {
+        condition.warranty_id = managers.warranty_id;
       }
-      if(managers.store_id) {
-        condition.store_id = managers.store_id
+      if (managers.store_id) {
+        condition.store_id = managers.store_id;
       }
     }
     const products = await Product.findAll({
@@ -170,7 +170,7 @@ var allProducts = async (condition, managers) => {
         {
           model: Version,
           as: "version",
-          attributes: ["id", "name", 'price'],
+          attributes: ["id", "name", "price"],
         },
         {
           model: Color,
