@@ -13,6 +13,8 @@ const ModalRequest = (props) => {
   const [idColor, setIdColor] = useState(0);
   const [colors, setColors] = useState([]);
   const [requests, setRequests] = useState([]);
+  const [factories, setFactories] = useState([]);
+  const [idFactory, setIdFactory] = useState(0);
   const [changeRequest, setChangeRequest] = useState(false);
 
   const onSearch = (value) => {
@@ -25,6 +27,10 @@ const ModalRequest = (props) => {
   };
 
   const onChangeVersion = (value) => {
+    setIdVersion(value);
+  };
+
+  const onChangeFactory = (value) => {
     setIdVersion(value);
   };
 
@@ -185,6 +191,25 @@ const ModalRequest = (props) => {
         </Col>
 
         <Col span={8}>
+          <label>Factory: </label>
+          <Select
+            showSearch
+            title={"Version"}
+            placeholder="Select a person"
+            optionFilterProp="children"
+            style={{
+              width: "100%",
+            }}
+            onChange={onChangeFactory}
+            onSearch={onSearch}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+            options={factories}
+          />
+        </Col>
+
+        <Col span={4}>
           <label>Số lượng: </label>
           <InputNumber
             min={1}
