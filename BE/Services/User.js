@@ -1,4 +1,4 @@
-const {db, Manager, Customer, sequelize, Product, MODEL, Version, Color, Status, Request} = require('../models');
+const {db, Manager, Customer, sequelize, Product, MODEL, Version, Color, Status, Request, Error} = require('../models');
 const {QueryTypes} = require('sequelize');
 
 var findByAccount = async (account) => {
@@ -147,6 +147,13 @@ var getProducts = async (id, condition) => {
             model: Status,
             as: 'status',
             attributes: ['id', 'context'],
+          },
+          {
+            model: Error,
+            as: 'errors',
+            attributes: ['content'],
+            order: [['createdAt', 'DESC']],
+            limit: condition.status_id && [6,7,8].includes(condition.status_id) ? 1 : 0,
           }
         ],
         where: condition,
@@ -194,6 +201,7 @@ var getRequests = async (id, condition, role) => {
           },
         ],
         where: condition,
+        order: [['createdAt', 'DESC']]
       },
     ],
     });

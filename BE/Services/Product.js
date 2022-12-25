@@ -9,6 +9,7 @@ const {
   History,
   Image,
   Manager,
+  Error,
 } = require("../models");
 
 var addProducts = async (amount, color_id, model_id, version_id, batch_id) => {
@@ -40,6 +41,11 @@ var updateProducts = async (updateInfo, condition) => {
 var updateOneProduct = async (updateInfo, id) => {
   try {
     const product = await Product.findByPk(id);
+    updateInfo.keys().forEach((element) => {
+      if(updateInfo[element] === product[element]) {
+        throw "can not update the same value"
+      }
+    })
     await product.update(updateInfo);
     console.log(product);
     return product;
@@ -117,11 +123,6 @@ var productInfo = async (id) => {
               model: Status,
               as: "status",
               attributes: ["id", "context"],
-            },
-            {
-              model: Manager,
-              as: "manager",
-              attributes: ["id", "name"],
             },
           ],
           attributes: ["content", "createdAt"],
