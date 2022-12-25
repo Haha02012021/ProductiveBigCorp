@@ -135,8 +135,6 @@ const ProductWarranty = () => {
     }
   };
 
-  console.log(selledProducts);
-
   const warrantyDataSource = createDataTable(productWarrantyColumns, 5);
   const recallDataSource = createDataTable(recallProductColumns, 5);
 

@@ -19,7 +19,7 @@ export default function ModalViewProduct(props) {
     const res = await indexApi.getProductById(id);
     if (res.data) {
       setProduct(res.data);
-      if (res.data.color) {
+      if (res.data.model.colors) {
         setColors(res.data.model.colors);
       }
     }
