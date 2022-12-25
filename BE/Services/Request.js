@@ -54,6 +54,7 @@ const {
     try {
       const request = await Request.findByPk(id);
       request.progress = -1;
+      request.canceledAt = new Date();
       await request.save();
       return true
     } catch (err) {
