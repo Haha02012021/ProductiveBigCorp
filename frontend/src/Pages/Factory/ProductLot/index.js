@@ -82,7 +82,6 @@ export default function ProductLot() {
 
   const getBatches = async () => {
     const res = await getBatchesByFactoryId(authUser.id);
-
     if (res.success) {
       const ds = res.data.map((batch) => {
         const date = new Date(batch.createdAt);
@@ -108,14 +107,21 @@ export default function ProductLot() {
     const data = {
       ...form.getFieldsValue(),
       factory_id: authUser.id,
+      color_id: form
+        .getFieldValue("color_id")
+        .filter((color) => color !== undefined)[0],
     };
 
-    const res = await addNewProducts(data);
-    if (res.success) {
-      message.success("Thêm lô sản phẩm thành công!", 2);
-      setAddModalVisible(false);
-    } else {
-      message.error(res.message);
+    try {
+      const res = await addNewProducts(data);
+      if (res.success) {
+        message.success("Thêm lô sản phẩm thành công!", 2);
+        setAddModalVisible(false);
+      } else {
+        message.error(res.message);
+      }
+    } catch (error) {
+      message.error(error.message);
     }
   };
 

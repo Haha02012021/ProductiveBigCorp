@@ -7,10 +7,12 @@ import Store from "./Pages/Store";
 import Factory from "./Pages/Factory";
 import AuthProvider from "./Provider/AuthProvider";
 import ThemeProvider from "./Provider/ThemeProvider";
+import locale from "antd/locale/vi_VN";
 
 function App() {
   return (
     <ConfigProvider
+      locale={locale}
       theme={{
         token: {
           colorPrimary: "#47B5FF",

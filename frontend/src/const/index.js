@@ -40,3 +40,5 @@ export const progress = {
     color: "blue",
   },
 };
+
+export const dateFormat = "YYYY-MM-DD";

@@ -87,7 +87,7 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
     }
   };
   return (
-    <Spin spinning={!initialValues}>
+    <Spin spinning={!initialValues && versionId}>
       {initialValues && (
         <Form
           labelCol={{ sm: 6, md: 4 }}
