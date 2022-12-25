@@ -1,9 +1,11 @@
-const { getInfo, getAllVers } = require("../Services/Version");
-const { info, getAll } = require("../Services/Model");
-const { getProducts, allManagers, getRequests } = require("../Services/User");
-const { allColors } = require("../Services/Color");
-const { productInfo } = require("../Services/Product");
-const { getDetail } = require("../Services/Request");
+const {getInfo, getAllVers} = require('../Services/Version');
+const {info, getAll} = require('../Services/Model');
+const {getProducts, allManagers, getRequests} = require('../Services/User');
+const {allColors} = require('../Services/Color');
+const {productInfo} = require('../Services/Product');
+const {getDetail} = require('../Services/Request');
+const {allStatuses} = require('../Services/Status');
+
 
 var getVersionInfo = async (req, res) => {
   try {
@@ -192,15 +194,29 @@ var getAllRequests = async (req, res) => {
   }
 };
 
+var getAllStatuses = async (req, res) => {
+    try {
+        const statuses = await allStatuses();
+        if(!statuses) {
+            res.json({success: false, message: 'error in statuses table'})
+        } else {
+            res.json({success: true, data: statuses, message: 'get all statuses success'});
+        }
+    } catch (err) {
+        res.status(500).json({error: err, success: false, message: 'error from get all statuses'});
+    }
+}
+
 module.exports = {
-  getVersionInfo,
-  getModelInfo,
-  getAllProducts,
-  getAllModels,
-  getAllVersions,
-  getAllColors,
-  getProductInfo,
-  getAllManagers,
-  getRequestInfo,
-  getAllRequests,
-};
+    getVersionInfo,
+    getModelInfo,
+    getAllProducts,
+    getAllModels,
+    getAllVersions,
+    getAllColors,
+    getProductInfo,
+    getAllManagers,
+    getRequestInfo,
+    getAllRequests,
+    getAllStatuses,
+}
