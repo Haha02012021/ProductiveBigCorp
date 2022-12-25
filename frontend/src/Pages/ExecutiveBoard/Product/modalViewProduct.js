@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Modal, Image, Tabs, Col, Row, Radio, ConfigProvider } from "antd";
 import styled from "styled-components";
 import indexApi from "../../../apis/index";
+import ListImage from "../../../Components/ListImage";
+import CustomTable from "../../../Components/Table/CustomTable";
+import { historyColumns } from "../../../const/tableProduct";
+import moment from "moment";
 
 export default function ModalViewProduct(props) {
   const [product, setProduct] = useState({});
@@ -20,27 +24,24 @@ export default function ModalViewProduct(props) {
     if (res.data) {
       setProduct(res.data);
       if (res.data.model.colors) {
-        setColors(res.data.model.colors);
+        setColors(
+          res.data.model.colors.filter(
+            (color) => color.id === res.data.color.id
+          )
+        );
+        setIdColor(res.data.color.id);
       }
     }
   };
+
+  console.log(product);
 
   const Specification = () => {
     return (
       <>
         <Row>
           <Col span={12}>
-            <Image
-              width={270}
-              src={
-                colors &&
-                colors.length > 0 &&
-                colors[idColor] &&
-                colors[idColor].Model_Color.image
-                  ? colors[idColor].Model_Color.image
-                  : null
-              }
-            />
+            <Image width={270} src={colors[0]?.Model_Color?.image} />
           </Col>
           <Col span={12}>
             <Row
@@ -53,7 +54,7 @@ export default function ModalViewProduct(props) {
                 height: "17px",
               }}
             >
-              MAZDA CX-5
+              {product?.version?.name}
             </Row>
             <Row
               style={{
@@ -62,9 +63,10 @@ export default function ModalViewProduct(props) {
                 marginBottom: "2px",
                 fontStyle: "italic",
                 color: "gray",
+                textTransform: "capitalize",
               }}
             >
-              Ma
+              {product?.model?.name}
             </Row>
             <Row>
               {colors.length > 0 ? (
@@ -73,39 +75,83 @@ export default function ModalViewProduct(props) {
                   defaultValue={idColor}
                   onChange={(e) => setIdColor(e.target.value)}
                 >
-                  {colors.map((color, index) => {
-                    return (
-                      <ConfigProvider
-                        key={index}
-                        theme={{
-                          components: {
-                            Radio: {
-                              colorPrimary: `${color.code}`,
-                            },
-                          },
-                        }}
-                      >
-                        <Radio value={index} key={index}></Radio>
-                      </ConfigProvider>
-                    );
-                  })}
+                  <ConfigProvider
+                    theme={{
+                      components: {
+                        Radio: {
+                          colorPrimary: `${colors[0].code}`,
+                        },
+                      },
+                    }}
+                  >
+                    <Radio value={idColor}></Radio>
+                  </ConfigProvider>
+                  ;
                 </Radio.Group>
               ) : (
                 <></>
               )}
             </Row>
-            <BoldText>Cơ sở sản xuất:</BoldText>
-            <BoldText>Đại lý phân phối:</BoldText>
-            <BoldText>Trung tâm bảo hành:</BoldText>
-            <BoldText>Trạng thái:</BoldText>
+
+            <Row>
+              <BoldText>Cơ sở sản xuất: </BoldText>
+              <DesText>
+                {" " + product &&
+                product.managers &&
+                product.managers.length > 0
+                  ? product?.managers[0]?.name
+                  : null}
+              </DesText>
+            </Row>
+
+            <Row>
+              <BoldText>Mã UUID:</BoldText>
+              <DesText>{" " + product?.uuid}</DesText>
+            </Row>
+
+            <Row>
+              <BoldText>Thời gian bảo hành:</BoldText>
+              <DesText>{" " + product?.maintain_month + " Tháng"}</DesText>
+            </Row>
+            <Row>
+              <BoldText>Trạng thái: </BoldText>
+              <DesText>{" " + product?.status?.context}</DesText>
+            </Row>
           </Col>
         </Row>
         <Row style={{ display: "flex", flexDirection: "column" }}>
-          <BoldText style={{ marginTop: 10 }}>Thông số kỹ thuật</BoldText>
-          <Row></Row>
+          <BoldText style={{ marginTop: 10, fontSize: 16 }}>
+            Lịch sử sản phẩm
+          </BoldText>
+          <CustomTable
+            columns={historyColumns}
+            dataSource={buildDataHistory(product?.histories)}
+            footer={[]}
+            style={{ cursor: "pointer" }}
+            showPagination={false}
+          ></CustomTable>
         </Row>
       </>
     );
+  };
+
+  const buildDataHistory = (data) => {
+    if (data && data.length > 0) {
+      const result = new Array();
+      for (let i = 0; i < data.length; i++) {
+        const o = {};
+        o.key = i + 1;
+        o.status = data[i]?.status?.context;
+        o.content = data[i].content;
+        o.manage = data[i]?.manager?.name;
+        o.time = moment(new Date(data[i]?.createdAt))
+          .subtract(1, "hours")
+          .calendar();
+        result.push(o);
+      }
+      return result;
+    }
+    return [];
   };
 
   return (
@@ -132,7 +178,15 @@ export default function ModalViewProduct(props) {
             {
               label: `Hình ảnh`,
               key: "2",
-              children: <>Lich su</>,
+              children: (
+                <ListImage
+                  images={
+                    product && product.model && product.model.images
+                      ? product.model.images
+                      : []
+                  }
+                />
+              ),
             },
           ]}
         />
@@ -143,4 +197,9 @@ export default function ModalViewProduct(props) {
 
 const BoldText = styled(Row)`
   font-weight: bold;
+`;
+
+const DesText = styled(Row)`
+  text-transform: capitalize;
+  padding-left: 5px;
 `;

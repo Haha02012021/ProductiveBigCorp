@@ -107,6 +107,42 @@ export const productWarrantyColumns = [
   },
 ];
 
+export const historyColumns = [
+  {
+    title: "STT",
+    dataIndex: "key",
+    key: "key",
+    width: 64,
+    align: "center",
+
+    height: 56,
+  },
+  {
+    title: "Trạng thái",
+    dataIndex: "status",
+    key: "status",
+    width: 100,
+    align: "center",
+  },
+  {
+    title: "Nội dung",
+    dataIndex: "content",
+    key: "content",
+  },
+  {
+    title: "Cơ sở",
+    dataIndex: "manage",
+    key: "manage",
+    width: 150,
+  },
+  {
+    title: "Thời gian",
+    dataIndex: "time",
+    key: "time",
+    width: 150,
+  },
+];
+
 export const buildData = (data) => {
   const result = new Array();
   for (let i = 0; i < data.length; i++) {

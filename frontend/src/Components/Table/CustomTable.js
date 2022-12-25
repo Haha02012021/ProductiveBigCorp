@@ -7,6 +7,7 @@ export default function CustomTable({
     total: 50,
     onChangePagination: (page, pageSize) => {},
   },
+  showPagination = true,
 }) {
   return (
     <div style={{ width: "100%", overflowX: "auto" }}>
@@ -15,13 +16,17 @@ export default function CustomTable({
         bordered
         dataSource={dataSource}
         columns={columns}
-        pagination={{
-          showQuickJumper: true,
-          showSizeChanger: true,
-          defaultCurrent: 1,
-          total: paginationProps.total,
-          onChange: paginationProps.onChangePagination,
-        }}
+        pagination={
+          showPagination === true
+            ? {
+                showQuickJumper: true,
+                showSizeChanger: true,
+                defaultCurrent: 1,
+                total: paginationProps.total,
+                onChange: paginationProps.onChangePagination,
+              }
+            : false
+        }
       />
     </div>
   );
