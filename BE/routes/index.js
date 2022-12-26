@@ -15,13 +15,18 @@ var {
   getAllStatuses,
   findOneProduct
 } = require("../Controllers/index");
-var { param, query, validationResult } = require("express-validator");
+var { param, query, body, validationResult } = require("express-validator");
 
 const { authenToken } = require("../Middlewares/roleValidator");
+const { finalCheck } = require("../Validators/checkErrors");
 
-router.get("/version/:id", getVersionInfo);
+router.get("/version/:id", param('id').exists().withMessage('need an id').isInt().withMessage('must be integer'),
+finalCheck,
+getVersionInfo);
 
-router.get("/model/:id", getModelInfo);
+router.get("/model/:id", param('id').exists().withMessage('need an id').isInt().withMessage('must be integer'),
+finalCheck,
+getModelInfo);
 
 router.post("/products/manager/:manager_id", getAllProducts);
 
@@ -31,7 +36,9 @@ router.get("/models/all", getAllModels);
 
 router.get("/colors/all", getAllColors);
 
-router.get("/product/detail/:id", getProductInfo);
+router.get("/product/detail/:id", param('id').exists().withMessage('need an id').isInt().withMessage('must be integer'),
+finalCheck,
+getProductInfo);
 
 router.get(
   "/managers/all",
@@ -44,23 +51,22 @@ router.get(
     .optional({ checkFalsy: null })
     .isInt()
     .withMessage("must be integer"),
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
-    } else {
-      next();
-    }
-  },
+  finalCheck,
   getAllManagers
 );
 
-router.get("/request/:id", getRequestInfo);
+router.get("/request/:id", param('id').exists().withMessage('need an id').isInt().withMessage('must be integer'),
+finalCheck,
+getRequestInfo);
 
-router.post("/requests/all/:manager_id", getAllRequests);
+router.post("/requests/all/:manager_id", body('condition').optional({checkFalsy: null}).isObject().withMessage('must be an object'),
+finalCheck,
+getAllRequests);
 
 router.get("/statuses/all", getAllStatuses);
 
-router.get('/product/:uuid', findOneProduct);
+router.get('/product/:uuid', param('uuid').exists().withMessage('need a uuid').isUUID().withMessage('must be a uuid'),
+finalCheck,
+findOneProduct);
 
 module.exports = router;
