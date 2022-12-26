@@ -41,11 +41,6 @@ var updateProducts = async (updateInfo, condition) => {
 var updateOneProduct = async (updateInfo, id) => {
   try {
     const product = await Product.findByPk(id);
-    updateInfo.keys().forEach((element) => {
-      if(updateInfo[element] === product[element]) {
-        throw "can not update the same value"
-      }
-    })
     await product.update(updateInfo);
     console.log(product);
     return product;
@@ -184,6 +179,7 @@ var allProducts = async (condition, managers) => {
           attributes: ["id", "context"],
         },
         {
+          required: false,
           model: Manager,
           as: "managers",
           through: {

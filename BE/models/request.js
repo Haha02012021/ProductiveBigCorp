@@ -60,7 +60,11 @@ module.exports = (sequelize, DataTypes) => {
     completedAt: {
       type: DataTypes.DATE,
       allowNull: true,
-    }
+    },
+    canceledReason: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   }, {
     sequelize,
     modelName: 'Request',
