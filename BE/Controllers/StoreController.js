@@ -1,7 +1,6 @@
 const {
   updateOneProduct,
   updateProducts,
-  findByUuid,
 } = require("../Services/Product");
 const {
   addOneHistory,
@@ -9,7 +8,6 @@ const {
   productsByStatus,
 } = require("../Services/History");
 const { createCustomer, findCustomerByPhoneNum } = require("../Services/User");
-const { findCustomerByEmail } = require("../Services/User");
 const { makeRequests, destroy, complete } = require("../Services/Request");
 const { addError } = require("../Services/Error");
 const {addRelation} = require('../Services/Manager_Product');
@@ -244,23 +242,6 @@ var completeRequest = async (req, res) => {
   }
 };
 
-var findOneProduct = async (req, res) => {
-  try {
-    const product = await findByUuid(req.params.uuid);
-    if (product) {
-      res.json({ success: true, data: product, message: "product found" });
-    } else {
-      res.status(404).json({ success: false, message: "product not found" });
-    }
-  } catch (err) {
-    res.status(500).json({
-      error: err,
-      success: false,
-      message: "error from find a product",
-    });
-  }
-};
-
 module.exports = {
   requestWarranty,
   sendToWarranty,
@@ -272,5 +253,4 @@ module.exports = {
   createRequest,
   deleteRequest,
   completeRequest,
-  findOneProduct,
 };

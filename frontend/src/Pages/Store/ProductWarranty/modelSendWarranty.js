@@ -54,10 +54,6 @@ const ModelSendWarranty = (props) => {
   };
 
   const sendWarrant = async () => {
-    console.log(warranty);
-    console.log(errContent);
-    console.log(props.idProductWarranty);
-
     if (
       warranty !== 0 &&
       props.idProductWarranty > 0 &&

@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Image, Tabs, Col, Row, Radio, ConfigProvider } from "antd";
+import {
+  Modal,
+  Image,
+  Tabs,
+  Col,
+  Row,
+  Radio,
+  ConfigProvider,
+  Tooltip,
+} from "antd";
 import styled from "styled-components";
 import TableHidenRow from "../../../../Components/Table/TableHidenRow";
 import ListImage from "../../../../Components/ListImage";
@@ -38,6 +47,12 @@ export default function ModalViewProduct(props) {
       arr.push(o);
     }
     return arr;
+  };
+  const invertHex = (hex) => {
+    return (Number(`0x1${hex}`) ^ 0xffffff)
+      .toString(16)
+      .substr(1)
+      .toUpperCase();
   };
 
   const listTable = [
@@ -168,7 +183,16 @@ export default function ModalViewProduct(props) {
                           },
                         }}
                       >
-                        <Radio value={index} key={index}></Radio>
+                        <Tooltip
+                          title={color.name}
+                          color={color.code}
+                          overlayStyle={{
+                            color: "#" + invertHex(color.code.substring(1)),
+                          }}
+                          key={index}
+                        >
+                          <Radio value={index} key={index}></Radio>
+                        </Tooltip>
                       </ConfigProvider>
                     );
                   })}

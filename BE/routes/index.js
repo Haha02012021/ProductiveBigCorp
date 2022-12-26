@@ -13,6 +13,7 @@ var {
   getRequestInfo,
   getAllRequests,
   getAllStatuses,
+  findOneProduct
 } = require("../Controllers/index");
 var { param, query, validationResult } = require("express-validator");
 
@@ -59,5 +60,7 @@ router.get("/request/:id", getRequestInfo);
 router.post("/requests/all/:manager_id", getAllRequests);
 
 router.get("/statuses/all", getAllStatuses);
+
+router.get('/product/:uuid', findOneProduct);
 
 module.exports = router;

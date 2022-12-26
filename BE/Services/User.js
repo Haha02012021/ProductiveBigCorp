@@ -1,5 +1,17 @@
-const {db, Manager, Customer, sequelize, Product, MODEL, Version, Color, Status, Request, Error} = require('../models');
-const {QueryTypes, Op} = require('sequelize');
+const {
+  db,
+  Manager,
+  Customer,
+  sequelize,
+  Product,
+  MODEL,
+  Version,
+  Color,
+  Status,
+  Request,
+  Error,
+} = require("../models");
+const { QueryTypes, Op } = require("sequelize");
 
 var findByAccount = async (account) => {
   try {
@@ -49,15 +61,17 @@ var createManager = async (name, place, account, password, role) => {
 
 var findCustomerByPhoneNum = async (phoneNum) => {
   try {
-    const customer = await Customer.findAll({ where: { 
-      phone: {
-        [Op.like] : `%${phoneNum}%`
-      }
-    } });
+    const customer = await Customer.findAll({
+      where: {
+        phone: {
+          [Op.like]: `%${phoneNum}%`,
+        },
+      },
+    });
     if (customer) {
       return customer;
     } else {
-      throw "this user not found, error in service"
+      throw "this user not found, error in service";
     }
   } catch (err) {
     console.log(err);
@@ -117,56 +131,60 @@ var getProducts = async (id, condition) => {
   try {
     console.log(condition);
     const products = await Manager.findByPk(id, {
-      include: [{
-        model: Product,
-        as: 'products',
-        through: {
-          attributes: [],
+      include: [
+        {
+          model: Product,
+          as: "products",
+          through: {
+            attributes: [],
+          },
+          include: [
+            {
+              model: MODEL,
+              as: "model",
+              attributes: ["id", "name"],
+            },
+            {
+              model: Version,
+              as: "version",
+              attributes: ["id", "name", "price"],
+            },
+            {
+              model: Color,
+              as: "color",
+              attributes: ["id", "name", "code"],
+            },
+            {
+              required: false,
+              model: Manager,
+              as: "managers",
+              through: {
+                attributes: [],
+              },
+              where: {
+                role: [2, 3, 4],
+              },
+              attributes: ["id", "name"],
+            },
+            {
+              model: Status,
+              as: "status",
+              attributes: ["id", "context"],
+            },
+            {
+              model: Error,
+              as: "errors",
+              attributes: ["content", "updatedAt"],
+              order: [["createdAt", "ASC"]],
+              limit:
+                condition.status_id && [6, 7, 8].includes(condition.status_id)
+                  ? 1
+                  : 0,
+            },
+          ],
+          where: condition,
         },
-        include: [
-          {
-            model: MODEL,
-            as: 'model',
-            attributes: ['id', 'name']
-          },
-          {
-            model: Version,
-            as: 'version',
-            attributes: ['id', 'name', 'price'],
-          },
-          {
-            model: Color,
-            as: 'color',
-            attributes: ['id', 'name', 'code'],
-          },
-          {
-            required: false,
-            model: Manager,
-            as: "managers",
-            through: {
-              attributes: [],
-            },
-            where: {
-              role: [2, 3, 4],
-            },
-            attributes: ["id", "name"],
-          },
-          {
-            model: Status,
-            as: 'status',
-            attributes: ['id', 'context'],
-          },
-          {
-            model: Error,
-            as: 'errors',
-            attributes: ['content'],
-            order: [['createdAt', 'ASC']],
-            limit: condition.status_id && [6,7,8].includes(condition.status_id) ? 1 : 0,
-          }
-        ],
-        where: condition,
-      },
-    ],
+      ],
     });
     return products;
   } catch (err) {
@@ -178,41 +196,42 @@ var getProducts = async (id, condition) => {
 var getRequests = async (id, condition, role) => {
   try {
     const requests = await Manager.findByPk(id, {
-      include: [{
-        required: false,
-        model: Request,
-        as: role === 4 ? 'sentRequests': 'receivedRequests',
-        include: [
-          {
-            model: MODEL,
-            as: 'model',
-            attributes: ['id', 'name']
-          },
-          {
-            model: Version,
-            as: 'version',
-            attributes: ['id', 'name', 'price'],
-          },
-          {
-            model: Color,
-            as: 'color',
-            attributes: ['id', 'name', 'code'],
-          },
-          {
-            model: Manager,
-            as: "factory",
-            attributes: ["id", "name"],
-          },
-          {
-            model: Manager,
-            as: "store",
-            attributes: ["id", "name"],
-          },
-        ],
-        where: condition,
-        order: [['createdAt', 'DESC']]
-      },
-    ],
+      include: [
+        {
+          required: false,
+          model: Request,
+          as: role === 4 ? "sentRequests" : "receivedRequests",
+          include: [
+            {
+              model: MODEL,
+              as: "model",
+              attributes: ["id", "name"],
+            },
+            {
+              model: Version,
+              as: "version",
+              attributes: ["id", "name", "price"],
+            },
+            {
+              model: Color,
+              as: "color",
+              attributes: ["id", "name", "code"],
+            },
+            {
+              model: Manager,
+              as: "factory",
+              attributes: ["id", "name"],
+            },
+            {
+              model: Manager,
+              as: "store",
+              attributes: ["id", "name"],
+            },
+          ],
+          where: condition,
+          order: [["createdAt", "DESC"]],
+        },
+      ],
     });
     if (!requests) {
       throw "controller error, can not get requests";
