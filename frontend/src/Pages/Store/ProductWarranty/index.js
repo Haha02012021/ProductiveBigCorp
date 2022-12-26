@@ -236,6 +236,15 @@ const ProductWarranty = () => {
         o.model = data[i]?.model?.name;
         o.color = data[i]?.color?.name;
         o.id = data[i]?.id;
+        o.error =
+          data[i] && data[i].errors && data[i].errors.length > 0
+            ? data[i].errors[0]?.content
+            : null;
+        o.requestDate = moment(
+          data[i] && data[i].errors && data[i].errors.length > 0
+            ? data[i].errors[0]?.updatedAt
+            : null
+        ).calendar();
       }
       result.push(o);
     }

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Select, Row, Col, Switch } from "antd";
+import { Modal, Select, Row, Col, Switch, Form } from "antd";
 import { Input, Button } from "antd";
 import ProductDetail from "../../ExecutiveBoard/Product/ProductDetail";
 import indexApi from "../../../apis";
-
+import styled from "styled-components";
+import { newCustomer } from "../../../apis/store";
 const ModalSell = (props) => {
   const [create, setCreate] = useState(true);
   const [product, setProduct] = useState({});
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (props.idProduct) {
@@ -25,29 +27,104 @@ const ModalSell = (props) => {
     console.log(`selected ${value}`);
   };
 
-  const onSearch = (value) => {
-    console.log("search:", value);
+  const onFinish = async (values) => {
+    setError("");
+    const data = { ...values, product_id: props.idProduct };
+    console.log(data);
+    const res = await newCustomer(data);
+    if (res.success === true) {
+      props.handleOk();
+    } else {
+      setError(res.message);
+    }
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
   };
 
   const CreateUser = () => {
     return (
       <Col span={24} style={{ marginLeft: 10 }}>
-        <Row>
-          <label>Tên: </label>
-          <Input placeholder="Basic usage" />
-        </Row>
-        <Row>
-          <label>Địa chỉ: </label>
-          <Input placeholder="Basic usage" />
-        </Row>
-        <Row>
-          <label>Email: </label>
-          <Input placeholder="Basic usage" />
-        </Row>
-        <Row>
-          <label>Sdt: </label>
-          <Input placeholder="Basic usage" />
-        </Row>
+        <Form
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="on"
+        >
+          <Row>
+            <LabelInput>Tên người mua: </LabelInput>
+            <Form.Item
+              style={{ width: "100%", margin: 0 }}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your username",
+                },
+              ]}
+              name="name"
+            >
+              <Input placeholder="Nhập đầy đủ họ tên" />
+            </Form.Item>
+          </Row>
+
+          <Row>
+            <LabelInput>Địa chỉ: </LabelInput>
+            <Form.Item
+              style={{ width: "100%", margin: 0 }}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your address",
+                },
+              ]}
+              name="place"
+            >
+              <Input placeholder="Nhập địa chỉ" />
+            </Form.Item>
+          </Row>
+          <Row>
+            <LabelInput>Email: </LabelInput>
+            <Form.Item
+              style={{ width: "100%", margin: 0 }}
+              rules={[
+                {
+                  type: "email",
+                  message: "The input is not valid E-mail!",
+                },
+                {
+                  required: true,
+                  message: "Please input your E-mail!",
+                },
+              ]}
+              name="email"
+            >
+              <Input placeholder="Nhập email" />
+            </Form.Item>
+          </Row>
+
+          <Row>
+            <LabelInput>Sdt: </LabelInput>
+            <Form.Item
+              style={{ width: "100%", margin: 0 }}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your phoneNumber",
+                },
+              ]}
+              name="phone"
+            >
+              <Input placeholder="Nhập số điện thoại" />
+            </Form.Item>
+          </Row>
+          <ErrorMessage>{error}</ErrorMessage>
+          <Form.Item>
+            <Row style={{ padding: "20px 0 20px 0" }}>
+              <Button type="primary" htmlType="submit">
+                Tạo yêu cầu
+              </Button>
+            </Row>
+          </Form.Item>
+        </Form>
       </Col>
     );
   };
@@ -59,13 +136,8 @@ const ModalSell = (props) => {
           <label>Tìm kiếm người dùng: </label>
           <Select
             showSearch
-            placeholder="Select a person"
-            optionFilterProp="children"
+            placeholder="Nhập số điện thoại để tìm kiếm người dùng"
             onChange={onChange}
-            onSearch={onSearch}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
             style={{ width: "100%" }}
             options={[
               {
@@ -111,12 +183,18 @@ const ModalSell = (props) => {
         </Col>
         {create ? <CreateUser /> : <SearchUser />}
       </Row>
-
-      <Row style={{ paddingTop: 20 }}>
-        <Button type="primary">Tạo yêu cầu</Button>
-      </Row>
     </Modal>
   );
 };
 
 export default ModalSell;
+
+const LabelInput = styled(Row)`
+  font-weight: 450;
+  padding-top: 5px;
+`;
+
+const ErrorMessage = styled(Row)`
+  padding-top: 5px;
+  color: red;
+`;
