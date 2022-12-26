@@ -39,12 +39,14 @@ module.exports = {
         defaultValue: 0,
       },
       acceptedAt: {
-        allowNull: false,
         type: DataTypes.DATE,
         allowNull: true,
       },
       canceledAt: {
-        allowNull: false,
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      completedAt: {
         type: DataTypes.DATE,
         allowNull: true,
       },
