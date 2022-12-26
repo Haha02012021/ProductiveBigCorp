@@ -1,16 +1,18 @@
-const { Op } = require("sequelize");
+const {QueryTypes, Op} = require('sequelize');
 const {
   db,
   Product,
   MODEL,
   Version,
   Batch,
+  Manager_Product,
   Color,
   Status,
   History,
   Image,
   Manager,
   Error,
+  sequelize
 } = require("../models");
 
 var addProducts = async (amount, color_id, model_id, version_id, batch_id) => {
@@ -152,10 +154,20 @@ var getCustomerInfo = async (id) => {
 
 var allProducts = async (condition, managers) => {
   try {
+    console.log(managers, condition);
+    if(managers && managers.length > 0) {
+      condition.id = await sequelize.query(
+        `SELECT product_id FROM manager_product where manager_id in (${managers.toString()})
+        group by product_id having count(manager_id) > $1 or count(manager_id) = $1`,
+        {
+          bind: [managers.length],
+          type: QueryTypes.SELECT,
+        }
+      );
+    }
+    condition.id = condition.id.map(element => { return element.product_id });
     const products = await Product.findAll({
-      where: {
-        condition
-      },
+      where: condition,
       include: [
         {
           model: MODEL,
@@ -187,7 +199,7 @@ var allProducts = async (condition, managers) => {
           where: {
             role: [2, 3, 4],
           },
-          attributes: ["id", "name"],
+          attributes: ["id", "name", "role"],
         },
       ],
     });
