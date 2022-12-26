@@ -28,7 +28,7 @@ export const progress = {
     color: "red",
   },
   0: {
-    context: "Chuẩn bị hàng",
+    context: "Chờ xác nhận",
     color: "grey",
   },
   1: {
