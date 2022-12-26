@@ -203,6 +203,20 @@ var allProducts = async (condition, managers) => {
   }
 };
 
+var findByUuid = async (uuid) => {
+  try {
+    const product = await Product.findOne({where: {uuid}});
+    if(!product) {
+      throw "product not found";
+    } else {
+      return product;
+    }
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
 module.exports = {
   addProducts,
   updateProducts,
@@ -210,4 +224,5 @@ module.exports = {
   productInfo,
   getCustomerInfo,
   allProducts,
+  findByUuid,
 };

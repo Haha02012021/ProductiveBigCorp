@@ -1,6 +1,6 @@
-const {updateOneProduct, updateProducts} = require('../Services/Product');
+const {updateOneProduct, updateProducts, findByUuid} = require('../Services/Product');
 const {addOneHistory, addHistory, productsByStatus} = require('../Services/History');
-const {createCustomer} = require('../Services/User');
+const {createCustomer, findCustomerByPhoneNum} = require('../Services/User');
 const {findCustomerByEmail} = require('../Services/User');
 const {makeRequests, destroy, complete} = require('../Services/Request');
 const { addError } = require('../Services/Error');
@@ -38,7 +38,7 @@ var receiveWarranty = async (req, res) => {
 
 var getCustomer = async (req, res) => {
     try {
-        const customer = await findCustomerByEmail(req.body.email);
+        const customer = await findCustomerByPhoneNum(req.body.phoneNum);
         //console.log(req.body.email);
         //await console.log(customer);
         if(!customer) {
@@ -57,7 +57,12 @@ var addCustomer = async (req, res) => {
         if(!customer) {
             res.json({success: false, message: 'this customer already exists'})
         } else {
-            res.json({success: true, message: 'customer added', data: customer});
+            const product = await updateOneProduct({customer_id: customer.id}, req.body.product_id);
+            if(product){
+                res.json({success: true, message: 'customer added', data: customer});
+            } else {
+                res.json({success: false, message: 'failed to update customer id to product'})
+            }
         }
     } catch (err) {
         res.status(500).json({error: err, success: false, message: 'error from add customer'});
@@ -126,6 +131,19 @@ var completeRequest = async (req, res) => {
     }
 }
 
+var findOneProduct = async (req, res) => {
+    try {
+        const product = await findByUuid(req.params.uuid);
+        if(product) {
+            res.json({success: true, data: product, message: 'product found'})
+        } else {
+            res.status(404).json({success: false, message: 'product not found'});
+        }
+    } catch (err) {
+        res.status(500).json({error: err, success: false, message: 'error from find a product'});
+    }
+}
+
 module.exports = {
     requestWarranty,
     sendToWarranty,
@@ -137,4 +155,5 @@ module.exports = {
     createRequest,
     deleteRequest,
     completeRequest,
+    findOneProduct,
 }
