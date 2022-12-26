@@ -66,15 +66,17 @@ export default function ProductExport() {
         title: "Thao tác",
         dataIndex: "actions",
         key: "actions",
-        render: (_, record) => (
-          <ActionsCell
-            hasView={false}
-            hasEdit={false}
-            hasConfirm={record.progress === 0}
-            onConfirm={() => handleConfirm(record)}
-            onDelete={() => handleCancel(record)}
-          />
-        ),
+        render: (_, record) => {
+          if (record.progress !== 2) {
+            <ActionsCell
+              hasView={false}
+              hasEdit={false}
+              hasConfirm={record.progress === 0}
+              onConfirm={() => handleConfirm(record)}
+              onDelete={() => handleCancel(record)}
+            />;
+          }
+        },
       },
     ];
   }, []);
@@ -135,7 +137,6 @@ export default function ProductExport() {
       role: 2,
     };
     const res = await indexApi.getRequestsByManagerId(authUser.id, condition);
-
     if (res.success) {
       setCanceledReqDataSource(buildData(res.data.receivedRequests));
     }
@@ -156,7 +157,7 @@ export default function ProductExport() {
         model: req.model.name,
         version: req.version.name,
         amount: req.amount,
-        store: req.managers?.find((manager) => manager?.role === 4)?.name,
+        store: req.store.name,
         progress: req.progress,
         inExportDate: acceptedAt + " ~ " + completedAt,
         canceledDate: new Date(req.canceledAt)

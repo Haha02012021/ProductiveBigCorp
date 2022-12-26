@@ -10,12 +10,16 @@ export default function ActionsCell({
   onEdit,
   onDelete,
   onConfirm,
+  viewText = "Xem",
+  editText = "Sửa",
+  deleteText = "Xóa",
+  confirmText = "Xác nhận",
 }) {
   return (
     <Space split={<Divider type="vertical" />} size>
       {hasView && (
         <StyledButton type="primary" onClick={onView}>
-          Xem
+          {viewText}
         </StyledButton>
       )}
       {hasEdit && (
@@ -24,17 +28,17 @@ export default function ActionsCell({
           style={{ background: "#256D85" }}
           onClick={onEdit}
         >
-          Sửa
+          {editText}
         </StyledButton>
       )}
       {hasDelete && (
         <StyledButton type="primary" danger onClick={onDelete}>
-          Xóa
+          {deleteText}
         </StyledButton>
       )}
       {hasConfirm && (
         <StyledButton type="primary" onClick={onConfirm}>
-          Xác nhận
+          {confirmText}
         </StyledButton>
       )}
     </Space>

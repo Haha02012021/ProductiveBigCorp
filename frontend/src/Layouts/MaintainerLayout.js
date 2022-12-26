@@ -14,6 +14,11 @@ export default function MaintainerLayout() {
       label: "Sản phẩm bảo hành/triệu hồi",
     },
     {
+      key: "transport-products",
+      icon: <SettingOutlined />,
+      label: "Vận chuyển sản phẩm",
+    },
+    {
       key: "statistical",
       icon: <SettingOutlined />,
       label: "Thống kê số liệu sản phẩm",

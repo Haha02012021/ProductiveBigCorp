@@ -42,3 +42,70 @@ export const progress = {
 };
 
 export const dateFormat = "YYYY-MM-DD";
+
+export const statuses = {
+  1: {
+    content: "Đã sản xuất",
+    color: "",
+  },
+  2: {
+    content: "Yêu cầu từ nhà máy",
+    color: "",
+  },
+  3: {
+    content: "Vận chuyển để bán",
+    color: "",
+  },
+  4: {
+    content: "Tồn kho",
+    color: "",
+  },
+  5: {
+    content: "Đã bán",
+    color: "",
+  },
+  6: {
+    content: "Yêu cầu bảo hành",
+    color: "",
+  },
+  7: {
+    content: "Chờ xác nhận bảo hành",
+    color: "",
+  },
+  8: {
+    content: "Đang bảo hành",
+    color: "",
+  },
+  9: {
+    content: "Đã sửa",
+    color: "",
+  },
+  10: {
+    content: "Đã bảo hành và trả về",
+    color: "",
+  },
+  11: {
+    content: "Đã bảo hành và thu hồi",
+    color: "",
+  },
+  12: {
+    content: "Hỏng",
+    color: "",
+  },
+  13: {
+    content: "Gửi lại đại lý",
+    color: "",
+  },
+  14: {
+    content: "Gửi trả nhà máy",
+    color: "",
+  },
+  15: {
+    content: "Đã hủy",
+    color: "",
+  },
+  16: {
+    content: "Đã triệu hồi",
+    color: "",
+  },
+};
