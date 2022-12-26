@@ -1,5 +1,6 @@
 const { request } = require('express');
 var express = require('express');
+const { body } = require('express-validator');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 const { route } = require('.');
@@ -9,26 +10,66 @@ const {requestWarranty, sendToWarranty, receiveWarranty, getCustomer,
     completeRequest} = require('../Controllers/StoreController');
 
 const {validateStore} = require('../Middlewares/roleValidator');
+const { checkIntArray } = require('../Validators/arrayValidator');
+const { finalCheck } = require('../Validators/checkErrors');
+const { checkSpecialCharacters } = require('../Validators/stringValidator');
 
-router.post('/warrantyRequest', requestWarranty);
+router.post('/warrantyRequest', body('product_id').exists().withMessage('need a product_id').isInt().withMessage('must be integer'),
+body('store_id').exists().withMessage('need a store_id').isInt().withMessage('must be integer'),
+body('content').exists().withMessage('need a error content').isString().withMessage('must be string'),
+finalCheck,
+requestWarranty);
 
-router.post('/sendToWarranty', sendToWarranty);
+router.post('/sendToWarranty',
+body('store_id').exists().withMessage('need a store_id').isInt().withMessage('must be integer'), 
+body('warranty_id').exists().withMessage('need a warranty_id').isInt().withMessage('must be integer'),
+body('products').custom(checkIntArray),
+finalCheck,
+sendToWarranty);
 
-router.post('/warrantyReceive', receiveWarranty);
+router.post('/warrantyReceive', 
+body('store_id').exists().withMessage('need a store_id').isInt().withMessage('must be integer'),
+body('products').custom(checkIntArray),
+finalCheck,
+receiveWarranty);
 
-router.post('/customer/search', getCustomer);
+router.post('/customer/search', body('phoneNum').exists().withMessage('need a phone number').custom(checkSpecialCharacters), 
+finalCheck,
+getCustomer);
 
-router.post('/customer/new', addCustomer)
+router.post('/customer/new', 
+body('email').isEmail().withMessage('must be an email'),
+body('name').exists().withMessage('need a name').custom(checkSpecialCharacters),
+body('product_id').exists().withMessage('need a product_id').isInt().withMessage('must be integer'),
+body('phone').exists().withMessage('need a phone number').custom(checkSpecialCharacters),
+finalCheck,
+addCustomer)
 
-router.post('/sell', sell);
+router.post('/sell', 
+body('store_id').exists().withMessage('need a store_id').isInt().withMessage('must be integer'),
+body('customer_id').exists().withMessage('need a customer_id').isInt().withMessage('must be integer'),
+finalCheck,
+sell);
 
 router.get('/analize/status/:manager_id', analizeProducts);
 
-router.post('/request/new', createRequest);
+router.post('/request/new', 
+body('factory_id').exists().withMessage('need a factory_id').isInt().withMessage('must be integer'),
+body('version_id').exists().withMessage('need a version_id').isInt().withMessage('must be integer'),
+body('model_id').exists().withMessage('need a model_id').isInt().withMessage('must be integer'),
+body('color_id').exists().withMessage('need a color_id').isInt().withMessage('must be integer'),
+body('amount').exists().withMessage('need a amount').isInt().withMessage('must be integer'),
+createRequest);
 
-router.delete('/request/delete/:id', deleteRequest);
+router.delete('/request/delete/:id', 
+body('id').exists().withMessage('need a id').isInt().withMessage('must be integer'),
+finalCheck,
+deleteRequest);
 
-router.get('/request/complete/:id/:store_id', completeRequest);
+router.get('/request/complete/:id/:store_id', 
+body('id').exists().withMessage('need a id').isInt().withMessage('must be integer'),
+finalCheck,
+completeRequest);
 
 module.exports = router
 
