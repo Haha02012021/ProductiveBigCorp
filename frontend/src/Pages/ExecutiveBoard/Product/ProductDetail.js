@@ -105,6 +105,18 @@ const ProductDetail = ({ product = {}, isProduct = true }) => {
             <BoldText>Trạng thái: </BoldText>
             <DesText>{" " + product?.status?.context}</DesText>
           </Row>
+          <Row>
+            <BoldText>Tên người mua: </BoldText>
+            <DesText>{" " + product?.customer?.name}</DesText>
+          </Row>
+          <Row>
+            <BoldText>Số điện thoại: </BoldText>
+            <DesText>{" " + product?.customer?.phone}</DesText>
+          </Row>
+          <Row>
+            <BoldText>Email: </BoldText>
+            <DesText>{" " + product?.customer?.email}</DesText>
+          </Row>
         </Col>
       </Row>
     </>

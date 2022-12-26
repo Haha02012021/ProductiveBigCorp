@@ -21,6 +21,7 @@ const StoreProduct = () => {
   const [addRequest, setAddRequest] = useState(false);
   const [requests, setRequests] = useState([]);
   const [idProductSell, setIdProductSell] = useState(0);
+  const [selled, setSelled] = useState(false);
 
   const requestProductColumns = [
     {
@@ -175,11 +176,14 @@ const StoreProduct = () => {
   }, []);
 
   useEffect(() => {
-    getProductsStore();
     if (authUser && authUser.id) {
       getRequest(authUser.id);
     }
   }, [addRequest]);
+
+  useEffect(() => {
+    getProductsStore();
+  }, [selled]);
 
   const getProductsStore = async (id) => {
     const condition = {
@@ -286,6 +290,7 @@ const StoreProduct = () => {
           handleOk={() => setIsModalSell(false)}
           handleCancel={() => setIsModalSell(false)}
           idProduct={idProductSell}
+          handleSell={() => setSelled(!selled)}
         />
       )}
     </PageContent>

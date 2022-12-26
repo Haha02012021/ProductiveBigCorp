@@ -184,8 +184,8 @@ const ProductWarranty = () => {
       },
       {
         title: "Ngày gửi",
-        dataIndex: "sentDate",
-        key: "sentDate",
+        dataIndex: "requestDate",
+        key: "requestDate",
         width: 140,
       },
       {
@@ -193,8 +193,13 @@ const ProductWarranty = () => {
         dataIndex: "actions",
         key: "actions",
         width: 60,
-        render: () => (
-          <ActionsCell hasConfirm={false} hasDelete={false} hasEdit={false} />
+        render: (text, record, index) => (
+          <ActionsCell
+            hasConfirm={false}
+            hasDelete={false}
+            hasEdit={false}
+            onView={() => showModal(record)}
+          />
         ),
       },
     ],

@@ -4,16 +4,21 @@ import { Input, Button } from "antd";
 import ProductDetail from "../../ExecutiveBoard/Product/ProductDetail";
 import indexApi from "../../../apis";
 import styled from "styled-components";
-import { newCustomer } from "../../../apis/store";
+import { newCustomer, searchCustomer, sellProduct } from "../../../apis/store";
+
+const Option = Select.Option;
 const ModalSell = (props) => {
-  const [create, setCreate] = useState(true);
+  const [create, setCreate] = useState(false);
   const [product, setProduct] = useState({});
   const [error, setError] = useState("");
+  const [customers, setCustomers] = useState([]);
+  const [customer, setCustomer] = useState({});
 
   useEffect(() => {
     if (props.idProduct) {
       getProduct(props.idProduct);
     }
+    getCustomers();
   }, [props.idProduct]);
 
   const getProduct = async (id) => {
@@ -23,16 +28,26 @@ const ModalSell = (props) => {
     }
   };
 
-  const onChange = (value) => {
-    console.log(`selected ${value}`);
+  const getCustomers = async () => {
+    const res = await searchCustomer({ phoneNum: "" });
+    if (res.success === true && res.data) {
+      setCustomers(res.data);
+    }
+  };
+
+  const onChange = async (value) => {
+    const res = await searchCustomer({ phoneNum: value });
+    if (res.success === true && res.data) {
+      setCustomer(res.data[0]);
+    }
   };
 
   const onFinish = async (values) => {
     setError("");
     const data = { ...values, product_id: props.idProduct };
-    console.log(data);
     const res = await newCustomer(data);
     if (res.success === true) {
+      props.handleSell();
       props.handleOk();
     } else {
       setError(res.message);
@@ -40,6 +55,19 @@ const ModalSell = (props) => {
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+  };
+
+  const sellProductClick = async () => {
+    if (customer && customer.id && props.idProduct) {
+      const res = await sellProduct({
+        customer_id: customer.id,
+        product_id: props.idProduct,
+      });
+      if (res.success === true) {
+        props.handleSell();
+        props.handleOk();
+      }
+    }
   };
 
   const CreateUser = () => {
@@ -139,21 +167,52 @@ const ModalSell = (props) => {
             placeholder="Nhập số điện thoại để tìm kiếm người dùng"
             onChange={onChange}
             style={{ width: "100%" }}
-            options={[
-              {
-                value: "jack",
-                label: "Jack",
-              },
-              {
-                value: "lucy",
-                label: "Lucy",
-              },
-              {
-                value: "tom",
-                label: "Tom",
-              },
-            ]}
-          />
+            dropdownRender={(menu) => (
+              <React.Fragment>
+                <div onMouseDown={() => console.log("before clicked")}>
+                  Danh sách người dùng
+                </div>
+                {menu}
+              </React.Fragment>
+            )}
+            value={customer ? customer.phone : ""}
+          >
+            {customers &&
+              customers.length > 0 &&
+              customers.map((c, index) => {
+                return (
+                  <Option
+                    value={c.phone}
+                    style={{
+                      backgroundColor: `${
+                        index % 2 === 0 ? "#ececec" : "#faf9f9"
+                      }`,
+                    }}
+                    key={index}
+                  >
+                    <Row>Số điện thoại: {c.phone}</Row>
+                    <Row>Tên người mua: {c.name}</Row>
+                  </Option>
+                );
+              })}
+          </Select>
+          {customer && customer.name && customer.email && customer.phone && (
+            <Col span={24} style={{ marginLeft: 5 }}>
+              <Row style={{ paddingTop: 5 }}>
+                Tên người mua: {customer.name}
+              </Row>
+              <Row style={{ paddingTop: 5 }}>Địa chỉ: {customer.place}</Row>
+              <Row style={{ paddingTop: 5 }}>Email: {customer.email}</Row>
+              <Row style={{ paddingTop: 5 }}>
+                Số điện thoại : {customer.phone}
+              </Row>
+              <Row style={{ padding: "20px 0 20px 0" }}>
+                <Button type="primary" onClick={() => sellProductClick()}>
+                  Tạo yêu cầu
+                </Button>
+              </Row>
+            </Col>
+          )}
         </Row>
       </Col>
     );
@@ -177,7 +236,7 @@ const ModalSell = (props) => {
           <Switch
             checkedChildren="YES"
             unCheckedChildren="NO"
-            defaultChecked
+            checked={create}
             onChange={() => setCreate(!create)}
           />
         </Col>
