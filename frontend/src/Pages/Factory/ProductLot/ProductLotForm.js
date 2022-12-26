@@ -113,7 +113,7 @@ export default function ProductLotForm({ form, batch }) {
               placeholder="Chọn màu"
               showArrow
               tagRender={tagRender}
-              defaultValue={[batch?.color.id]}
+              defaultValue={batch ? [batch.color.id] : []}
               style={{
                 width: "100%",
               }}

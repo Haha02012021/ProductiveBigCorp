@@ -36,6 +36,11 @@ export default function MaintainProduct() {
       key: "status",
     },
     {
+      title: "Đại lý",
+      dataIndex: "store",
+      key: "store",
+    },
+    {
       title: "Ngày gửi",
       dataIndex: "giveDate",
       key: "giveDate",
@@ -70,7 +75,9 @@ export default function MaintainProduct() {
       children: (
         <PageContent>
           <CustomTable
-            columns={columns.filter((column) => column.key !== "id")}
+            columns={columns.filter(
+              (column) => column.key !== "id" && column.key !== "store"
+            )}
           />
         </PageContent>
       ),
