@@ -30,14 +30,55 @@ const {
     }
   }
 
-  //var accepRequest = async (id) => {
-  //  const request = await Request.findByPk(id);
-  //  request.progress = 1;
-  //  request.acceptedAt = new Date();
-  //  request.save();
+  var accept = async (id, factory_id) => {
+    try {
+      const request = await Request.findByPk(id);
+      request.progress = 1;
+      request.acceptedAt = new Date();
+      await request.save();
 
-  //  const products = 
-  //}
+      //console.log(request);
+
+      let products = await Manager.findByPk(factory_id, {
+        include: [
+          {
+            model: Product,
+            as: 'products',
+            through: {
+              attributes: [],
+            },
+            where: {
+              version_id: request.version_id,
+              color_id: request.color_id,
+              status_id: 1,
+            },
+          }
+        ]
+      });
+
+      products = products.get({ plain: true }).products;
+      if(products.length < request.amount) {
+        return {err: "not enough to supply"}
+      }
+      if(products) {
+        const result = await Product.update({request_id: request.id, status_id: 3}, {where: {
+          id: products.slice(0,request.amount).map(element => {return element.id})
+        }, 
+        returning: true,
+        plain: true,});
+        if(result) {
+          return result;
+        } else {
+          throw "error in update product status to 3"
+        }
+      } else {
+        throw "productsnot found"
+      }
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  }
 
   var destroy = async (id) => {
     try {
@@ -63,9 +104,29 @@ const {
     }
   }
 
+  var complete = async (id) => {
+    try {
+      const request = await Request.findByPk(id);
+      request.progress = 2;
+      request.completedAt = new Date();
+      await request.save();
+
+      const products = await Product.update({status_id: 4}, {where: {request_id: request.id}});
+      if(!products) {
+        throw "can not update products";
+      }
+      return products;
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  }
+
   module.exports = {
     getDetail,
     makeRequests,
     destroy,
     refuse,
+    accept,
+    complete,
   }

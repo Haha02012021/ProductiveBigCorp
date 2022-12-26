@@ -2,7 +2,7 @@ const {updateOneProduct, updateProducts} = require('../Services/Product');
 const {addOneHistory, addHistory, productsByStatus} = require('../Services/History');
 const {createCustomer} = require('../Services/User');
 const {findCustomerByEmail} = require('../Services/User');
-const {makeRequests, destroy} = require('../Services/Request');
+const {makeRequests, destroy, complete} = require('../Services/Request');
 const { addError } = require('../Services/Error');
 
 var requestWarranty = async (req, res) => {
@@ -113,6 +113,19 @@ var deleteRequest = async (req, res) => {
     }
 }
 
+var completeRequest = async (req, res) => {
+    try {
+        const data = complete(req.params.id);
+        if(data) {
+            res.json({success: true, message: 'request accept'});
+        } else {
+            res.json({success: false, message: 'can not update, service error'});
+        }
+    } catch (err) {
+        res.status(500).json({error: err, success: false, message: 'error from completing request'});
+    }
+}
+
 module.exports = {
     requestWarranty,
     sendToWarranty,
@@ -123,4 +136,5 @@ module.exports = {
     analizeProducts,
     createRequest,
     deleteRequest,
+    completeRequest,
 }
