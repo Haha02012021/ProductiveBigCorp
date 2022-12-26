@@ -24,7 +24,7 @@ router.get('/batches/:factory_id', getBatches);
 
 router.post('/receiveBrokenProducts', receiveBrokenProducts);
 
-router.get('/request/refuse/:id', refuseRequest);
+router.post('/request/refuse/:id', refuseRequest);
 
 router.get('/request/accept/:id/:factory_id', acceptRequest);
 
