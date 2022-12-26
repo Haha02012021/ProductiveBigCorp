@@ -50,6 +50,10 @@ module.exports = {
         type: DataTypes.DATE,
         allowNull: true,
       },
+      canceledReason: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE
