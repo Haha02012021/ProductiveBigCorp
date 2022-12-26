@@ -55,14 +55,14 @@ export default function VersionManage() {
   const getAllVersions = async () => {
     const res = await indexApi.getAllVersions();
 
-    if (res.success) {
-      const ds = res.data.map((version, index) => {
+    if (res.success === true) {
+      const ds = res?.data.map((version, index) => {
         return {
           key: index,
           index: index + 1,
-          productLine: version.model_id,
-          version: version.name,
-          id: version.id,
+          model: version?.model?.name,
+          version: version?.name,
+          id: version?.id,
         };
       });
 
@@ -80,8 +80,8 @@ export default function VersionManage() {
     },
     {
       title: "Dòng sản phẩm",
-      dataIndex: "productLine",
-      key: "productLine",
+      dataIndex: "model",
+      key: "model",
     },
     {
       title: "Phiên bản",

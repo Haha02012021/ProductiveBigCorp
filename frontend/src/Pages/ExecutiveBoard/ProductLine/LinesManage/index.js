@@ -26,7 +26,7 @@ export default function LineManage() {
         return {
           key: model.id,
           index: index + 1,
-          name: model.name,
+          model: model.name,
           actions: model,
         };
       });
@@ -45,8 +45,8 @@ export default function LineManage() {
       },
       {
         title: "Dòng sản phẩm",
-        dataIndex: "name",
-        key: "name",
+        dataIndex: "model",
+        key: "model",
       },
       {
         title: "Thao tác",
@@ -71,6 +71,7 @@ export default function LineManage() {
   };
 
   const handleEditLine = (productLineInfo) => {
+    console.log(productLineInfo);
     form.resetFields();
     setEditModalVisible(true);
     form.setFieldsValue(productLineInfo);
