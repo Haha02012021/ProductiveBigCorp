@@ -12,7 +12,7 @@ var createProducts = async (req, res) => {
             req.body.version_id,
             req.body.amount
         )
-  
+        
         const products = await addProducts(req.body.amount, req.body.color_id, req.body.model_id, req.body.version_id, batch.id)
   
         const productsId = products.map(element => {return element.id});
@@ -64,10 +64,11 @@ var acceptRequest = async (req, res) => {
     try {
         const data = await accept(req.params.id, req.params.factory_id);
         if(data) {
-            console.log(data);
+            //console.log(data);
             if(data.err) {
                 res.status(500).json({success: false, message: data.err});
             } else {
+                await addHistory(data, 3, 'đang chuyển tới cửa hàng yêu cầu', req.params.factory_id);
                 res.json({success: true, data: data, message: 'request accepted, products has been marked'});
             }
         } else {

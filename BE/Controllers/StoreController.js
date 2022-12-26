@@ -12,6 +12,7 @@ const { createCustomer, findCustomerByPhoneNum } = require("../Services/User");
 const { findCustomerByEmail } = require("../Services/User");
 const { makeRequests, destroy, complete } = require("../Services/Request");
 const { addError } = require("../Services/Error");
+const {addRelation} = require('../Services/Manager_Product');
 
 var requestWarranty = async (req, res) => {
   try {
@@ -59,7 +60,7 @@ var sendToWarranty = async (req, res) => {
       data: { products, history },
     });
   } catch (err) {
-    err.status(500).json({
+    res.status(500).json({
       error: err,
       success: false,
       message: "error from warrantyRequest",
@@ -226,8 +227,10 @@ var deleteRequest = async (req, res) => {
 
 var completeRequest = async (req, res) => {
   try {
-    const data = complete(req.params.id);
+    const data = await complete(req.params.id);
     if (data) {
+      await addRelation(data, req.params.store_id);
+      await addHistory(data, 4, 'đã bàn giao cho cửa hàng', req.params.store_id);
       res.json({ success: true, message: "request accept" });
     } else {
       res.json({ success: false, message: "can not update, service error" });

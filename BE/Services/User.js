@@ -1,5 +1,5 @@
 const {db, Manager, Customer, sequelize, Product, MODEL, Version, Color, Status, Request, Error} = require('../models');
-const {QueryTypes} = require('sequelize');
+const {QueryTypes, Op} = require('sequelize');
 
 var findByAccount = async (account) => {
   try {
@@ -49,7 +49,11 @@ var createManager = async (name, place, account, password, role) => {
 
 var findCustomerByPhoneNum = async (phoneNum) => {
   try {
-    const customer = await Customer.findOne({ where: { phone: phoneNum } });
+    const customer = await Customer.findAll({ where: { 
+      phone: {
+        [Op.like] : `%${phoneNum}%`
+      }
+    } });
     if (customer) {
       return customer;
     } else {
