@@ -130,12 +130,6 @@ export const historyColumns = [
     key: "content",
   },
   {
-    title: "Cơ sở",
-    dataIndex: "manage",
-    key: "manage",
-    width: 150,
-  },
-  {
     title: "Thời gian",
     dataIndex: "time",
     key: "time",
