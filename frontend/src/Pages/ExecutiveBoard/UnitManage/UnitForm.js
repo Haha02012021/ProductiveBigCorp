@@ -18,7 +18,7 @@ const UNIT_TYPES = [
 
 const CITIES = ["Hà Nội", "Thái Bình", "Bắc Ninh"];
 
-export default function UnitForm({ form }) {
+export default function UnitForm({ form, isEdit = false }) {
   return (
     <Form
       form={form}
@@ -33,7 +33,9 @@ export default function UnitForm({ form }) {
         rules={[{ required: true, message: errorMessages.unitForm.role }]}
       >
         <Select
+          disabled={isEdit}
           placeholder="Chọn đơn vị"
+          defaultValue={form.getFieldValue("role")}
           options={UNIT_TYPES.map((type) => {
             return { label: type.name, value: type.role };
           })}
@@ -61,6 +63,7 @@ export default function UnitForm({ form }) {
         rules={[{ required: true, message: errorMessages.unitForm.place }]}
       >
         <Select
+          disabled={isEdit}
           placeholder="Chọn thành phố"
           options={CITIES.map((city) => {
             return { label: city, value: city };
@@ -80,7 +83,11 @@ export default function UnitForm({ form }) {
           },
         ]}
       >
-        <Input placeholder="Nhập tên tài khoản" autoComplete="off" />
+        <Input
+          placeholder="Nhập tên tài khoản"
+          disabled={isEdit}
+          autoComplete="off"
+        />
       </Form.Item>
       <Form.Item
         label="Mật khẩu"

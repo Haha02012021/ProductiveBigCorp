@@ -1,64 +1,67 @@
-import ExecutiveBoardLayout from "../../../Layouts/ExecutiveBoardLayout";
 import ActionsCell from "../../../Components/Table/ActionsCell";
 import CustomTable from "../../../Components/Table/CustomTable";
 import CustomModal from "../../../Components/CustomModal";
 import { Form, message, Tabs } from "antd";
-import { useMemo, useState } from "react";
+import { useState, useEffect } from "react";
 import UnitForm from "./UnitForm";
 import PageContent from "../../../Components/PageContent";
 import { errorMessages } from "../../../const";
 import coporationApi from "../../../apis/coporation";
-
-const factoryDataSource = [
-  {
-    key: 1,
-    index: 1,
-    name: "Factory 1",
-    username: "factory1",
-    password: "factory1",
-    actions: {
-      name: "Factory 1",
-      username: "factory1",
-      password: "factory1",
-    },
-  },
-];
-
-const storeDataSource = [
-  {
-    key: 1,
-    index: 1,
-    name: "Store 1",
-    username: "store1",
-    password: "store1",
-    actions: {
-      name: "Store 1",
-      username: "store1",
-      password: "store1",
-    },
-  },
-];
-
-const maintainCenterDataSource = [
-  {
-    key: 1,
-    index: 1,
-    name: "Center 1",
-    username: "center1",
-    password: "center1",
-    actions: {
-      name: "Center 1",
-      username: "center1",
-      password: "center1",
-    },
-  },
-];
+import indexApi from "../../../apis/index";
 
 export default function UnitManage() {
   const [currentTab, setCurrentTab] = useState(1);
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
+  const [factocies, setFactocies] = useState([]);
+  const [stores, setStores] = useState([]);
+  const [warranties, setWarranties] = useState([]);
+
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    getFactories();
+    getStore();
+    getWarranties();
+  }, []);
+
+  const getFactories = async () => {
+    const res = await indexApi.getManagerByRole(2);
+    if (res.data) {
+      setFactocies(buildManageData(res.data));
+    }
+  };
+
+  const getStore = async () => {
+    const res = await indexApi.getManagerByRole(4);
+    if (res.data) {
+      setStores(buildManageData(res.data));
+    }
+  };
+
+  const getWarranties = async () => {
+    const res = await indexApi.getManagerByRole(3);
+    if (res.data) {
+      setWarranties(buildManageData(res.data));
+    }
+  };
+
+  const buildManageData = (data) => {
+    const result = new Array();
+    for (let i = 0; i < data.length; i++) {
+      const o = {};
+      if (data[i]) {
+        o.id = data[i]?.id;
+        o.index = i + 1;
+        o.name = data[i]?.name;
+        o.account = data[i]?.account;
+        o.password = data[i]?.password;
+        o.place = data[i]?.place;
+      }
+      result.push(o);
+    }
+    return result;
+  };
 
   const columns = [
     {
@@ -74,9 +77,14 @@ export default function UnitManage() {
       key: "name",
     },
     {
+      title: "Địa chỉ",
+      dataIndex: "place",
+      key: "place",
+    },
+    {
       title: "Tài khoản",
-      dataIndex: "username",
-      key: "username",
+      dataIndex: "account",
+      key: "account",
     },
     {
       title: "Mật khẩu",
@@ -88,11 +96,11 @@ export default function UnitManage() {
       dataIndex: "actions",
       key: "actions",
       width: 130,
-      render: (unitInfo) => (
+      render: (text, record, index) => (
         <ActionsCell
           hasConfirm={false}
           hasView={false}
-          onEdit={() => handleEdit(unitInfo)}
+          onEdit={() => handleEdit(record)}
         />
       ),
     },
@@ -104,28 +112,25 @@ export default function UnitManage() {
       key: "1",
       children: (
         <PageContent>
-          <CustomTable dataSource={factoryDataSource} columns={columns} />
-        </PageContent>
-      ),
-    },
-    {
-      label: `Đại lý phân phối`,
-      key: "2",
-      children: (
-        <PageContent>
-          <CustomTable dataSource={storeDataSource} columns={columns} />
+          <CustomTable dataSource={factocies} columns={columns} />
         </PageContent>
       ),
     },
     {
       label: `Trung tâm bảo hành`,
+      key: "2",
+      children: (
+        <PageContent>
+          <CustomTable dataSource={warranties} columns={columns} />
+        </PageContent>
+      ),
+    },
+    {
+      label: `Đại lý phân phối`,
       key: "3",
       children: (
         <PageContent>
-          <CustomTable
-            dataSource={maintainCenterDataSource}
-            columns={columns}
-          />
+          <CustomTable dataSource={stores} columns={columns} />
         </PageContent>
       ),
     },
@@ -141,10 +146,10 @@ export default function UnitManage() {
     setEditModalVisible(true);
     form.setFieldsValue({
       ...unitInfo,
+      role: Number(currentTab) + 1,
       repassword: unitInfo.password,
       unitType: Number(currentTab),
     });
-    console.log(form.getFieldsValue());
   };
 
   const handleSave = async () => {
@@ -161,6 +166,7 @@ export default function UnitManage() {
       message.error(errorMessages.unitForm.errorSubmit, 2);
     }
   };
+
   return (
     <PageContent
       pageHeaderProps={{
@@ -194,7 +200,7 @@ export default function UnitManage() {
           onCancel={() => setEditModalVisible(false)}
           onOk={handleSave}
         >
-          <UnitForm form={form} />
+          <UnitForm form={form} isEdit={true} />
         </CustomModal>
       )}
     </PageContent>

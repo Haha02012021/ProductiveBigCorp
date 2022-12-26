@@ -31,7 +31,7 @@ export default function ModalViewProduct(props) {
       <>
         <ProductDetail product={product} />
         <Row style={{ display: "flex", flexDirection: "column" }}>
-          <BoldText style={{ marginTop: 10, fontSize: 16 }}>
+          <BoldText style={{ marginTop: 10, fontSize: 16, marginBottom: 10 }}>
             Lịch sử sản phẩm
           </BoldText>
           <CustomTable

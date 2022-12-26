@@ -101,30 +101,6 @@ export default function Product() {
       onFilter: () => {},
     },
     {
-      title: "Đại lý phân phối",
-      dataIndex: "store",
-      key: "productLine",
-      filters: [
-        { text: "Fac 1", value: "Fac 1" },
-        { text: "Fac 2", value: "Fac 2" },
-        { text: "Factory", value: "Factory" },
-      ],
-      filterSearch: true,
-      onFilter: () => {},
-    },
-    {
-      title: "Trung tâm bảo hành",
-      dataIndex: "maintainCenter",
-      key: "maintainCenter",
-      filters: [
-        { text: "Fac 1", value: "Fac 1" },
-        { text: "Fac 2", value: "Fac 2" },
-        { text: "Factory", value: "Factory" },
-      ],
-      filterSearch: true,
-      onFilter: () => {},
-    },
-    {
       title: "Trạng thái",
       dataIndex: "state",
       key: "state",

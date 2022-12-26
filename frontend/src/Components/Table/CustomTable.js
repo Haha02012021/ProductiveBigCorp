@@ -4,7 +4,7 @@ export default function CustomTable({
   dataSource,
   columns,
   paginationProps = {
-    total: 50,
+    total: 5,
     onChangePagination: (page, pageSize) => {},
   },
   showPagination = true,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Image, Tabs, Col, Row, Radio, ConfigProvider } from "antd";
+import { Image,Col, Row, Radio, ConfigProvider } from "antd";
 import styled from "styled-components";
 
 const ProductDetail = ({ product = {}, isProduct = true }) => {
@@ -105,18 +105,22 @@ const ProductDetail = ({ product = {}, isProduct = true }) => {
             <BoldText>Trạng thái: </BoldText>
             <DesText>{" " + product?.status?.context}</DesText>
           </Row>
-          <Row>
-            <BoldText>Tên người mua: </BoldText>
-            <DesText>{" " + product?.customer?.name}</DesText>
-          </Row>
-          <Row>
-            <BoldText>Số điện thoại: </BoldText>
-            <DesText>{" " + product?.customer?.phone}</DesText>
-          </Row>
-          <Row>
-            <BoldText>Email: </BoldText>
-            <DesText>{" " + product?.customer?.email}</DesText>
-          </Row>
+          {product?.customer?.name && (
+            <>
+              <Row>
+                <BoldText>Tên người mua: </BoldText>
+                <DesText>{" " + product?.customer?.name}</DesText>
+              </Row>
+              <Row>
+                <BoldText>Số điện thoại: </BoldText>
+                <DesText>{" " + product?.customer?.phone}</DesText>
+              </Row>
+              <Row>
+                <BoldText>Email: </BoldText>
+                <DesText>{" " + product?.customer?.email}</DesText>
+              </Row>
+            </>
+          )}
         </Col>
       </Row>
     </>
