@@ -59,16 +59,17 @@ const {
         return {err: "not enough to supply"}
       }
       else {
+        products = products.slice(0,request.amount).map(element => {return element.id})
         request.progress = 1;
         request.acceptedAt = new Date();
         await request.save();
         const result = await Product.update({request_id: request.id, status_id: 3}, {where: {
-          id: products.slice(0,request.amount).map(element => {return element.id})
+          id: products
         }, 
         returning: true,
         plain: true,});
         if(result) {
-          return result;
+          return products;
         } else {
           throw "error in update product status to 3"
         }
@@ -110,16 +111,27 @@ const {
 
   var complete = async (id) => {
     try {
-      const request = await Request.findByPk(id);
+      const request = await Request.findByPk(id,{
+        include: [
+          {
+            model: Product,
+            as: 'products',
+            attributes: ['id']
+          }
+        ]
+      });
       request.progress = 2;
       request.completedAt = new Date();
       await request.save();
 
       const products = await Product.update({status_id: 4}, {where: {request_id: request.id, status_id: 3}});
+
+      const updatedProducts = request.get({ plain: true }).products.map(element => {return element.id});
+
       if(!products) {
         throw "can not update products";
       }
-      return products;
+      return updatedProducts;
     } catch (err) {
       console.log(err);
       return null;

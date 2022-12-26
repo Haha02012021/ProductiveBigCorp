@@ -64,10 +64,11 @@ var acceptRequest = async (req, res) => {
     try {
         const data = await accept(req.params.id, req.params.factory_id);
         if(data) {
-            console.log(data);
+            //console.log(data);
             if(data.err) {
                 res.status(500).json({success: false, message: data.err});
             } else {
+                await addHistory(data, 3, 'đang chuyển tới cửa hàng yêu cầu', req.params.factory_id);
                 res.json({success: true, data: data, message: 'request accepted, products has been marked'});
             }
         } else {
