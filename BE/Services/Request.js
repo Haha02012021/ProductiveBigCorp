@@ -32,11 +32,8 @@ const {
 
   var accept = async (id, factory_id) => {
     try {
+      console.log(id);
       const request = await Request.findByPk(id);
-      request.progress = 1;
-      request.acceptedAt = new Date();
-      await request.save();
-
       //console.log(request);
 
       let products = await Manager.findByPk(factory_id, {
@@ -61,6 +58,9 @@ const {
         return {err: "not enough to supply"}
       }
       if(products) {
+        request.progress = 1;
+        request.acceptedAt = new Date();
+        await request.save();
         const result = await Product.update({request_id: request.id, status_id: 3}, {where: {
           id: products.slice(0,request.amount).map(element => {return element.id})
         }, 
@@ -111,7 +111,7 @@ const {
       request.completedAt = new Date();
       await request.save();
 
-      const products = await Product.update({status_id: 4}, {where: {request_id: request.id}});
+      const products = await Product.update({status_id: 4}, {where: {request_id: request.id, status_id: 3}});
       if(!products) {
         throw "can not update products";
       }
