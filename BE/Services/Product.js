@@ -104,6 +104,7 @@ var productInfo = async (id) => {
           attributes: ["id", "context"],
         },
         {
+          required: false,
           model: Manager,
           as: "managers",
           through: {

@@ -52,6 +52,7 @@ var sendToWarranty = async (req, res) => {
       "vận chuyển đến nơi bảo hành",
       req.body.store_id
     );
+    await addRelation(req.body.products, req.body.warranty_id);
     res.json({
       success: true,
       message: "request sent",
