@@ -5,7 +5,6 @@ const {addRelation} = require('../Services/Manager_Product');
 var receiveRequest = async (req, res) => {
     try {
         const products = await updateProducts({status_id: 8}, {id: req.body.products});
-        await addRelation(req.body.products, req.body.warranty_id);
         const history = await addHistory(req.body.products, 8, 'đang được bảo hành', req.body.warranty_id);
         res.json({success: true, message: 'request sent', data: {products, history}});
     } catch (err) {
