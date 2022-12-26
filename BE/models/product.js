@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate({Manager, Color, Manager_Product, Version, MODEL, Status, History, Batch, Request, Customer, Error}) {
+      this.hasMany(Manager_Product, {foreignKey: 'product_id', as: 'manager_product', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
       this.belongsToMany(Status, {as: 'hasStatuses', through: History, foreignKey: 'product_id', otherKey: 'status_id'})
       this.belongsTo(Status, {foreignKey: 'status_id', as: 'status', onDelete: 'CASCADE', onUpdate: 'CASCADE'})
       this.belongsTo(Version, {foreignKey: 'version_id', as: 'version', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
