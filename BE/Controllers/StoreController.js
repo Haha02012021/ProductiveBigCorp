@@ -227,8 +227,10 @@ var deleteRequest = async (req, res) => {
 
 var completeRequest = async (req, res) => {
   try {
-    const data = complete(req.params.id);
+    const data = await complete(req.params.id);
     if (data) {
+      await addRelation(data, req.params.store_id);
+      await addHistory(data, 4, 'đã bàn giao cho cửa hàng', req.params.store_id);
       res.json({ success: true, message: "request accept" });
     } else {
       res.json({ success: false, message: "can not update, service error" });
