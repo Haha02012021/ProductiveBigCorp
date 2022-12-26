@@ -39,13 +39,13 @@ export default function LineForm({ form, lineId }) {
     const color = colors.find((color) => color.id === value);
     return (
       <Tag
-        color={color.code}
+        color={color?.code}
         onMouseDown={onPreventMouseDown}
         closable={closable}
         onClose={onClose}
         style={{
           marginRight: 3,
-          color: invertColor(color.code, true),
+          color: invertColor(color?.code, true),
         }}
       >
         {color.name}

@@ -153,9 +153,7 @@ var getCustomerInfo = async (id) => {
 var allProducts = async (condition, managers) => {
   try {
     const products = await Product.findAll({
-      where: {
-        condition
-      },
+      where: condition,
       include: [
         {
           model: MODEL,
