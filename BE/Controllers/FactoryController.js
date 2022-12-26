@@ -49,7 +49,7 @@ var getBatches = async (req, res) => {
 
 var refuseRequest = async (req, res) => {
     try {
-        const check = await refuse(req.params.id);
+        const check = await refuse(req.params.id, req.body.canceledReason);
         if(!check) {
             res.status(500).json({success: false, message: 'refuse failed'});
         } else {
