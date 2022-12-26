@@ -53,7 +53,7 @@ var findCustomerByPhoneNum = async (phoneNum) => {
     if (customer) {
       return customer;
     } else {
-      return null;
+      throw "this user not found, error in service"
     }
   } catch (err) {
     console.log(err);
