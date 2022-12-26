@@ -1,8 +1,10 @@
-import { Tabs } from "antd";
-import { useMemo } from "react";
+import { message, Tabs } from "antd";
+import { useContext, useMemo } from "react";
+import { receiveBrokenProducts } from "../../../../apis/factory";
 import PageContent from "../../../../Components/PageContent";
 import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
+import { AuthContext } from "../../../../Provider/AuthProvider";
 
 const waitingProducts = [
   {
@@ -10,13 +12,14 @@ const waitingProducts = [
     productLine: "ABC",
     version: "1",
     error: "Error",
+    key: 1,
   },
 ];
 
 const errorProducts = [
   {
     id: 1,
-    productLine: "ABC MNPQ MNPQMNPQ MNPQMNPQ MNPQ",
+    model: "ABC MNPQ MNPQMNPQ MNPQMNPQ MNPQ",
     version: "1",
     error:
       "Error Error Error Error Error Error Error ErrorErrorError ErrorErrorErrorErrorError     ErrorErrorErrorErrorErrorErrorErrorErrorErrorError ErrorErrorErrorErrorError ErrorErrorErrorErrorError",
@@ -24,6 +27,7 @@ const errorProducts = [
 ];
 
 export default function ProductImport() {
+  const { authUser } = useContext(AuthContext);
   const columns = useMemo(
     () => [
       {
@@ -33,8 +37,8 @@ export default function ProductImport() {
       },
       {
         title: "Dòng sản phẩm",
-        dataIndex: "productLine",
-        key: "productLine",
+        dataIndex: "model",
+        key: "model",
       },
       {
         title: "Phiên bản",
@@ -51,8 +55,13 @@ export default function ProductImport() {
         dataIndex: "actions",
         key: "actions",
         width: 130,
-        render: (unitInfo) => (
-          <ActionsCell hasDelete={false} hasEdit={false} hasView={false} />
+        render: (_, record) => (
+          <ActionsCell
+            hasDelete={false}
+            hasEdit={false}
+            hasView={false}
+            onConfirm={() => handleConfirm(record)}
+          />
         ),
       },
     ],
@@ -84,6 +93,23 @@ export default function ProductImport() {
     ],
     []
   );
+
+  const handleConfirm = async (data) => {
+    const req = {
+      products: [data.key],
+      factory_id: authUser.id,
+    };
+
+    try {
+      const res = await receiveBrokenProducts(req);
+
+      if (res.success) {
+        message.success("Đã xác nhận sản phẩm lỗi", 2);
+      }
+    } catch (error) {
+      message.error(error.message, 2);
+    }
+  };
 
   return (
     <PageContent

@@ -16,9 +16,14 @@ const refuseRequestById = (id, data) => {
   return instance.get(`/factory/request/refuse/${id}`);
 };
 
+const receiveBrokenProducts = (data) => {
+  return instance.post("/factory/receiveBrokenProducts", data);
+};
+
 export {
   getBatchesByFactoryId,
   addNewProducts,
   refuseRequestById,
   acceptRequest,
+  receiveBrokenProducts,
 };
