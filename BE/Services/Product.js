@@ -164,8 +164,8 @@ var allProducts = async (condition, managers) => {
           type: QueryTypes.SELECT,
         }
       );
+      condition.id = condition.id.map(element => { return element.product_id });
     }
-    condition.id = condition.id.map(element => { return element.product_id });
     const products = await Product.findAll({
       where: condition,
       include: [
