@@ -12,6 +12,7 @@ const { createCustomer, findCustomerByPhoneNum } = require("../Services/User");
 const { findCustomerByEmail } = require("../Services/User");
 const { makeRequests, destroy, complete } = require("../Services/Request");
 const { addError } = require("../Services/Error");
+const {addRelation} = require('../Services/Manager_Product');
 
 var requestWarranty = async (req, res) => {
   try {
@@ -59,7 +60,7 @@ var sendToWarranty = async (req, res) => {
       data: { products, history },
     });
   } catch (err) {
-    err.status(500).json({
+    res.status(500).json({
       error: err,
       success: false,
       message: "error from warrantyRequest",

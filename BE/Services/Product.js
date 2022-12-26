@@ -23,6 +23,7 @@ var addProducts = async (amount, color_id, model_id, version_id, batch_id) => {
         status_id: 1,
       })
     );
+    //console.log(products);
     return products;
   } catch (err) {
     console.log(err);
