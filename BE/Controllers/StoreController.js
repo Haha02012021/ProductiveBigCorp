@@ -20,6 +20,7 @@ var sendToWarranty = async (req, res) => {
     try {
         const products = await updateProducts({status_id: 7}, {id: req.body.products});
         const history = await addHistory(req.body.products, 7, 'vận chuyển đến nơi bảo hành', req.body.store_id);
+        await addRelation(req.body.products, req.body.warranty_id);
         res.json({success: true, message: 'request sent', data: {products, history}});
     } catch (err) {
         err.status(500).json({error: err, success: false, message: 'error from warrantyRequest'});
@@ -57,7 +58,7 @@ var addCustomer = async (req, res) => {
         if(!customer) {
             res.json({success: false, message: 'this customer already exists'})
         } else {
-            const product = await updateOneProduct({customer_id: customer.id}, req.body.product_id);
+            const product = await updateOneProduct({customer_id: customer.id, isSold: 1, soldAt: new Date(), status_id: 5}, req.body.product_id);
             if(product){
                 res.json({success: true, message: 'customer added', data: customer});
             } else {
@@ -71,7 +72,7 @@ var addCustomer = async (req, res) => {
 
 var sell = async (req, res) => {
     try {
-        const product = await updateOneProduct({customer_id: req.body.customer_id, status_id: 5, isSold: true, soldAt: new Date()}, req.body.product_id);
+        const product = await updateOneProduct({customer_id: req.body.customer_id, status_id: 5, isSold: 1, soldAt: new Date()}, req.body.product_id);
         const history = addOneHistory(req.body.product_id, 5, 'đã được bán', req.body.store_id);
         res.json({success: true, message: 'product sold', data: product});
     } catch (err) {
