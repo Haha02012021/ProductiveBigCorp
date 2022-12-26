@@ -12,7 +12,7 @@ var createProducts = async (req, res) => {
             req.body.version_id,
             req.body.amount
         )
-  
+        
         const products = await addProducts(req.body.amount, req.body.color_id, req.body.model_id, req.body.version_id, batch.id)
   
         const productsId = products.map(element => {return element.id});
