@@ -147,14 +147,18 @@ export default function ProductExport() {
         ? new Date(req.acceptedAt).toLocaleString("vi-VN").split(",")[1]
         : "-";
 
+      const completedAt = req.completedAt
+        ? new Date(req.completedAt).toLocaleString("vi-VN").split(",")[1]
+        : "-";
+
       return {
         key: req.id,
         model: req.model.name,
         version: req.version.name,
         amount: req.amount,
-        store: req.store.name,
+        store: req.managers?.find((manager) => manager?.role === 4)?.name,
         progress: req.progress,
-        inExportDate: acceptedAt + " ~ -",
+        inExportDate: acceptedAt + " ~ " + completedAt,
         canceledDate: new Date(req.canceledAt)
           .toLocaleString("vi-VN")
           .split(",")[1],

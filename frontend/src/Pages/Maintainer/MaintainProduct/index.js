@@ -1,11 +1,13 @@
 import { Tabs } from "antd";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getAllMaintainProducts } from "../../../apis/maintainer";
 import PageContent from "../../../Components/PageContent";
 import ActionsCell from "../../../Components/Table/ActionsCell";
 import CustomTable from "../../../Components/Table/CustomTable";
+import { AuthContext } from "../../../Provider/AuthProvider";
 
 export default function MaintainProduct() {
+  const { authUser } = useContext(AuthContext);
   const [maintainProductsDataSource, setMaintainProductsDataSource] = useState(
     []
   );
@@ -44,16 +46,6 @@ export default function MaintainProduct() {
       title: "Đại lý",
       dataIndex: "store",
       key: "store",
-    },
-    {
-      title: "Ngày tiếp nhận",
-      dataIndex: "receivedDate",
-      key: "receivedDate",
-    },
-    {
-      title: "Ngày gửi đi",
-      dataIndex: "finishedDate",
-      key: "finishedDate",
     },
     {
       title: "Thao tác",
@@ -95,10 +87,11 @@ export default function MaintainProduct() {
   }, []);
 
   const getAllProducts = async () => {
-    const res = await getAllMaintainProducts();
+    const res = await getAllMaintainProducts(authUser.id);
 
+    console.log(res);
     if (res.success) {
-      setMaintainProductsDataSource(buildData(res.data));
+      setMaintainProductsDataSource(buildData(res.data.products));
     }
   };
 
@@ -109,6 +102,7 @@ export default function MaintainProduct() {
         id: product.uuid,
         model: product.model.name,
         version: product.version.name,
+        error: product.errors[0].content,
       };
     });
 

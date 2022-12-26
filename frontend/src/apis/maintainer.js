@@ -1,7 +1,7 @@
 import instance from "./axios";
 
-function getAllMaintainProducts() {
-  return instance.post("/coporation/products/all", {
+function getAllMaintainProducts(managerId) {
+  return instance.post(`/products/manager/${managerId}`, {
     condition: {
       status_id: 7,
     },

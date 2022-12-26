@@ -1,5 +1,6 @@
 import { message, Tabs } from "antd";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
+import indexApi from "../../../../apis";
 import { receiveBrokenProducts } from "../../../../apis/factory";
 import PageContent from "../../../../Components/PageContent";
 import ActionsCell from "../../../../Components/Table/ActionsCell";
@@ -28,6 +29,8 @@ const errorProducts = [
 
 export default function ProductImport() {
   const { authUser } = useContext(AuthContext);
+  const [brokenProducts, setBrokenProducts] = useState([]);
+  const [destroyedProducts, setDestroyedProducts] = useState([]);
   const columns = useMemo(
     () => [
       {
@@ -74,7 +77,7 @@ export default function ProductImport() {
         key: "1",
         children: (
           <PageContent>
-            <CustomTable dataSource={waitingProducts} columns={columns} />
+            <CustomTable dataSource={brokenProducts} columns={columns} />
           </PageContent>
         ),
       },
@@ -93,6 +96,37 @@ export default function ProductImport() {
     ],
     []
   );
+
+  useEffect(() => {
+    getBrokenProducts();
+  }, []);
+
+  const getBrokenProducts = async () => {
+    const condition = {
+      condition: {
+        status_id: 13,
+      },
+      role: 2,
+    };
+    const res = await indexApi.getProductsByManagerId(authUser.id, condition);
+    console.log(res);
+    if (res.success) {
+      setBrokenProducts(buildData(res.data.products));
+    }
+  };
+
+  const buildData = (data) => {
+    const builtData = data.map((product) => {
+      return {
+        key: product.id,
+        id: product.uuid,
+        model: product.model.name,
+        version: product.version.name,
+        error: product.errors[0].content,
+      };
+    });
+    return builtData;
+  };
 
   const handleConfirm = async (data) => {
     const req = {
