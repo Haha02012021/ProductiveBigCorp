@@ -11,3 +11,11 @@ export const sendWarrantService = (data) => {
 export const newCustomer = (data) => {
   return axios.post("/store/customer/new", data);
 };
+
+export const searchCustomer = (data) => {
+  return axios.post("/store/customer/search", data);
+};
+
+export const sellProduct = (data) => {
+  return axios.post("/store/sell", data);
+};
