@@ -41,6 +41,11 @@ var updateProducts = async (updateInfo, condition) => {
 var updateOneProduct = async (updateInfo, id) => {
   try {
     const product = await Product.findByPk(id);
+    Object.keys(updateInfo).forEach((element) => {
+      if (updateInfo[element] === product[element]) {
+        throw "can not update the same value";
+      }
+    });
     await product.update(updateInfo);
     console.log(product);
     return product;
@@ -201,8 +206,8 @@ var allProducts = async (condition, managers) => {
 
 var findByUuid = async (uuid) => {
   try {
-    const product = await Product.findOne({where: {uuid}});
-    if(!product) {
+    const product = await Product.findOne({ where: { uuid } });
+    if (!product) {
       throw "product not found";
     } else {
       return product;
@@ -211,7 +216,7 @@ var findByUuid = async (uuid) => {
     console.log(err);
     return null;
   }
-}
+};
 
 module.exports = {
   addProducts,
