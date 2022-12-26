@@ -1,9 +1,14 @@
 import { Tabs } from "antd";
+import { useEffect, useState } from "react";
+import { getAllMaintainProducts } from "../../../apis/maintainer";
 import PageContent from "../../../Components/PageContent";
 import ActionsCell from "../../../Components/Table/ActionsCell";
 import CustomTable from "../../../Components/Table/CustomTable";
 
 export default function MaintainProduct() {
+  const [maintainProductsDataSource, setMaintainProductsDataSource] = useState(
+    []
+  );
   const columns = [
     {
       title: "Mã sản phẩm",
@@ -41,12 +46,12 @@ export default function MaintainProduct() {
       key: "store",
     },
     {
-      title: "Ngày gửi",
-      dataIndex: "giveDate",
-      key: "giveDate",
+      title: "Ngày tiếp nhận",
+      dataIndex: "receivedDate",
+      key: "receivedDate",
     },
     {
-      title: "Ngày xử lý xong",
+      title: "Ngày gửi đi",
       dataIndex: "finishedDate",
       key: "finishedDate",
     },
@@ -65,6 +70,7 @@ export default function MaintainProduct() {
         <PageContent>
           <CustomTable
             columns={columns.filter((column) => column.key !== "amount")}
+            dataSource={maintainProductsDataSource}
           />
         </PageContent>
       ),
@@ -83,6 +89,31 @@ export default function MaintainProduct() {
       ),
     },
   ];
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
+  const getAllProducts = async () => {
+    const res = await getAllMaintainProducts();
+
+    if (res.success) {
+      setMaintainProductsDataSource(buildData(res.data));
+    }
+  };
+
+  const buildData = (data) => {
+    const builtData = data.map((product) => {
+      return {
+        key: product.id,
+        id: product.uuid,
+        model: product.model.name,
+        version: product.version.name,
+      };
+    });
+
+    return builtData;
+  };
   return (
     <PageContent
       pageHeaderProps={{
