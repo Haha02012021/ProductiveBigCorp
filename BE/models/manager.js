@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({Product, Manager_Product, Batch, History, Request}) {
       // define association here
+      this.hasMany(Manager_Product, {foreignKey: 'manager_id', as: 'manager_product', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
       this.belongsToMany(Product, {as: 'products', through: Manager_Product, foreignKey: 'manager_id', otherKey: 'product_id'})
       this.hasMany(Batch, {foreignKey: 'factory_id', as: 'batches', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
       this.hasMany(History, {foreignKey: 'manager_id', as: 'history', onDelete: 'CASCADE', onUpdate: 'CASCADE'});

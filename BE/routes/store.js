@@ -6,7 +6,7 @@ const { route } = require('.');
 
 const {requestWarranty, sendToWarranty, receiveWarranty, getCustomer, 
     sell, addCustomer, analizeProducts, createRequest, deleteRequest, 
-    completeRequest, findOneProduct} = require('../Controllers/StoreController');
+    completeRequest} = require('../Controllers/StoreController');
 
 const {validateStore} = require('../Middlewares/roleValidator');
 
@@ -29,8 +29,6 @@ router.post('/request/new', createRequest);
 router.delete('/request/delete/:id', deleteRequest);
 
 router.get('/request/complete/:id/:store_id', completeRequest);
-
-router.get('/product/:uuid', findOneProduct);
 
 module.exports = router
 

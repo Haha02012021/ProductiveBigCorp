@@ -1,8 +1,8 @@
 const { getInfo, getAllVers } = require("../Services/Version");
 const { info, getAll } = require("../Services/Model");
-const { getProducts, allManagers, getRequests } = require("../Services/User");
+const { getProducts, allManagers, getRequests} = require("../Services/User");
 const { allColors } = require("../Services/Color");
-const { productInfo } = require("../Services/Product");
+const { productInfo, findByUuid } = require("../Services/Product");
 const { getDetail } = require("../Services/Request");
 const { allStatuses } = require("../Services/Status");
 
@@ -215,6 +215,23 @@ var getAllStatuses = async (req, res) => {
   }
 };
 
+var findOneProduct = async (req, res) => {
+  try {
+    const product = await findByUuid(req.params.uuid);
+    if (product) {
+      res.json({ success: true, data: product, message: "product found" });
+    } else {
+      res.status(404).json({ success: false, message: "product not found" });
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err,
+      success: false,
+      message: "error from find a product",
+    });
+  }
+};
+
 module.exports = {
   getVersionInfo,
   getModelInfo,
@@ -227,4 +244,5 @@ module.exports = {
   getRequestInfo,
   getAllRequests,
   getAllStatuses,
+  findOneProduct,
 };
