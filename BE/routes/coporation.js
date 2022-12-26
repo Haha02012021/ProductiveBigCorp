@@ -37,6 +37,6 @@ createModel);
 
 router.post('/newVersion', createVersion);
 
-router.get('/products/all', getAllProducts);
+router.post('/products/all', getAllProducts);
 
 module.exports = router;

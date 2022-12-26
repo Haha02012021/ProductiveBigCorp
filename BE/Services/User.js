@@ -136,6 +136,7 @@ var getProducts = async (id, condition) => {
             attributes: ['id', 'name', 'code'],
           },
           {
+            required: false,
             model: Manager,
             as: "managers",
             through: {
@@ -174,6 +175,7 @@ var getRequests = async (id, condition, role) => {
   try {
     const requests = await Manager.findByPk(id, {
       include: [{
+        required: false,
         model: Request,
         as: role === 4 ? 'sentRequests': 'receivedRequests',
         include: [

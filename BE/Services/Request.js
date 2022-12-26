@@ -39,6 +39,7 @@ const {
       let products = await Manager.findByPk(factory_id, {
         include: [
           {
+            required: false,
             model: Product,
             as: 'products',
             through: {
@@ -57,7 +58,7 @@ const {
       if(products.length < request.amount) {
         return {err: "not enough to supply"}
       }
-      if(products) {
+      else {
         request.progress = 1;
         request.acceptedAt = new Date();
         await request.save();
@@ -71,9 +72,7 @@ const {
         } else {
           throw "error in update product status to 3"
         }
-      } else {
-        throw "productsnot found"
-      }
+      } 
     } catch (err) {
       console.log(err);
       return null;
@@ -91,13 +90,18 @@ const {
     }
   }
 
-  var refuse = async (id) => {
+  var refuse = async (id, reason) => {
     try {
       const request = await Request.findByPk(id);
-      request.progress = -1;
-      request.canceledAt = new Date();
-      await request.save();
-      return true
+      if(request) {
+        request.progress = -1;
+        request.canceledAt = new Date();
+        request.canceledReason = reason,
+        await request.save();
+        return true
+      } else {
+        throw "request not found";
+      }
     } catch (err) {
       console.log(err);
       return null;
