@@ -8,6 +8,7 @@ import { AuthContext } from "../../../Provider/AuthProvider";
 import { buildData } from "../../../const/tableProduct";
 import ModalViewProduct from "../../ExecutiveBoard/Product/modalViewProduct";
 import ModalRequest from "./modalRequest";
+import ModalSell from "./modalSell";
 import moment from "moment";
 
 const StoreProduct = () => {
@@ -16,8 +17,10 @@ const StoreProduct = () => {
   const [currentTab, setCurrentTab] = useState(1);
   const [productStore, setProductStore] = useState([]);
   const [isModalRequest, setIsModalRequest] = useState(false);
+  const [isModalSell, setIsModalSell] = useState(false);
   const [addRequest, setAddRequest] = useState(false);
   const [requests, setRequests] = useState([]);
+  const [idProductSell, setIdProductSell] = useState(0);
 
   const requestProductColumns = [
     {
@@ -130,6 +133,14 @@ const StoreProduct = () => {
           hasConfirm={false}
           hasDelete={false}
           onView={() => showModal(record)}
+          onEdit={() => {
+            if (record.id !== idProductSell) {
+              setIdProductSell(record.id);
+            }
+            if (isModalOpen === false) {
+              setIsModalSell(true);
+            }
+          }}
         />
       ),
     },
@@ -267,6 +278,14 @@ const StoreProduct = () => {
           handleOk={handleOk}
           handleCancel={handleCancel}
           idProduct={idProduct}
+        />
+      )}
+      {isModalSell && (
+        <ModalSell
+          isModalOpen={isModalSell}
+          handleOk={() => setIsModalSell(false)}
+          handleCancel={() => setIsModalSell(false)}
+          idProduct={idProductSell}
         />
       )}
     </PageContent>

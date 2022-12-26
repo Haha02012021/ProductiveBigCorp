@@ -5,7 +5,8 @@ var jwt = require('jsonwebtoken');
 const { route } = require('.');
 
 const {requestWarranty, sendToWarranty, receiveWarranty, getCustomer, 
-    sell, addCustomer, analizeProducts, createRequest, deleteRequest, refuseRequest} = require('../Controllers/StoreController');
+    sell, addCustomer, analizeProducts, createRequest, deleteRequest, 
+    completeRequest, findOneProduct} = require('../Controllers/StoreController');
 
 const {validateStore} = require('../Middlewares/roleValidator');
 
@@ -26,6 +27,10 @@ router.get('/analize/status/:manager_id', analizeProducts);
 router.post('/request/new', createRequest);
 
 router.delete('/request/delete/:id', deleteRequest);
+
+router.get('/request/complete/:id', completeRequest);
+
+router.get('/product/:uuid', findOneProduct);
 
 module.exports = router
 

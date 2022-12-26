@@ -2,7 +2,7 @@ const {addBatch, findByFactoryId} = require('../Services/Batch');
 const {addProducts, updateProducts} = require('../Services/Product');
 const {addHistory} = require('../Services/History');
 const {addRelation} = require('../Services/Manager_Product');
-const {refuse} = require('../Services/Request');
+const {refuse, accept} = require('../Services/Request');
 var createProducts = async (req, res) => {
     try {
         const batch = await addBatch(
@@ -47,16 +47,9 @@ var getBatches = async (req, res) => {
     }
 }
 
-var provide = async (req, res) => {
-    try {
-    } catch (err) {
-        res.status(500).json({success: false, message: 'error from provide', error: err});
-    }
-}
-
 var refuseRequest = async (req, res) => {
     try {
-        const check = refuse(req.params.id);
+        const check = await refuse(req.params.id);
         if(!check) {
             res.status(500).json({success: false, message: 'refuse failed'});
         } else {
@@ -67,10 +60,28 @@ var refuseRequest = async (req, res) => {
     }
 }
 
+var acceptRequest = async (req, res) => {
+    try {
+        const data = await accept(req.params.id, req.params.factory_id);
+        if(data) {
+            console.log(data);
+            if(data.err) {
+                res.status(500).json({success: false, message: data.err});
+            } else {
+                res.json({success: true, data: data, message: 'request accepted, products has been marked'});
+            }
+        } else {
+            res.status(500).json({success: false, message: 'failed to accept request'});
+        }
+    } catch (err) {
+        res.status(500).json({error: err, success: false, message: 'error from accepting request'});
+    }
+}
+
 module.exports = {
     createProducts,
     getBatches,
     receiveBrokenProducts,
-    provide,
     refuseRequest,
+    acceptRequest,
 }

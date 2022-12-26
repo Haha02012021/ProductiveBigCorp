@@ -21,7 +21,6 @@ export default function ModalViewProduct(props) {
     const res = await indexApi.getVersionById(id);
     if (res.data) {
       setVersion(res.data);
-      console.log(res.data.model);
       if (res.data.model && res.data.model.colors) {
         setColors(res.data.model.colors);
       }
@@ -179,9 +178,7 @@ export default function ModalViewProduct(props) {
               )}
             </Row>
             <BoldText>Dòng sản phẩm: {version?.model?.name}</BoldText>
-            <BoldText>Đại lý phân phối:</BoldText>
-            <BoldText>Trung tâm bảo hành:</BoldText>
-            <BoldText>Trạng thái:</BoldText>
+            <BoldText>Giá: {version?.price + " VND"}</BoldText>
           </Col>
         </Row>
         <Row style={{ display: "flex", flexDirection: "column" }}>

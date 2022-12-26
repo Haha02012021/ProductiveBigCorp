@@ -53,7 +53,7 @@ var findCustomerByPhoneNum = async (phoneNum) => {
     if (customer) {
       return customer;
     } else {
-      return null;
+      throw "this user not found, error in service"
     }
   } catch (err) {
     console.log(err);
@@ -155,7 +155,7 @@ var getProducts = async (id, condition) => {
             model: Error,
             as: 'errors',
             attributes: ['content'],
-            order: [['createdAt', 'DESC']],
+            order: [['createdAt', 'ASC']],
             limit: condition.status_id && [6,7,8].includes(condition.status_id) ? 1 : 0,
           }
         ],
