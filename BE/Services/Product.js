@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const {
   db,
   Product,
@@ -151,19 +152,10 @@ var getCustomerInfo = async (id) => {
 
 var allProducts = async (condition, managers) => {
   try {
-    if (managers) {
-      if (managers.factory_id) {
-        condition.factory_id = managers.factory_id;
-      }
-      if (managers.warranty_id) {
-        condition.warranty_id = managers.warranty_id;
-      }
-      if (managers.store_id) {
-        condition.store_id = managers.store_id;
-      }
-    }
     const products = await Product.findAll({
-      where: condition,
+      where: {
+        condition
+      },
       include: [
         {
           model: MODEL,
