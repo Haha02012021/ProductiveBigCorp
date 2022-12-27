@@ -24,8 +24,6 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
     "i_activsense",
   ]);
 
-  console.log("initialValues");
-
   useEffect(() => {
     if (versionId) {
       getVersionById();
@@ -93,6 +91,7 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
           labelCol={{ sm: 6, md: 4 }}
           style={{ paddingTop: 24, paddingBottom: 24 }}
           form={form}
+          layout="vertical"
         >
           <Form.Item label="Dòng sản phẩm" required name="model_id">
             <Select
@@ -117,12 +116,11 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
             >
               <Collapse.Panel header="Kích thước - Khối lượng" key="size">
                 <Form.Item
-                  labelCol={{ sm: { span: 12 }, md: { span: 10 } }}
                   label="Kích thước tổng thể"
                   required
                   style={{ margin: 0 }}
                 >
-                  <Space size={[20, 0]}>
+                  <Space size={[24, 0]}>
                     <Form.Item
                       name={["size", "kich_thuoc_tong_the", "length"]}
                       required
@@ -498,7 +496,6 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                 >
                   <Switch
                     defaultChecked={() => {
-                      console.log("in");
                       return (
                         initialValues?.interior?.ghe_lai_dieu_chinh_dien ===
                         "yes"
@@ -1073,7 +1070,6 @@ function SpecificationFormItem({
 }) {
   return (
     <Form.Item
-      labelCol={{ sm: { span: 12 }, md: { span: 10 } }}
       label={label}
       labelWrap
       required

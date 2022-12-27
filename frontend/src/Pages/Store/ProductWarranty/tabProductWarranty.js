@@ -109,7 +109,7 @@ const TabProductWarranty = (props) => {
   useEffect(() => {
     getWarrantyProductsStore({
       condition: {
-        isSold: 1,
+        isSold: 2,
         status_id: 6,
       },
     });

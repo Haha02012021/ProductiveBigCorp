@@ -35,3 +35,7 @@ export const deleteRequest = (id) => {
 export const warrantyReceive = (data) => {
   return axios.post(`/store/warrantyReceive`, data);
 };
+
+export const sendBackCustomer = (product_id, store_id) => {
+  return axios.get(`/store/customer/sendBack/${product_id}/${store_id}`);
+};

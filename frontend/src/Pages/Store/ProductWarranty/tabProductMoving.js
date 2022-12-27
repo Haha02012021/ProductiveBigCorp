@@ -37,7 +37,7 @@ const TabProductMoving = (props) => {
       width: 150,
     },
     {
-      title: "Ngày yêu cầu",
+      title: "Ngày xuất",
       dataIndex: "requestDate",
       key: "requestDate",
       width: 150,
@@ -111,7 +111,7 @@ const TabProductMoving = (props) => {
   useEffect(() => {
     getMovingProductsStore({
       condition: {
-        isSold: 1,
+        isSold: 2,
         status_id: 10,
       },
     });

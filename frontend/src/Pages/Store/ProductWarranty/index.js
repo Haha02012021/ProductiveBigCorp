@@ -137,7 +137,7 @@ const ProductWarranty = () => {
         title: "Thao tác",
         dataIndex: "actions",
         key: "actions",
-        width: 60,
+        width: 80,
         render: (text, record, index) => (
           <ActionsCell
             hasConfirm={false}
@@ -221,7 +221,7 @@ const ProductWarranty = () => {
       ),
     },
     {
-      label: `Sản phẩm bảo hành`,
+      label: `Gửi bảo hành`,
       key: "2",
       children: (
         <TabProductWarranty
@@ -231,7 +231,7 @@ const ProductWarranty = () => {
       ),
     },
     {
-      label: `Sản phẩm chờ vận chuyển`,
+      label: `Chờ vận chuyển`,
       key: "3",
       children: (
         <TabProductMoving
@@ -241,7 +241,7 @@ const ProductWarranty = () => {
       ),
     },
     {
-      label: `Sản phẩm đã được bảo hành`,
+      label: `Chờ bàn giao`,
       key: "4",
       children: (
         <TabProductMantained
