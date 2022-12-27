@@ -166,7 +166,7 @@ var getProducts = async (id, condition) => {
               where: {
                 role: [2, 3, 4],
               },
-              attributes: ["id", "name"],
+              attributes: ["id", "name", "role"],
             },
             {
               model: Status,
