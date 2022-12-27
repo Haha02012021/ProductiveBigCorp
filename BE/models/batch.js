@@ -39,6 +39,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    isSummoned: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    error: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   }, {
     sequelize,
     modelName: 'Batch',
