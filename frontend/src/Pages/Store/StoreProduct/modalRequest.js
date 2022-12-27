@@ -110,7 +110,7 @@ const ModalRequest = (props) => {
     }
   };
 
-  const getFactories = async (id) => {
+  const getFactories = async () => {
     const res = await indexApi.getManagerByRole(2);
     if (res.data) {
       setFactories(buildDataModel(res.data));
@@ -127,7 +127,6 @@ const ModalRequest = (props) => {
 
   const renderRequest = useMemo(() => {
     const node = requests.map((request, index) => {
-      console.log(request);
       return (
         <Row
           key={index}
@@ -260,7 +259,7 @@ const ModalRequest = (props) => {
                         },
                       }}
                     >
-                      <Radio value={index} key={index}></Radio>
+                      <Radio value={color.id} key={index}></Radio>
                     </ConfigProvider>
                   );
                 })}

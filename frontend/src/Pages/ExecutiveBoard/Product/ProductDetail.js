@@ -33,7 +33,7 @@ const ProductDetail = ({ product = {}, isProduct = true }) => {
         <Col xs={{ span: 24 }} md={{ span: 8, offset: 0 }}>
           <Image width={"100%"} src={colors[0]?.Model_Color?.image} />
         </Col>
-        <Col xs={{ span: 24 }} md={{ span: 8, offset: 4 }}>
+        <Col xs={{ span: 24 }} md={{ span: 9, offset: 3 }}>
           <Row
             style={{
               fontWeight: "bold",
