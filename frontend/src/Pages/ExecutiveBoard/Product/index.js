@@ -6,6 +6,7 @@ import ModalViewProduct from "./modalViewProduct";
 import PageContent from "../../../Components/PageContent";
 import coporationApi from "../../../apis/coporation";
 import { statuses } from "../../../const/index";
+import getUniqueArray from "../../../utils/getUniqueArray";
 
 export default function Product() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,16 +42,27 @@ export default function Product() {
 
   const buildData = (data) => {
     const result = new Array();
+    console.log(data);
     for (let i = 0; i < data.length; i++) {
       const o = {};
+      const factory = data[i].managers.find((manager) => manager.role === "2");
+      const store = data[i].managers.find((manager) => manager.role === "4");
+      const maintainCenter = data[i].managers.find(
+        (manager) => manager.role === "3"
+      );
       if (data[i]) {
         o.id = data[i].id;
         o.key = i;
         o.version = data[i].version.name;
+        o.versionId = data[i].version.id;
         o.productLine = data[i].model.name;
-        o.factory = data[i].managers[0].name;
-        o.store = data[i].store;
-        o.maintainCenter = data[i].maintainCenter;
+        o.productLineId = data[i].model.id;
+        o.factory = factory?.name;
+        o.factoryId = factory?.id;
+        o.store = store?.name;
+        o.storeId = store?.id;
+        o.maintainer = maintainCenter?.name;
+        o.maintainerId = maintainCenter?.id;
         o.state = statuses[data[i].status_id].content;
       }
       result.push(o);
@@ -68,11 +80,14 @@ export default function Product() {
       title: "Dòng sản phẩm",
       dataIndex: "productLine",
       key: "productLine",
-      filters: [
-        { text: "Fac 1", value: "Fac 1" },
-        { text: "Fac 2", value: "Fac 2" },
-        { text: "Factory", value: "Factory" },
-      ],
+      filters: getUniqueArray(
+        products.map((product) => {
+          return {
+            text: product.productLine,
+            value: product.productLineId,
+          };
+        })
+      ),
       filterSearch: true,
       onFilter: () => {},
     },
@@ -92,6 +107,30 @@ export default function Product() {
       title: "Cơ sở sản xuất",
       dataIndex: "factory",
       key: "factory",
+      filters: [
+        { text: "Fac 1", value: "Fac 1" },
+        { text: "Fac 2", value: "Fac 2" },
+        { text: "Factory", value: "Factory" },
+      ],
+      filterSearch: true,
+      onFilter: () => {},
+    },
+    {
+      title: "Đại lý phân phối",
+      dataIndex: "store",
+      key: "store",
+      filters: [
+        { text: "Fac 1", value: "Fac 1" },
+        { text: "Fac 2", value: "Fac 2" },
+        { text: "Factory", value: "Factory" },
+      ],
+      filterSearch: true,
+      onFilter: () => {},
+    },
+    {
+      title: "Trung tâm bảo hành",
+      dataIndex: "maintainer",
+      key: "maintainer",
       filters: [
         { text: "Fac 1", value: "Fac 1" },
         { text: "Fac 2", value: "Fac 2" },
