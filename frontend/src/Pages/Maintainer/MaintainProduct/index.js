@@ -6,12 +6,14 @@ import CustomTable from "../../../Components/Table/CustomTable";
 import indexApi from "../../../apis";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import moment from "moment";
+import ModalViewProduct from "../../ExecutiveBoard/Product/modalViewProduct";
 
 export default function MaintainProduct() {
   const { authUser } = useContext(AuthContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [warrantyProducts, setWarrantyProducts] = useState([]);
   const [summonProducts, setSummonProducts] = useState([]);
-
+  const [idProduct, setIdProduct] = useState(1);
   const columns = [
     {
       title: "Mã",
@@ -54,7 +56,20 @@ export default function MaintainProduct() {
       title: "Thao tác",
       dataIndex: "actions",
       key: "actions",
-      render: () => <ActionsCell hasView={false} hasConfirm={false} />,
+      width: 150,
+      render: (text, record, index) => (
+        <ActionsCell
+          hasConfirm={false}
+          onView={() => {
+            if (record.id !== idProduct) {
+              setIdProduct(record.id);
+            }
+            if (isModalOpen === false) {
+              setIsModalOpen(true);
+            }
+          }}
+        />
+      ),
     },
   ];
 
@@ -155,6 +170,14 @@ export default function MaintainProduct() {
       showSearch={false}
     >
       <Tabs items={tabItems} />
+      {isModalOpen && (
+        <ModalViewProduct
+          isModalOpen={isModalOpen}
+          handleOk={() => setIsModalOpen(false)}
+          handleCancel={() => setIsModalOpen(false)}
+          idProduct={idProduct}
+        />
+      )}
     </PageContent>
   );
 }

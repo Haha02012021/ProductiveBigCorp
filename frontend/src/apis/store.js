@@ -19,3 +19,7 @@ export const searchCustomer = (data) => {
 export const sellProduct = (data) => {
   return axios.post("/store/sell", data);
 };
+
+export const sendWarrant = (data) => {
+  return axios.post("/store/sendToWarranty", data);
+};
