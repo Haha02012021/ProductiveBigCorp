@@ -54,7 +54,7 @@ var getNonWarrantyProducts = async (id) => {
     try {
         let products = await Product.findAll({
             where: {
-                status_id : {[Op.notIn]: [6, 7, 8, 9, 10, 11]},
+                status_id : [3, 4, 5, 11, 17, 19],
                 batch_id: id
             },
             attributes: ['id'],
