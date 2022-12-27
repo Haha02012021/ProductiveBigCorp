@@ -7,9 +7,10 @@ import indexApi from "../../../apis";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import ModalViewProduct from "../../ExecutiveBoard/Product/modalViewProduct";
 import ModelSendWarranty from "./modelSendWarranty";
-
 import moment from "moment";
 import TabProductWarranty from "./tabProductWarranty";
+import TabProductMantained from "./tabProductMaintained";
+
 const ProductWarranty = () => {
   const [currentTab, setCurrentTab] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,7 +21,6 @@ const ProductWarranty = () => {
   const [idProduct, setIdProduct] = useState(0);
   const [idProductWarranty, setIdProductWarranty] = useState(1);
   const [summonProducts, setSummonProducts] = useState([]);
-  const [idSummonProducts, setIdSummonProducts] = useState(0);
 
   const showModal = (data) => {
     if (data.id !== idProduct) {
@@ -237,6 +237,16 @@ const ProductWarranty = () => {
         <CustomTable
           dataSource={summonProducts}
           columns={summonProductColumns}
+        />
+      ),
+    },
+    {
+      label: `Sản phẩm đã được bảo hành`,
+      key: "4",
+      children: (
+        <TabProductMantained
+          showModal={() => setIsModalOpen(true)}
+          selectProduct={(id) => setIdProduct(id)}
         />
       ),
     },

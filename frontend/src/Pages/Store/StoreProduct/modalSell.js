@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Modal, Select, Row, Col, Switch, Form } from "antd";
 import { Input, Button } from "antd";
 import ProductDetail from "../../ExecutiveBoard/Product/ProductDetail";
 import indexApi from "../../../apis";
 import styled from "styled-components";
 import { newCustomer, searchCustomer, sellProduct } from "../../../apis/store";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../../Provider/AuthProvider";
 
 const Option = Select.Option;
 const ModalSell = (props) => {
+  const { authUser } = useContext(AuthContext);
   const [create, setCreate] = useState(false);
   const [product, setProduct] = useState({});
   const [error, setError] = useState("");
@@ -62,10 +65,14 @@ const ModalSell = (props) => {
       const res = await sellProduct({
         customer_id: customer.id,
         product_id: props.idProduct,
+        store_id: authUser.id,
       });
       if (res.success === true) {
         props.handleSell();
         props.handleOk();
+        toast.success(res.message);
+      } else {
+        toast.success(res.message);
       }
     }
   };
