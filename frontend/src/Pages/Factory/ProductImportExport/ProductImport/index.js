@@ -67,12 +67,29 @@ export default function ProductImport() {
       ),
     },
   ];
+
+  const handleSearchBrokenProductResults = (results) => {
+    if (results) {
+      setBrokenProducts(buildData([results]));
+    } else {
+      getBrokenProducts();
+    }
+  };
+
+  const handleSearchDestroyedProductResults = (results) => {
+    if (results) {
+      setDestroyedProducts(buildData([results]));
+    } else {
+      getDestroyedProducts();
+    }
+  };
+
   const tabItems = [
     {
       label: `Chờ xác nhận`,
       key: "1",
       children: (
-        <PageContent>
+        <PageContent getSearchResults={handleSearchBrokenProductResults}>
           <CustomTable dataSource={brokenProducts} columns={columns} />
         </PageContent>
       ),
@@ -81,7 +98,7 @@ export default function ProductImport() {
       label: `Sản phẩm lỗi`,
       key: "2",
       children: (
-        <PageContent>
+        <PageContent getSearchResults={handleSearchDestroyedProductResults}>
           <CustomTable
             dataSource={destroyedProducts}
             columns={columns.filter((column) => column.key !== "actions")}

@@ -13,6 +13,14 @@ const coporationApi = {
   addModel(modelInfo) {
     return axios.post("/coporation/newModel", modelInfo);
   },
+
+  deleteModel(id) {
+    return axios.delete(`/coporation/model/${id}`);
+  },
+
+  deleteVersion(id) {
+    return axios.delete(`/coporation/version/${id}`);
+  },
 };
 
 export default coporationApi;

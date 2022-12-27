@@ -7,17 +7,26 @@ import PageContent from "../../../../Components/PageContent";
 import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
 import LineForm from "./LineForm";
+import ModalConfirmDelete from "./modalConfirmDelete";
+import { toast } from "react-toastify";
 
 export default function LineManage() {
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [selectedLineId, setSelectedLineId] = useState();
   const [dataSource, setDataSource] = useState([]);
+  const [confirmDeleteModal, setConfirmDeleteModal] = useState(false);
+  const [model, setModel] = useState({});
   const [form] = Form.useForm();
+  const [change, setChange] = useState(false);
 
   useEffect(() => {
     getAllModels();
   }, [addModalVisible, editModalVisible]);
+
+  useEffect(() => {
+    getAllModels();
+  }, [change]);
 
   const getAllModels = async () => {
     const res = await indexApi.getAllModels();
@@ -57,8 +66,12 @@ export default function LineManage() {
         render: (productLineInfo) => (
           <ActionsCell
             hasView={false}
-            onEdit={() => handleEditLine(productLineInfo)}
             hasConfirm={false}
+            onEdit={() => handleEditLine(productLineInfo)}
+            onDelete={() => {
+              setModel(productLineInfo);
+              setConfirmDeleteModal(true);
+            }}
           />
         ),
       },
@@ -81,10 +94,21 @@ export default function LineManage() {
     form.submit();
     const res = await coporationApi.addModel(form.getFieldsValue());
     if (res.success) {
-      message.success("Thêm dòng sản phẩm thành công!", 2);
+      toast.success("Thêm dòng sản phẩm thành công!", 2);
       setAddModalVisible(false);
     } else {
-      message.error("Dường như có lỗi gì đó!", 2);
+      toast.error("Dường như có lỗi gì đó!", 2);
+    }
+  };
+
+  const deleteModelF = async () => {
+    const res = await coporationApi.deleteModel(model.id);
+    if (res.success === true) {
+      setChange(!change);
+      setConfirmDeleteModal(false);
+      toast.success("Xóa model thành công");
+    } else {
+      toast.error("Xóa model thất bại");
     }
   };
 
@@ -121,6 +145,18 @@ export default function LineManage() {
         >
           <LineForm form={form} lineId={selectedLineId} />
         </CustomModal>
+      )}
+      {confirmDeleteModal && (
+        <ModalConfirmDelete
+          title="Xóa dòng sản phẩm"
+          open={confirmDeleteModal}
+          onCancel={() => setConfirmDeleteModal(false)}
+          onOk={() => deleteModelF()}
+          type={"Model"}
+          name={model?.name}
+          okText="Đồng ý"
+          cancelText="Bỏ qua"
+        />
       )}
     </>
   );

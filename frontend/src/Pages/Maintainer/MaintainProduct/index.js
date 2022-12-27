@@ -102,12 +102,28 @@ export default function MaintainProduct() {
     },
   ];
 
+  const handleSearchMaintainProductResults = (results) => {
+    if (results) {
+      setMaintainProductsDataSource(buildMaintainData([results]));
+    } else {
+      getMaintainProducts();
+    }
+  };
+
+  const handleSearchSummonProductResults = (results) => {
+    if (results) {
+      setSummonProducts(buildSummonData([results]));
+    } else {
+      getSummonProducts();
+    }
+  };
+
   const tabItems = [
     {
       key: "1",
       label: "Sản phẩm bảo hành",
       children: (
-        <PageContent>
+        <PageContent getSearchResults={handleSearchMaintainProductResults}>
           <CustomTable
             columns={columns.filter((column) => column.key !== "amount")}
             dataSource={maintainProductsDataSource}
@@ -119,7 +135,7 @@ export default function MaintainProduct() {
       key: "2",
       label: "Sản phẩm triệu hồi",
       children: (
-        <PageContent>
+        <PageContent getSearchResults={handleSearchSummonProductResults}>
           <CustomTable
             columns={columns.filter(
               (column) => column.key !== "id" && column.key !== "store"
