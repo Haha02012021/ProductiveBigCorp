@@ -3,7 +3,7 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var {body, param, validationResult} = require('express-validator');
 
-const {createProducts, getBatches, receiveBrokenProducts, acceptRequest} = require('../Controllers/FactoryController');
+const {createProducts, getBatches, receiveBrokenProducts, acceptRequest, requestSummon} = require('../Controllers/FactoryController');
 
 const {validateFactory} = require('../Middlewares/roleValidator');
 const {refuseRequest} = require('../Controllers/FactoryController');
@@ -28,5 +28,10 @@ refuseRequest);
 router.get('/request/accept/:id/:factory_id', param('id').exists().withMessage('need an id').isInt().withMessage('must be integer'),
 finalCheck,
 acceptRequest);
+
+router.get('/products/summon/:id/:factory_id',
+param('id').exists().withMessage('need a id').isInt().withMessage('must be integer'),
+finalCheck, 
+requestSummon);
 
 module.exports = router;

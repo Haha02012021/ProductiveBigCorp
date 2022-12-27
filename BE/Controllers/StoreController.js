@@ -10,12 +10,12 @@ const {
 const { createCustomer, findCustomerByPhoneNum } = require("../Services/User");
 const { makeRequests, destroy, complete } = require("../Services/Request");
 const { addError } = require("../Services/Error");
-const {addRelation} = require('../Services/Manager_Product');
+const {addRelation, deleteOneRelation} = require('../Services/Manager_Product');
 
 var requestWarranty = async (req, res) => {
   try {
     const product = await updateOneProduct(
-      { status_id: 6 },
+      { status_id: 6, isSold: 2 },
       req.body.product_id
     );
     const history = await addOneHistory(
@@ -242,6 +242,63 @@ var completeRequest = async (req, res) => {
   }
 };
 
+var sendBackToCustomer = async (req, res) => {
+  try {
+    const product = await updateOneProduct({isSold: 1}, req.params.product_id);
+    //const check = await deleteOneRelation(req.params.id, req.params.warranty_id);
+    if(!product) {
+      res.json({ success: false, message: "can not update isSold 1 to product" });
+    } else {
+      await addOneHistory(req.params.product_id, 17, 'đã gửi lại cho khách hàng', req.params.store_id);
+      res.json({ success: true, data: product, message: "sent back to customer"});
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err,
+      success: false,
+      message: "error from sending to customer",
+    });
+  }
+}
+
+var receiveFromCustomer = async (req, res) => {
+  try {
+    const product = await updateOneProduct({isSold: 2}, req.params.product_id);
+    //const check = await deleteOneRelation(req.params.id, req.params.warranty_id);
+    if(!product) {
+      res.json({ success: false, message: "can not update isSold 2 to product" });
+    } else {
+      await addOneHistory(req.params.product_id, 18, 'khách hàng đã bàn giao cho cửa hàng', req.params.store_id);
+      res.json({ success: true, data: product, message: "received from customer"});
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err,
+      success: false,
+      message: "error from receiveing from customer",
+    });
+  }
+}
+
+var compensate = async (req, res) => {
+  try {
+    const product = await updateOneProduct({isSold: 1, isCompensate: 1, soldAt: new Date(), status_id: 5, customer_id: req.params.customer_id}, req.params.product_id);
+    //const check = await deleteOneRelation(req.params.id, req.params.warranty_id);
+    if(!product) {
+      res.json({ success: false, message: "can not update compensate to product" });
+    } else {
+      await addOneHistory(req.params.product_id, 19, 'được chuyển cho khách hàng, đền bù sản phẩm lỗi', req.params.store_id);
+      res.json({ success: true, data: product, message: "compensate for customer"});
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err,
+      success: false,
+      message: "error from compensating for customer",
+    });
+  }
+}
+
 module.exports = {
   requestWarranty,
   sendToWarranty,
@@ -253,4 +310,7 @@ module.exports = {
   createRequest,
   deleteRequest,
   completeRequest,
+  sendBackToCustomer,
+  receiveFromCustomer,
+  compensate,
 };

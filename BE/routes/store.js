@@ -1,22 +1,25 @@
 const { request } = require("express");
 var express = require("express");
 const { body, param } = require("express-validator");
+
 var router = express.Router();
 var jwt = require("jsonwebtoken");
 const { route } = require(".");
 
 const {
-  requestWarranty,
-  sendToWarranty,
-  receiveWarranty,
-  getCustomer,
-  sell,
-  addCustomer,
-  analizeProducts,
-  createRequest,
-  deleteRequest,
+  requestWarranty, 
+  sendToWarranty, 
+  receiveWarranty, 
+  getCustomer, 
+  sell, 
+  addCustomer, 
+  analizeProducts, 
+  createRequest, 
+  deleteRequest, 
   completeRequest,
-} = require("../Controllers/StoreController");
+  sendBackToCustomer,
+  receiveFromCustomer,
+  compensate} = require('../Controllers/StoreController');
 
 const { validateStore } = require("../Middlewares/roleValidator");
 const { checkIntArray } = require("../Validators/arrayValidator");
@@ -172,5 +175,12 @@ router.get(
   finalCheck,
   completeRequest
 );
+
+router.get('/customer/sendBack/:product_id/:store_id', sendBackToCustomer);
+
+router.get('/customer/receive/:product_id/:store_id', receiveFromCustomer);
+
+router.get('/customer/compensate/:product_id/:store_id', compensate)
+
 
 module.exports = router;
