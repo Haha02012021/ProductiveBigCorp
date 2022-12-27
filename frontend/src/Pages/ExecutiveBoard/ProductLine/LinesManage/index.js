@@ -7,17 +7,26 @@ import PageContent from "../../../../Components/PageContent";
 import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
 import LineForm from "./LineForm";
+import ModalConfirmDelete from "./modalConfirmDelete";
+import { toast } from "react-toastify";
 
 export default function LineManage() {
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [selectedLineId, setSelectedLineId] = useState();
   const [dataSource, setDataSource] = useState([]);
+  const [confirmDeleteModal, setConfirmDeleteModal] = useState(false);
+  const [model, setModel] = useState({});
   const [form] = Form.useForm();
+  const [change, setChange] = useState(false);
 
   useEffect(() => {
     getAllModels();
   }, [addModalVisible, editModalVisible]);
+
+  useEffect(() => {
+    getAllModels();
+  }, [change]);
 
   const getAllModels = async () => {
     const res = await indexApi.getAllModels();
@@ -57,9 +66,12 @@ export default function LineManage() {
         render: (productLineInfo) => (
           <ActionsCell
             hasView={false}
-            onEdit={() => handleEditLine(productLineInfo)}
             hasConfirm={false}
-            onDelete={() => handleDelete(productLineInfo.id)}
+            onEdit={() => handleEditLine(productLineInfo)}
+            onDelete={() => {
+              setModel(productLineInfo);
+              setConfirmDeleteModal(true);
+            }}
           />
         ),
       },
@@ -78,36 +90,47 @@ export default function LineManage() {
     setSelectedLineId(productLineInfo.id);
   };
 
-  const handleDelete = (lineId) => {
-    Modal.confirm({
-      content: "Bạn có chắc muốn xóa dòng này không?",
-      okText: "Có",
-      cancelText: "Không",
-      onCancel: () => {},
-      onOk: async () => {
-        try {
-          const res = await coporationApi.deleteModel(lineId);
-          if (res.success) {
-            message.success("Xóa dòng sản phẩm thành công!", 2);
-            getAllModels();
-            Modal.destroyAll();
-          }
-        } catch (error) {
-          message.error(error.message, 2);
-          Modal.destroyAll();
-        }
-      },
-    });
-  };
+  // const handleDelete = (lineId) => {
+  //   Modal.confirm({
+  //     content: "Bạn có chắc muốn xóa dòng này không?",
+  //     okText: "Có",
+  //     cancelText: "Không",
+  //     onCancel: () => {},
+  //     onOk: async () => {
+  //       try {
+  //         const res = await coporationApi.deleteModel(lineId);
+  //         if (res.success) {
+  //           message.success("Xóa dòng sản phẩm thành công!", 2);
+  //           getAllModels();
+  //           Modal.destroyAll();
+  //         }
+  //       } catch (error) {
+  //         message.error(error.message, 2);
+  //         Modal.destroyAll();
+  //       }
+  //     },
+  //   });
+  // };
 
   const handleSave = async () => {
     form.submit();
     const res = await coporationApi.addModel(form.getFieldsValue());
     if (res.success) {
-      message.success("Thêm dòng sản phẩm thành công!", 2);
+      toast.success("Thêm dòng sản phẩm thành công!", 2);
       setAddModalVisible(false);
     } else {
-      message.error("Dường như có lỗi gì đó!", 2);
+      toast.error("Dường như có lỗi gì đó!", 2);
+    }
+  };
+
+  const deleteModelF = async () => {
+    const res = await coporationApi.deleteModel(model.id);
+    if (res.success === true) {
+      setChange(!change);
+      setConfirmDeleteModal(false);
+      toast.success("Xóa model thành công");
+    } else {
+      toast.error("Xóa model thất bại");
     }
   };
 
@@ -144,6 +167,18 @@ export default function LineManage() {
         >
           <LineForm form={form} lineId={selectedLineId} />
         </CustomModal>
+      )}
+      {confirmDeleteModal && (
+        <ModalConfirmDelete
+          title="Xóa dòng sản phẩm"
+          open={confirmDeleteModal}
+          onCancel={() => setConfirmDeleteModal(false)}
+          onOk={() => deleteModelF()}
+          type={"Model"}
+          name={model?.name}
+          okText="Đồng ý"
+          cancelText="Bỏ qua"
+        />
       )}
     </>
   );

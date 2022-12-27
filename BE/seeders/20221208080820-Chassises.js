@@ -367,6 +367,19 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          version_id: 27,
+          he_thong_treo_truoc: "Loại McPherson / McPherson Strut",
+          he_thong_treo_sau: "Thanh xoắn / Torsion beam",
+          he_thong_dan_dong: "Cầu trước / FWD",
+          he_thong_phanh_truoc: "Đĩa thông gió / Ventilated disc",
+          he_thong_phanh_sau: "Đĩa đặc / Solid disc",
+          he_thong_tro_luc_lai: "Trợ lực điện / EPAS",
+          kich_thuoc_lop_xe: "215/45R18",
+          duong_kinh_mam_xe: '18"',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     );

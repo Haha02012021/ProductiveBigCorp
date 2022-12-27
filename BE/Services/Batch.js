@@ -17,12 +17,13 @@ const addBatch = async (factory_id, color_id, model_id, version_id, amount) => {
     }
 }
 
-const findByFactoryId = async (factory_id) => {
+const findByFactoryId = async (factory_id, condition) => {
     try{
+        if(condition) {
+            condition.factory_id = factory_id;
+        }
         const batches = await Batch.findAll({
-          where: {
-            factory_id: factory_id
-          },
+          where: condition ? condition : {factory_id},
           include: [
             {
                 model: MODEL,
@@ -73,8 +74,29 @@ var getNonWarrantyProducts = async (id) => {
     }
 }
 
+var updateOneBatch = async (updateInfo, id) => {
+    try {
+        const batch = await Batch.findByPk(id);
+        Object.keys(updateInfo).forEach((element) => {
+            if (updateInfo[element] === batch[element]) {
+              throw "can not update the same value";
+            }
+        });
+        if(!batch) {
+            throw "batch not found"
+        } else {
+            batch.update(updateInfo);
+            return batch
+        }
+    } catch (err) {
+        console.log(err);
+        return null;
+    } 
+} 
+
 module.exports = {
     addBatch,
     findByFactoryId,
     getNonWarrantyProducts,
+    updateOneBatch,
 }
