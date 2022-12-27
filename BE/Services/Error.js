@@ -17,6 +17,28 @@ var addError = async (product_id, content) => {
     }
 }
 
+var addErrorForMany = async (products, content) => {
+    try{
+        const errors = await Error.bulkCreate(
+            products.map(element => {
+                return {
+                    product_id: element,
+                    content
+                }
+            })
+        )
+        if(errors) {
+            return errors;
+        } else {
+            throw "create error for many broken"
+        }
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
 module.exports = {
     addError,
+    addErrorForMany,
 }
