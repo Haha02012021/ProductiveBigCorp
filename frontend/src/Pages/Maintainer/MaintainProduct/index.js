@@ -355,7 +355,7 @@ export default function MaintainProduct() {
           const res2 = await returnBackToFactory(data);
 
           if (res2.success) {
-            message.success("Các sản phẩm sẽ được chuyển về đại lý", 2);
+            message.success("Các sản phẩm sẽ được chuyển về nhà máy", 2);
             setTransportModalVisible(false);
           }
         } catch (error) {
@@ -368,7 +368,7 @@ export default function MaintainProduct() {
           const res4 = await returnBackToStore(data);
 
           if (res4.success) {
-            message.success("Các sản phẩm sẽ được chuyển về nhà máy", 2);
+            message.success("Các sản phẩm sẽ được chuyển về đại lý", 2);
             setTransportModalVisible(false);
           }
         } catch (error) {
