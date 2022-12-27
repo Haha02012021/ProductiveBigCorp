@@ -57,7 +57,7 @@ export const statuses = {
     color: "",
   },
   4: {
-    content: "Tồn kho",
+    content: "Tồn kho đại lý",
     color: "",
   },
   5: {
@@ -81,11 +81,11 @@ export const statuses = {
     color: "",
   },
   10: {
-    content: "Gửi lại đại lý",
+    content: "Đã bảo hành và gửi lại đại lý",
     color: "",
   },
   11: {
-    content: "Trả về nhà máy",
+    content: "Đã bảo hành và đến đại lý",
     color: "",
   },
   12: {
@@ -93,11 +93,11 @@ export const statuses = {
     color: "",
   },
   13: {
-    content: "Gửi lại đại lý",
+    content: "Trả về nhà máy",
     color: "",
   },
   14: {
-    content: "Gửi trả nhà máy",
+    content: "Đã đến nhà máy",
     color: "",
   },
   15: {

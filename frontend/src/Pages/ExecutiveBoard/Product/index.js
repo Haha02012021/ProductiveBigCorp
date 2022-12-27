@@ -5,6 +5,7 @@ import CustomTable from "../../../Components/Table/CustomTable";
 import ModalViewProduct from "./modalViewProduct";
 import PageContent from "../../../Components/PageContent";
 import coporationApi from "../../../apis/coporation";
+import { statuses } from "../../../const/index";
 
 export default function Product() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,7 +51,7 @@ export default function Product() {
         o.factory = data[i].managers[0].name;
         o.store = data[i].store;
         o.maintainCenter = data[i].maintainCenter;
-        o.state = data[i].status.context;
+        o.state = statuses[data[i].status_id].content;
       }
       result.push(o);
     }
@@ -130,9 +131,17 @@ export default function Product() {
     },
   ];
 
+  const handleSearchResults = (results) => {
+    console.log(results);
+    setProducts(buildData([results]));
+  };
+
   return (
     <>
-      <PageContent pageHeaderProps={{ title: "Sản phẩm", hasAction: false }}>
+      <PageContent
+        pageHeaderProps={{ title: "Sản phẩm", hasAction: false }}
+        getSearchResults={(results) => handleSearchResults(results)}
+      >
         <CustomTable columns={columns} dataSource={products} />
       </PageContent>
       {isModalOpen && (
