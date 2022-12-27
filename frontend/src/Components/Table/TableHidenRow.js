@@ -6,23 +6,21 @@ export default function TableHidenRow({ columns, data }) {
   const [show, setShow] = useState(false);
   return (
     <ConfigProvider renderEmpty={() => <></>}>
-      <MyTable
-        columns={columns}
-        dataSource={show ? data : []}
-        style={{
-          width: "100%",
-          backgroundColor: "white",
-        }}
-        pagination={false}
-        onHeaderRow={() => {
-          return {
-            onClick: () => {
-              setShow(!show);
-            },
-          };
-        }}
-        bordered={false}
-      />
+      <div>
+        <MyTable
+          columns={columns}
+          dataSource={show ? data : []}
+          pagination={false}
+          onHeaderRow={() => {
+            return {
+              onClick: () => {
+                setShow(!show);
+              },
+            };
+          }}
+          bordered={false}
+        />
+      </div>
     </ConfigProvider>
   );
 }
@@ -37,6 +35,7 @@ const MyTable = styled(Table)`
         text-transform: uppercase;
         font-size: 12px;
         cursor: pointer;
+        maxwidth: "35%";
       }
     }
   }

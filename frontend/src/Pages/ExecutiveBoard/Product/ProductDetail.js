@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Image,Col, Row, Radio, ConfigProvider } from "antd";
+import { Image, Col, Row, Radio, ConfigProvider } from "antd";
 import styled from "styled-components";
 
 const ProductDetail = ({ product = {}, isProduct = true }) => {
@@ -29,11 +29,11 @@ const ProductDetail = ({ product = {}, isProduct = true }) => {
 
   return (
     <>
-      <Row>
-        <Col span={12}>
-          <Image width={270} src={colors[0]?.Model_Color?.image} />
+      <Row gutter={[8, 8]} style={{ paddingBottom: 20 }}>
+        <Col xs={{ span: 24 }} md={{ span: 8, offset: 0 }}>
+          <Image width={"100%"} src={colors[0]?.Model_Color?.image} />
         </Col>
-        <Col span={12}>
+        <Col xs={{ span: 24 }} md={{ span: 8, offset: 4 }}>
           <Row
             style={{
               fontWeight: "bold",
