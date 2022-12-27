@@ -15,7 +15,7 @@ body('factory_id').exists().withMessage('need factory_id').isInt().withMessage('
 finalCheck, 
 createProducts);
 
-router.get('/batches/:factory_id', getBatches);
+router.post('/batches/:factory_id', getBatches);
 
 router.post('/receiveBrokenProducts', body('products').isArray().withMessage('must be an array').custom(checkIntArray), 
 finalCheck,
@@ -29,7 +29,7 @@ router.get('/request/accept/:id/:factory_id', param('id').exists().withMessage('
 finalCheck,
 acceptRequest);
 
-router.get('/products/summon/:batch_id/:factory_id',
+router.post('/products/summon/:batch_id/:factory_id',
 param('batch_id').exists().withMessage('need a id').isInt().withMessage('must be integer'),
 finalCheck, 
 requestSummon);

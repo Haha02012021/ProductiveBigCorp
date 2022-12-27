@@ -1,8 +1,9 @@
-const {addBatch, findByFactoryId, getNonWarrantyProducts} = require('../Services/Batch');
+const {addBatch, findByFactoryId, getNonWarrantyProducts, updateOneBatch} = require('../Services/Batch');
 const {addProducts, updateProducts} = require('../Services/Product');
 const {addHistory} = require('../Services/History');
 const {addRelation} = require('../Services/Manager_Product');
 const {refuse, accept} = require('../Services/Request');
+const { addErrorForMany } = require('../Services/Error');
 var createProducts = async (req, res) => {
     try {
         const batch = await addBatch(
@@ -40,7 +41,7 @@ var receiveBrokenProducts = async (req, res) => {
 
 var getBatches = async (req, res) => {
     try {
-        const batches = await findByFactoryId(req.params.factory_id);
+        const batches = await findByFactoryId(req.params.factory_id, req.body.condition);
         res.json({success: true, data: batches});
     } catch (err) {
         res.status(500).json({success: false, message: 'error from get batches', error: err});
@@ -85,9 +86,11 @@ var requestSummon = async (req, res) => {
         if(!products) {
             res.status(404).json({success: false, message: 'products not found'});
         } else {
+            const batch = await updateOneBatch({isSummoned: 1, error: req.body.error}, req.params.batch_id);
             const update = await updateProducts({status_id: 16}, {id: products});
             const history = await addHistory(products, 16, 'được yêu cầu triệu hồi từ nhà máy', req.params.factory_id);
-            if(update && history) {
+            const errors = await addErrorForMany(products, req.body.error);
+            if(update && history && batch) {
                 res.json({success: true, message: 'summoned'});
             } else {
                 res.status(500).json({success: false, message: 'can not summon products'});
