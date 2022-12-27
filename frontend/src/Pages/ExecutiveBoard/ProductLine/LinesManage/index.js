@@ -71,7 +71,6 @@ export default function LineManage() {
   };
 
   const handleEditLine = (productLineInfo) => {
-    console.log(productLineInfo);
     form.resetFields();
     setEditModalVisible(true);
     form.setFieldsValue(productLineInfo);
@@ -80,7 +79,6 @@ export default function LineManage() {
 
   const handleSave = async () => {
     form.submit();
-    console.log(form.getFieldsValue());
     const res = await coporationApi.addModel(form.getFieldsValue());
     if (res.success) {
       message.success("Thêm dòng sản phẩm thành công!", 2);
