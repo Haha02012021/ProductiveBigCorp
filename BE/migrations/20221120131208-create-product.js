@@ -51,6 +51,10 @@ module.exports = {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
+      isCompensate: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
       soldAt: {
         allowNull: true,
         type: DataTypes.DATE

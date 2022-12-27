@@ -76,7 +76,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          context: "sendBackToFactory",
+          context: "brokenAndSendBackToFactory",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -91,10 +91,25 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          context: "summoned",
+          context: "summonRequested",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          context: "backToCustomer",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          context: "receivedFromCustomer",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          context: "compensateForCustomer",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }
       ],
       {}
     );

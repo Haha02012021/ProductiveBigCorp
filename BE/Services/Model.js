@@ -1,4 +1,4 @@
-const {db, MODEL, Model_Color, Color, sequelize, Image} = require('../models');
+const {db, MODEL, Model_Color, Color, sequelize, Image, Version} = require('../models');
 const {QueryTypes} = require('sequelize');
 
 var addModel = async (name, colors) => {

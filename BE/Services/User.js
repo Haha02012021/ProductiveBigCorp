@@ -182,7 +182,7 @@ var getProducts = async (id, condition) => {
               attributes: ["content", "updatedAt"],
               order: [["createdAt", "ASC"]],
               limit:
-                condition.status_id && [6, 7, 8].includes(condition.status_id)
+                condition.status_id && [6, 7, 8, 9, 10, 11].includes(condition.status_id)
                   ? 1
                   : 0,
             },
