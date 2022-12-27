@@ -14,12 +14,13 @@ var receiveRequest = async (req, res) => {
 
 var finishWaranty = async (req, res) => {
     try {
-        const product = await updateOneProduct({status_id: 9}, req.body.product_id);
         console.log(req.body);
         if(req.body.done) {
+            const product = await updateOneProduct({status_id: 9}, req.body.product_id);
             const history = await addOneHistory(req.body.product_id, 9, `đã bảo hành xong`, req.body.warranty_id);
             res.json({success: true, message: 'warranty done', data: {product, history}});
         } else {
+            const product = await updateOneProduct({status_id: 12}, req.body.product_id);
             const history = await addOneHistory(req.body.product_id, 12, `Không thể sửa chữa, ${req.body.error ? req.body.error : 'không rõ nguyên nhân'}`, req.body.warranty_id);
             res.json({success: true, message: 'warranty done', data: {product, history}});
         }
