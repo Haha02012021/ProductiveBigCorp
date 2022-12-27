@@ -152,9 +152,13 @@ export default function ProductExport() {
       },
       role: 2,
     };
-    const res = await indexApi.getRequestsByManagerId(authUser.id, condition);
-    if (res.success) {
-      setCanceledReqDataSource(buildData(res.data.receivedRequests));
+    try {
+      const res = await indexApi.getRequestsByManagerId(authUser.id, condition);
+      if (res.success) {
+        setCanceledReqDataSource(buildData(res.data.receivedRequests));
+      }
+    } catch (error) {
+      setCanceledReqDataSource([]);
     }
   };
 

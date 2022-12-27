@@ -6,6 +6,7 @@ import PageContent from "../../../../Components/PageContent";
 import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
 import { AuthContext } from "../../../../Provider/AuthProvider";
+import { ThemeContext } from "../../../../Provider/ThemeProvider";
 
 const waitingProducts = [
   {
@@ -28,6 +29,7 @@ const errorProducts = [
 ];
 
 export default function ProductImport() {
+  const { isMobile } = useContext(ThemeContext);
   const { authUser } = useContext(AuthContext);
   const [brokenProducts, setBrokenProducts] = useState([]);
   const [destroyedProducts, setDestroyedProducts] = useState([]);
@@ -120,9 +122,13 @@ export default function ProductImport() {
       },
       role: 2,
     };
-    const res = await indexApi.getProductsByManagerId(authUser.id, condition);
-    if (res.success) {
-      setBrokenProducts(buildData(res.data.products));
+    try {
+      const res = await indexApi.getProductsByManagerId(authUser.id, condition);
+      if (res.success) {
+        setBrokenProducts(buildData(res.data.products));
+      }
+    } catch (error) {
+      setBrokenProducts([]);
     }
   };
 
@@ -171,7 +177,7 @@ export default function ProductImport() {
         id: product.uuid,
         model: product.model.name,
         version: product.version.name,
-        error: product.errors[0].content,
+        error: product.errors[0]?.content,
       };
     });
     return builtData;
@@ -188,6 +194,8 @@ export default function ProductImport() {
         "Bạn có chắc chắn xác nhận sản phẩm này bị lỗi và sẽ bị tiêu hủy không?",
       okText: "Có",
       cancelText: "Không",
+      closable: true,
+      width: isMobile ? "80%" : "40%",
       onCancel: () => {},
       onOk: async () => {
         try {
