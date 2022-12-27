@@ -1,5 +1,5 @@
 import { Form, message, Modal } from "antd";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import indexApi from "../../../../apis";
 import coporationApi from "../../../../apis/coporation";
 import CustomModal from "../../../../Components/CustomModal";
@@ -9,8 +9,10 @@ import CustomTable from "../../../../Components/Table/CustomTable";
 import LineForm from "./LineForm";
 import ModalConfirmDelete from "./modalConfirmDelete";
 import { toast } from "react-toastify";
+import { ThemeContext } from "../../../../Provider/ThemeProvider";
 
 export default function LineManage() {
+  const { isMobile } = useContext(ThemeContext);
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [selectedLineId, setSelectedLineId] = useState();
@@ -95,6 +97,8 @@ export default function LineManage() {
   //     content: "Bạn có chắc muốn xóa dòng này không?",
   //     okText: "Có",
   //     cancelText: "Không",
+  //     width: isMobile ? "80%" : "40%",
+  //     closable: true,
   //     onCancel: () => {},
   //     onOk: async () => {
   //       try {

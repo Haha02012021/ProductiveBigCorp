@@ -98,23 +98,25 @@ export default function VersionManage() {
           hasConfirm={false}
           onView={() => showModal(record)}
           onEdit={() => handleEdit(record)}
-          onDelete={() => handleDelete(record.id)}
+          onDelete={() => handleDelete(record)}
         />
       ),
     },
   ];
 
-  const handleDelete = (versionId) => {
+  const handleDelete = (data) => {
     Modal.confirm({
-      content: "Bạn có chắc muốn xóa phiên bản này không?",
+      content: `Bạn có chắc muốn xóa phiên bản ${data.version} không?`,
       okText: "Có",
       cancelText: "Không",
+      width: isMobile ? "80%" : "40%",
+      closable: true,
       onCancel: () => {},
       onOk: async () => {
         try {
-          const res = await coporationApi.deleteVersion(versionId);
+          const res = await coporationApi.deleteVersion(data.id);
           if (res.success) {
-            message.success("Xóa phiên bản thành công!", 2);
+            message.success(`Xóa phiên bản ${data.id} thành công!`, 2);
             getAllVersions();
             Modal.destroyAll();
           }
