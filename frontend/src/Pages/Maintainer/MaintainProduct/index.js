@@ -268,14 +268,13 @@ export default function MaintainProduct() {
         factory: product.managers.find((manager) => manager.role === "2")?.name,
         model: product.model.name,
         version: product.version.name,
-        error: product.errors[0].content,
+        error: product.errors[0]?.content,
         status: {
           content: statuses[product.status.id].content,
           id: product.status.id,
         },
       };
     });
-
     return builtData;
   };
 

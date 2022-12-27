@@ -35,18 +35,24 @@ export default function TransportForm({ form }) {
       },
       role: selectedManagerRole,
     };
-    const res = await indexApi.getProductsByManagerId(authUser.id, condition);
+    try {
+      const res = await indexApi.getProductsByManagerId(authUser.id, condition);
 
-    if (res.success) {
-      const ops = res.data.products.map((product) => {
-        return {
-          label: product.uuid + " - " + product.errors[0].content,
-          value: product.id,
-        };
-      });
-      setProducts(ops);
+      if (res.success) {
+        const ops = res.data.products.map((product) => {
+          return {
+            label: product.uuid + " - " + product.errors[0]?.content,
+            value: product.id,
+          };
+        });
+        setProducts(ops);
+      }
+    } catch (error) {
+      setProducts([]);
     }
   };
+
+  console.log(products);
 
   return (
     <Form form={form} style={{ paddingTop: 16 }} layout="vertical">
