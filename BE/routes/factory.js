@@ -29,8 +29,8 @@ router.get('/request/accept/:id/:factory_id', param('id').exists().withMessage('
 finalCheck,
 acceptRequest);
 
-router.get('/products/summon/:id/:factory_id',
-param('id').exists().withMessage('need a id').isInt().withMessage('must be integer'),
+router.get('/products/summon/:batch_id/:factory_id',
+param('batch_id').exists().withMessage('need a id').isInt().withMessage('must be integer'),
 finalCheck, 
 requestSummon);
 

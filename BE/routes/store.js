@@ -180,7 +180,7 @@ router.get('/customer/sendBack/:product_id/:store_id', sendBackToCustomer);
 
 router.get('/customer/receive/:product_id/:store_id', receiveFromCustomer);
 
-router.get('/customer/compensate/:product_id/:store_id', compensate)
+router.get('/customer/compensate/:product_id/:store_id/:customer_id', compensate)
 
 
 module.exports = router;
