@@ -5,6 +5,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import indexApi from "../../../apis";
 import { sendRequest } from "../../../apis/store";
 import { AuthContext } from "../../../Provider/AuthProvider";
+import { toast } from "react-toastify";
 
 const ModalRequest = (props) => {
   const [versions, setVersions] = useState([]);
@@ -78,11 +79,18 @@ const ModalRequest = (props) => {
   };
 
   const sendRequestToDb = async () => {
-    const res = await sendRequest({ requests: requests });
-    if (res.success === true) {
-      setRequests([]);
-      props.addRequest();
-      props.handleOk();
+    try {
+      const res = await sendRequest({ requests: requests });
+      if (res.success === true) {
+        setRequests([]);
+        props.addRequest();
+        props.handleOk();
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error) {
+      toast.error("error service");
     }
   };
 

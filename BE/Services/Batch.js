@@ -60,8 +60,7 @@ var getNonWarrantyProducts = async (id) => {
             },
             attributes: ['id'],
         });
-        //console.log(products);
-        if(!products) {
+        if(products.length === 0) {
             throw 'no products fit the demand'
         } else {
             products =  products.map(element => {return element.id});

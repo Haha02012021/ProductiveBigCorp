@@ -9,7 +9,7 @@ const {
 } = require("../models");
 const { QueryTypes } = require("sequelize");
 
-var addModel = async (name, colors) => {
+var addModel = async (name, colors, colorImages, images) => {
   try {
     const oldModel = await sequelize.query(
       "SELECT * FROM models WHERE BINARY name = $1 limit 1",
@@ -25,14 +25,21 @@ var addModel = async (name, colors) => {
       const newModel = await MODEL.create({
         name: name,
       });
+      const realtion = [];
+      for (let i = 0; i< colorImages; i++) {
+        realtion.push({model_id: newModel.id, color_id: colors[i], image: colorImages[i]});
+      }
       await Model_Color.bulkCreate(
-        colors.map((element) => {
-          return {
-            model_id: newModel.id,
-            color_id: element,
-          };
-        })
+        realtion
       );
+      await Image.bulkCreate(
+        images.map(element => {
+          return {
+            link: element,
+            model_id: newModel.id,
+          }
+        })
+      )
       return newModel;
     }
   } catch (err) {

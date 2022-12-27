@@ -20,7 +20,7 @@ const ModalConfirm = (props) => {
   };
   return (
     <Modal
-      title="Xác nhận đã nhận được sản phẩm"
+      title={props.title}
       onOk={props.handleOk}
       open={props.isModalOpen}
       onCancel={props.handleCancel}

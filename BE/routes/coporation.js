@@ -9,6 +9,22 @@ const {validateCoporation} = require('../Middlewares/roleValidator');
 const { finalCheck } = require('../Validators/checkErrors');
 const { checkIntArray } = require('../Validators/arrayValidator');
 
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      //files khi upload xong sẽ nằm trong thư mục "uploads" này - các bạn có thể tự định nghĩa thư mục này
+      cb(null, 'images') 
+    },
+    filename: function (req, file, cb) {
+      // tạo tên file = thời gian hiện tại nối với số ngẫu nhiên => tên file chắc chắn không bị trùng
+      const filename = Date.now() + '-' + Math.round(Math.random() * 1E9) 
+      cb(null, filename + '-' + file.originalname )
+    }
+})
+
+const upload = multer({ storage: storage })
+
 router.post('/addManager',
 body('name').exists().withMessage('need a name').isString().withMessage('need to be string').isLength({max: 16}).withMessage('max length is 16'),
 body('account').exists().withMessage('need an account').isString().withMessage('need to be string').isLength({max: 16}).withMessage('max length is 16'),
@@ -18,10 +34,13 @@ body('role').exists().withMessage('need a role').isIn([2, 3, 4]).withMessage('ne
 finalCheck,
 addManager);
 
+
 router.post('/newModel', 
 body('name').exists().withMessage('need a name').isString('must be a string'),
-finalCheck,
-createModel);
+body('color_id').isArray().withMessage('must be an array').custom(checkIntArray),
+body('images').isArray().withMessage('must be an array'),
+body('colors').isArray().withMessage('must be an array'),
+finalCheck, upload.fields([{name: 'colors'}, {name: 'images'}]), createModel);
 
 router.post('/newVersion', createVersion);
 

@@ -3,6 +3,8 @@ var logger = require("morgan");
 var path = require("path");
 var dotenv = require("dotenv");
 var cookieParser = require("cookie-parser");
+var bodyParser = require('body-parser');
+
 dotenv.config();
 var authRouter = require("./routes/auth");
 var factoryRouter = require("./routes/factory");
@@ -10,7 +12,6 @@ var coporationRouter = require("./routes/coporation");
 var storeRouter = require("./routes/store");
 var indexRouter = require("./routes/index");
 var warrantyRouter = require("./routes/warranty");
-
 var app = express();
 
 app.use(logger("dev"));
@@ -30,6 +31,7 @@ app.use(function (req, res, next) {
     next();
   }
 });
+app.use
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
