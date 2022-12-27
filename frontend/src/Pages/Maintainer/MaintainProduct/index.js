@@ -96,7 +96,7 @@ export default function MaintainProduct() {
           onDelete={() => handleDelete(record)}
           onConfirm={() => handleDoneMaintain(record)}
           onView={() => {
-            if (record.key !== selectedProduct?.id) {
+            if (record.id !== selectedProduct?.id) {
               setSelectedProduct({
                 id: record.id,
                 uuid: record.key,
