@@ -66,6 +66,7 @@ export default function ProductLot() {
       render: (_, record) => (
         <ActionsCell
           hasConfirm={false}
+          hasView={false}
           deleteText="Triệu hồi"
           onEdit={() => handleEdit(record)}
           onDelete={() => handleSummon(record)}
