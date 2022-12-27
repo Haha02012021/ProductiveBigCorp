@@ -1,13 +1,30 @@
-import { Space } from "antd";
-import Search from "antd/es/input/Search";
+import { Input, message, Space } from "antd";
 import PageHeader from "./PageHeader";
+import indexApi from "../apis/index";
 
 export default function PageContent({
   showSearch = true,
-  searchPlaceholder = "Nhập vào đây",
+  searchPlaceholder = "Nhập mã sản phẩm để tìm kiếm",
   children,
   pageHeaderProps,
+  onSearch,
+  getSearchResults = () => {},
 }) {
+  const handleSearch = async (value) => {
+    if (value) {
+      try {
+        const res = await indexApi.getProductByUuid(value);
+
+        if (res.success) {
+          getSearchResults(res.data);
+        }
+      } catch (error) {
+        message.error(error.message, 2);
+      }
+    } else {
+      getSearchResults(null);
+    }
+  };
   return (
     <>
       {pageHeaderProps && (
@@ -28,7 +45,12 @@ export default function PageContent({
             marginBottom: "16px",
           }}
         >
-          <Search placeholder={searchPlaceholder} style={{ width: "36%" }} />
+          <Input.Search
+            onSearch={onSearch || handleSearch}
+            placeholder={searchPlaceholder}
+            style={{ width: "36%" }}
+            allowClear
+          />
         </div>
       )}
       {children}

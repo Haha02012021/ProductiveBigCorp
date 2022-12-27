@@ -14,7 +14,7 @@ export default function CustomTable({
       <Table
         className="custom-table"
         bordered
-        dataSource={dataSource}
+        dataSource={[...dataSource]}
         style={{ width: "100%", overflowX: "auto" }}
         columns={columns}
         pagination={

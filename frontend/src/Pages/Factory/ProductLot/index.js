@@ -85,7 +85,7 @@ export default function ProductLot() {
     if (res.success) {
       const ds = res.data.map((batch) => {
         const date = new Date(batch.createdAt);
-        const time = date.toLocaleString().split(",")[0];
+        const time = date.toLocaleString("vi-VN").split(",")[1];
         return {
           key: batch.id,
           factory_id: batch.factory_id,

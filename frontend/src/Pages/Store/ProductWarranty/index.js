@@ -7,19 +7,20 @@ import indexApi from "../../../apis";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import ModalViewProduct from "../../ExecutiveBoard/Product/modalViewProduct";
 import ModelSendWarranty from "./modelSendWarranty";
-
 import moment from "moment";
+import TabProductWarranty from "./tabProductWarranty";
+import TabProductMantained from "./tabProductMaintained";
+import TabProductMoving from "./tabProductMoving";
+
 const ProductWarranty = () => {
   const [currentTab, setCurrentTab] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalWarrantyOpen, setIsModalWarrantyOpen] = useState(false);
   const { authUser } = useContext(AuthContext);
   const [selledProducts, setSelledProducts] = useState([]);
-  const [warrantyProducts, setWarrantyProducts] = useState([]);
   const [idProduct, setIdProduct] = useState(0);
   const [idProductWarranty, setIdProductWarranty] = useState(1);
   const [summonProducts, setSummonProducts] = useState([]);
-  const [idSummonProducts, setIdSummonProducts] = useState(0);
 
   const showModal = (data) => {
     if (data.id !== idProduct) {
@@ -35,62 +36,6 @@ const ProductWarranty = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
-  const productWarrantyColumns = [
-    {
-      title: "Mã",
-      dataIndex: "code",
-      key: "code",
-      width: 100,
-      height: 56,
-      align: "center",
-    },
-    {
-      title: "Phiên bản",
-      dataIndex: "version",
-      key: "version",
-    },
-    {
-      title: "Lỗi cần xử lý",
-      dataIndex: "error",
-      key: "error",
-      width: 150,
-    },
-    {
-      title: "Ngày yêu cầu",
-      dataIndex: "requestDate",
-      key: "requestDate",
-      width: 150,
-    },
-    {
-      title: "Cơ sở bảo hành",
-      dataIndex: "factory",
-      key: "factory",
-      width: 150,
-    },
-    {
-      title: "Trạng thái bảo hành",
-      dataIndex: "status",
-      key: "status",
-      width: 170,
-      align: "center",
-    },
-
-    {
-      title: "Thao tác",
-      dataIndex: "actions",
-      key: "actions",
-      width: 80,
-      render: (text, record, index) => (
-        <ActionsCell
-          hasDelete={false}
-          hasConfirm={false}
-          hasEdit={false}
-          onView={() => showModal(record)}
-        />
-      ),
-    },
-  ];
 
   const productSelledColumns = [
     {
@@ -212,12 +157,6 @@ const ProductWarranty = () => {
         isSold: 1,
       },
     });
-    getWarrantyProductsStore({
-      condition: {
-        isSold: 1,
-        status_id: 6,
-      },
-    });
 
     getSummonProducts({
       condition: {
@@ -263,13 +202,6 @@ const ProductWarranty = () => {
     }
   };
 
-  const getWarrantyProductsStore = async (condition) => {
-    const res = await indexApi.getProductsByManagerId(authUser.id, condition);
-    if (res.data && res.data.products) {
-      setWarrantyProducts(buildData(res.data.products));
-    }
-  };
-
   const getSummonProducts = async (condition) => {
     const res = await indexApi.getProductsByManagerId(authUser.id, condition);
     if (res.data && res.data.products) {
@@ -292,15 +224,35 @@ const ProductWarranty = () => {
       label: `Sản phẩm bảo hành`,
       key: "2",
       children: (
-        <CustomTable
-          dataSource={warrantyProducts}
-          columns={productWarrantyColumns}
+        <TabProductWarranty
+          showModal={() => setIsModalOpen(true)}
+          selectProduct={(id) => setIdProduct(id)}
+        />
+      ),
+    },
+    {
+      label: `Sản phẩm chờ vận chuyển`,
+      key: "3",
+      children: (
+        <TabProductMoving
+          showModal={() => setIsModalOpen(true)}
+          selectProduct={(id) => setIdProduct(id)}
+        />
+      ),
+    },
+    {
+      label: `Sản phẩm đã được bảo hành`,
+      key: "4",
+      children: (
+        <TabProductMantained
+          showModal={() => setIsModalOpen(true)}
+          selectProduct={(id) => setIdProduct(id)}
         />
       ),
     },
     {
       label: `Sản phẩm triệu hồi`,
-      key: "3",
+      key: "5",
       children: (
         <CustomTable
           dataSource={summonProducts}

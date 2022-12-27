@@ -19,7 +19,7 @@ const addBatch = async (factory_id, color_id, model_id, version_id, amount) => {
 
 const findByFactoryId = async (factory_id) => {
     try{
-        const batches = await Batch.findAll({  
+        const batches = await Batch.findAll({
           where: {
             factory_id: factory_id
           },

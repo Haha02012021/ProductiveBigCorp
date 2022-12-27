@@ -36,6 +36,9 @@ const indexApi = {
   getRequestById(id) {
     return axios.get(`/request/${id}`);
   },
+  getProductByUuid(uuid) {
+    return axios.get(`/product/${uuid}`);
+  },
 };
 
 export default indexApi;

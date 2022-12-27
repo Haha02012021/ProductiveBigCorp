@@ -1,11 +1,9 @@
 import { Form, Input, Select, Tag } from "antd";
 import { useEffect, useState } from "react";
 import indexApi from "../../../../apis";
-import invertColor from "../../../../utils/invertColor";
 import { errorMessages } from "../../../../const";
 
 export default function LineForm({ form, lineId }) {
-  const [lineInfo, setLineInfo] = useState([]);
   const [colors, setAllColors] = useState([]);
   useEffect(() => {
     if (lineId) {
@@ -15,6 +13,10 @@ export default function LineForm({ form, lineId }) {
 
   useEffect(() => {
     getAllColors();
+
+    return () => {
+      form.resetFields();
+    };
   }, []);
 
   const getAllColors = async () => {
@@ -26,8 +28,21 @@ export default function LineForm({ form, lineId }) {
     const res = await indexApi.getModelById(lineId);
 
     if (res.success) {
-      setLineInfo(res.data);
+      const dataColors = res.data.colors.map((color) => color.id);
+      form.setFieldValue("name", res.data.name);
+      form.setFieldValue("colors", dataColors);
     }
+  };
+
+  const invertHex = (hex) => {
+    if (hex && hex.length > 0) {
+      const color = hex.substr(1);
+      return (
+        "#" +
+        (Number(`0x1${color}`) ^ 0xffffff).toString(16).substr(1).toUpperCase()
+      );
+    }
+    return "#ffffff";
   };
 
   const tagRender = (props) => {
@@ -37,6 +52,7 @@ export default function LineForm({ form, lineId }) {
       event.stopPropagation();
     };
     const color = colors.find((color) => color.id === value);
+
     return (
       <Tag
         color={color?.code}
@@ -45,10 +61,12 @@ export default function LineForm({ form, lineId }) {
         onClose={onClose}
         style={{
           marginRight: 3,
-          color: invertColor(color?.code, true),
+          color: invertHex(color?.code),
+          border: "1px solid black",
         }}
+        key={color?.code}
       >
-        {color.name}
+        {color?.name}
       </Tag>
     );
   };
@@ -85,18 +103,20 @@ export default function LineForm({ form, lineId }) {
           mode="multiple"
           showArrow
           tagRender={tagRender}
-          defaultValue={lineInfo?.colors?.map((color) => {
-            return color.code;
-          })}
-          style={{
-            width: "100%",
-          }}
           showSearch={false}
-          options={colors.map((color) => {
+          dropdownRender={(menu) => (
+            <>
+              <div style={{ backgroundColor: "#cccccccc" }}>{menu}</div>
+            </>
+          )}
+          options={colors.map((color, index) => {
             return {
               value: color.id,
               label: (
-                <div style={{ display: "inline-flex", alignItems: "center" }}>
+                <div
+                  style={{ display: "inline-flex", alignItems: "center" }}
+                  key={index}
+                >
                   <div
                     style={{
                       backgroundColor: color.code,

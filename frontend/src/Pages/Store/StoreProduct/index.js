@@ -10,14 +10,19 @@ import ModalViewProduct from "../../ExecutiveBoard/Product/modalViewProduct";
 import ModalRequest from "./modalRequest";
 import ModalSell from "./modalSell";
 import moment from "moment";
+import ModalConfirm from "./modalConfirm";
+import { completeProduct, deleteRequest } from "../../../apis/store";
+import { toast } from "react-toastify";
 
 const StoreProduct = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idProduct, setIdProduct] = useState(0);
   const [currentTab, setCurrentTab] = useState(1);
   const [productStore, setProductStore] = useState([]);
+  const [productMoving, setProductMoving] = useState([]);
   const [isModalRequest, setIsModalRequest] = useState(false);
   const [isModalSell, setIsModalSell] = useState(false);
+  const [isModalConfirm, setIsModalConfirm] = useState(false);
   const [addRequest, setAddRequest] = useState(false);
   const [requests, setRequests] = useState([]);
   const [idProductSell, setIdProductSell] = useState(0);
@@ -53,7 +58,14 @@ const StoreProduct = () => {
       title: "Số lượng",
       dataIndex: "amount",
       key: "amount",
-      width: 100,
+      width: 50,
+      align: "center",
+    },
+    {
+      title: "Màu",
+      dataIndex: "color",
+      key: "color",
+      width: 50,
       align: "center",
     },
     {
@@ -65,8 +77,8 @@ const StoreProduct = () => {
     },
     {
       title: "Trạng thấi",
-      dataIndex: "status",
-      key: "status",
+      dataIndex: "progress",
+      key: "progress",
       width: 104,
     },
     {
@@ -81,8 +93,100 @@ const StoreProduct = () => {
       dataIndex: "actions",
       key: "actions",
       width: 80,
-      render: () => (
-        <ActionsCell hasEdit={false} hasView={false} hasConfirm={false} />
+      render: (text, record, index) => (
+        <ActionsCell
+          hasEdit={false}
+          hasView={false}
+          hasConfirm={false}
+          onDelete={async () => {
+            const res = await deleteRequest(record.id);
+            if (res.success === true) {
+              setAddRequest(!addRequest);
+              toast.success(res.message);
+            } else {
+              toast.error(res.message);
+            }
+          }}
+        />
+      ),
+    },
+  ];
+
+  const movingProductColumns = [
+    {
+      title: "Mã",
+      dataIndex: "code",
+      key: "code",
+      width: 100,
+      height: 56,
+      align: "center",
+    },
+
+    {
+      title: "Phiên bản",
+      dataIndex: "version",
+      key: "version",
+      width: 182,
+      height: 56,
+      align: "center",
+    },
+    {
+      title: "Cơ sở sản xuất",
+      dataIndex: "factory",
+      key: "factory",
+      width: 140,
+      height: 56,
+      align: "center",
+    },
+    {
+      title: "Số lượng",
+      dataIndex: "amount",
+      key: "amount",
+      width: 50,
+      align: "center",
+    },
+    {
+      title: "Màu",
+      dataIndex: "color",
+      key: "color",
+      width: 50,
+      align: "center",
+    },
+    {
+      title: "Giá",
+      dataIndex: "price",
+      key: "price",
+      width: 182,
+      align: "center",
+    },
+    {
+      title: "Trạng thấi",
+      dataIndex: "progress",
+      key: "progress",
+      width: 104,
+    },
+    {
+      title: "Thời gian yêu cầu",
+      dataIndex: "time",
+      key: "time",
+      with: 100,
+      align: "center",
+    },
+    {
+      title: "Thao tác",
+      dataIndex: "actions",
+      key: "actions",
+      width: 80,
+      render: (text, record, index) => (
+        <ActionsCell
+          hasEdit={false}
+          hasView={false}
+          hasDelete={false}
+          onConfirm={() => {
+            setIsModalConfirm(true);
+            setIdProduct(record.id);
+          }}
+        />
       ),
     },
   ];
@@ -183,9 +287,12 @@ const StoreProduct = () => {
 
   useEffect(() => {
     getProductsStore();
+    if (authUser && authUser.id) {
+      getProductMoving(authUser.id);
+    }
   }, [selled]);
 
-  const getProductsStore = async (id) => {
+  const getProductsStore = async () => {
     const condition = {
       condition: {
         isSold: 0,
@@ -195,6 +302,17 @@ const StoreProduct = () => {
     const res = await indexApi.getProductsByManagerId(authUser.id, condition);
     if (res.data && res.data.products) {
       setProductStore(buildData(res.data.products));
+    }
+  };
+
+  const acceptProduct = async () => {
+    const res = await completeProduct(idProduct, authUser.id);
+    if (res.success === true) {
+      setIsModalConfirm(false);
+      setSelled(!selled);
+      toast.success(res.message);
+    } else {
+      toast.error(res.message);
     }
   };
 
@@ -209,6 +327,19 @@ const StoreProduct = () => {
     console.log(res);
     if (res.data && res.data.sentRequests) {
       setRequests(buildDataRequest(res.data.sentRequests));
+    }
+  };
+
+  const getProductMoving = async (id) => {
+    const condition = {
+      condition: {
+        progress: 1,
+      },
+      role: 4,
+    };
+    const res = await indexApi.getRequestsByManagerId(id, condition);
+    if (res.data && res.data.sentRequests) {
+      setProductMoving(buildDataRequest(res.data.sentRequests));
     }
   };
 
@@ -228,6 +359,12 @@ const StoreProduct = () => {
         o.status = data[i]?.status?.context;
         o.amount = data[i]?.amount;
         o.time = moment(data[i]?.createdAt).calendar();
+        o.progress =
+          data[i]?.progress === 0
+            ? "Chờ xác nhận"
+            : data[i]?.progress === 1
+            ? "Đang vận chuyển"
+            : "Đã hủy";
       }
       result.push(o);
     }
@@ -244,10 +381,27 @@ const StoreProduct = () => {
       ),
     },
     {
-      label: `Sản phẩm trong kho`,
+      label: `Sản phẩm đang vận chuyển`,
       key: "2",
       children: (
+        <CustomTable
+          dataSource={productMoving}
+          columns={movingProductColumns}
+        />
+      ),
+    },
+    {
+      label: `Sản phẩm trong kho`,
+      key: "3",
+      children: (
         <CustomTable dataSource={productStore} columns={productColumns} />
+      ),
+    },
+    {
+      label: `Yêu cầu bị từ chối`,
+      key: "4",
+      children: (
+        <CustomTable dataSource={requests} columns={requestProductColumns} />
       ),
     },
   ];
@@ -291,6 +445,16 @@ const StoreProduct = () => {
           handleCancel={() => setIsModalSell(false)}
           idProduct={idProductSell}
           handleSell={() => setSelled(!selled)}
+        />
+      )}
+      {isModalConfirm && (
+        <ModalConfirm
+          isModalOpen={isModalConfirm}
+          handleOk={() => {
+            acceptProduct();
+          }}
+          handleCancel={() => setIsModalConfirm(false)}
+          idProduct={idProduct}
         />
       )}
     </PageContent>

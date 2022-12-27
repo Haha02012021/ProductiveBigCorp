@@ -133,7 +133,6 @@ var getProducts = async (id, condition) => {
     const products = await Manager.findByPk(id, {
       include: [
         {
-          required: false,
           model: Product,
           as: "products",
           through: {
@@ -167,16 +166,14 @@ var getProducts = async (id, condition) => {
               where: {
                 role: [2, 3, 4],
               },
-              attributes: ["id", "name"],
+              attributes: ["id", "name", "role"],
             },
             {
-              required: false,
               model: Status,
               as: "status",
               attributes: ["id", "context"],
             },
             {
-              required: false,
               model: Error,
               as: "errors",
               attributes: ["content", "updatedAt"],
@@ -191,11 +188,7 @@ var getProducts = async (id, condition) => {
         },
       ],
     });
-    if(!products) {
-      throw "products not found";
-    } else{
-      return products;
-    }
+    return products;
   } catch (err) {
     console.log(err);
     return null;

@@ -50,7 +50,7 @@ export default function Login() {
               navigate("/factory/product-lot", { replace: true });
               break;
             case "3":
-              navigate("/maintainer/", { replace: true });
+              navigate("/maintainer/maintain-products", { replace: true });
               break;
             case "4":
               navigate("/store/store-product", { replace: true });

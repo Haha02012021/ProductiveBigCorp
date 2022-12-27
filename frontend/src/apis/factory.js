@@ -8,8 +8,22 @@ const addNewProducts = (data) => {
   return instance.post("/factory/newProducts", data);
 };
 
-const refuseRequestById = (id, data) => {
-  return instance.get(`/factory/request/refuse/${id}`);
+const acceptRequest = (reqId, factoryId) => {
+  return instance.get(`/factory/request/accept/${reqId}/${factoryId}`);
 };
 
-export { getBatchesByFactoryId, addNewProducts, refuseRequestById };
+const refuseRequestById = (id, data) => {
+  return instance.post(`/factory/request/refuse/${id}`, data);
+};
+
+const receiveBrokenProducts = (data) => {
+  return instance.post("/factory/receiveBrokenProducts", data);
+};
+
+export {
+  getBatchesByFactoryId,
+  addNewProducts,
+  refuseRequestById,
+  acceptRequest,
+  receiveBrokenProducts,
+};

@@ -5,18 +5,14 @@ import styled from "styled-components";
 import indexApi from "../../../apis/index";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import { sendWarrantService } from "../../../apis/store";
+import { toast } from "react-toastify";
+
 const { TextArea } = Input;
 
 const ModelSendWarranty = (props) => {
   const [product, setProduct] = useState({});
-  const [warranties, setWarranties] = useState([]);
-  const [warranty, setWarranty] = useState(0);
   const { authUser } = useContext(AuthContext);
   const [errContent, setErrorContent] = useState("");
-
-  const onSearch = (value) => {
-    console.log("search:", value);
-  };
 
   useEffect(() => {
     if (props.idProductWarranty) {
@@ -30,43 +26,19 @@ const ModelSendWarranty = (props) => {
       setProduct(res.data);
     }
   };
-  useEffect(() => {
-    getWarranties();
-  }, []);
-
-  const getWarranties = async () => {
-    const res = await indexApi.getManagerByRole(3);
-    if (res.data) {
-      setWarranties(buildDataModel(res.data));
-    }
-  };
-
-  const buildDataModel = (data) => {
-    const results = new Array();
-    for (let i = 0; i < data.length; i++) {
-      results.push({ value: data[i].id, label: data[i].name });
-    }
-    return results;
-  };
-
-  const onChangeWarranty = (value) => {
-    setWarranty(value);
-  };
 
   const sendWarrant = async () => {
-    if (
-      warranty !== 0 &&
-      props.idProductWarranty > 0 &&
-      errContent.length > 0
-    ) {
+    if (props.idProductWarranty > 0 && errContent.length > 0) {
       const res = await sendWarrantService({
         product_id: props.idProductWarranty,
         store_id: authUser.id,
         content: errContent,
       });
       if (res.success === true) {
-        setWarranty(0);
         props.handleOk();
+        toast.success(res.data);
+      } else {
+        toast.error(res.data);
       }
     }
   };
@@ -139,24 +111,6 @@ const ModelSendWarranty = (props) => {
         <BoldText style={{ textTransform: "uppercase" }}>
           Thông tin chi tiết bảo hành
         </BoldText>
-
-        <Col span={24}>
-          <label>Cơ sở bảo hành: </label>
-          <Select
-            showSearch
-            placeholder="Select a person"
-            optionFilterProp="children"
-            onChange={onChangeWarranty}
-            style={{
-              width: "100%",
-            }}
-            onSearch={onSearch}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
-            options={warranties}
-          />
-        </Col>
 
         <Col span={24}>
           <label>Mô tả lỗi: </label>
