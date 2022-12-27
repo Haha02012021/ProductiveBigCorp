@@ -232,7 +232,7 @@ export default function ProductExport() {
       label: `Đơn hàng được yêu cầu`,
       key: "1",
       children: (
-        <PageContent getSearchResults={handleSearchReqResults}>
+        <PageContent>
           <CustomTable
             dataSource={reqDataSource}
             columns={columns.filter(
@@ -247,7 +247,7 @@ export default function ProductExport() {
       label: `Đơn hàng đã hủy`,
       key: "2",
       children: (
-        <PageContent getSearchResults={handleSearchCanceledReqResults}>
+        <PageContent>
           <CustomTable
             dataSource={canceledReqDataSource}
             columns={columns.filter((column) => column.key !== "actions")}
@@ -256,22 +256,6 @@ export default function ProductExport() {
       ),
     },
   ];
-
-  const handleSearchReqResults = (results) => {
-    if (results) {
-      setReqDataSource(buildData([results]));
-    } else {
-      getRequestsByManagerId();
-    }
-  };
-
-  const handleSearchCanceledReqResults = (results) => {
-    if (results) {
-      setCanceledReqDataSource(buildData([results]));
-    } else {
-      getCanceledReqsByManagerId();
-    }
-  };
 
   return (
     <>
