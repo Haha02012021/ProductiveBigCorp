@@ -1,4 +1,4 @@
-const {db, Version, Size, Safety, Interior, I_ACTIVSENSE, Exterior, Chassis, Engine, MODEL, Color, Image} = require('../models');
+const {db, Version, Size, Safety, Interior, Iactivsense, Exterior, Chassis, Engine, MODEL, Color, Image} = require('../models');
 
 var addVersion = async (data) => {
     try {
@@ -68,7 +68,7 @@ var addVersion = async (data) => {
             tua_tay_ghe_sau_tich_hop_cong_usb: data.tua_tay_ghe_sau_tich_hop_cong_usb,
             hang_ghe_thu_hai_gap_theo_ti_le_60_40: data.hang_ghe_thu_hai_gap_theo_ti_le_60_40,
         })
-        await I_ACTIVSENSE.create({
+        await Iactivsense.create({
             version_id: newVer.id,
             AFS: data.AFS,
             HBC: data.HBC,
@@ -121,33 +121,61 @@ var addVersion = async (data) => {
 const getInfo = async (id) => {
     try {
         const versionInfo = await Version.findByPk(id, {include: [
-        'chassis', 
-        'engine', 
-        'exterior',
-        'interior',
-        'i_activesense',
-        'safety',
-        'size',
-        {
-            model: MODEL,
-            as: 'model',
-            attributes: ['id', 'name'],
-            include: [
-                {
-                    model: Color,
-                    as: 'colors',
-                    through: {
-                        attributes: ['image']
+            {
+              model: Chassis,
+              as: "chassis",
+              paranoid: false,
+            },
+            {
+              model: Engine,
+              as: "engine",
+              paranoid: false,
+            },
+            {
+              model: Exterior,
+              as: "exterior",
+              paranoid: false,
+            },
+            {
+              model: Interior,
+              as: "interior",
+              paranoid: false,
+            },
+            {
+              model: Iactivsense,
+              as: "i_activsense",
+              paranoid: false,
+            },
+            {
+              model: Safety,
+              as: "safety",
+              paranoid: false,
+            },
+            {
+              model: Size,
+              as: "size",
+              paranoid: false,
+            },
+            {
+                model: MODEL,
+                as: 'model',
+                attributes: ['id', 'name'],
+                include: [
+                    {
+                        model: Color,
+                        as: 'colors',
+                        through: {
+                            attributes: ['image']
+                        },
+                        attributes: ['id', 'name', 'code'],
                     },
-                    attributes: ['id', 'name', 'code'],
-                },
-                {
-                    model: Image,
-                    as: 'images',
-                    attributes: ['id', 'link'],
-                }
-            ]
-        },]});
+                    {
+                        model: Image,
+                        as: 'images',
+                        attributes: ['id', 'link'],
+                    }
+                ]
+            },]});
         return versionInfo;
     } catch (err) {
         console.log(err);
@@ -161,7 +189,7 @@ const getAllVers = async () => {
                 {
                     model: MODEL,
                     as: 'model',
-                    attributes: ['id', 'name'],
+                    attributes: ['id', 'name', 'deletedAt'],
                 },
             ]
         });

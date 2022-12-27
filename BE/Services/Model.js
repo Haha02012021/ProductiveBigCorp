@@ -39,12 +39,20 @@ var info = async (id) => {
             through: {
                 attributes: [],
             },
-        }, 'versions', {
+        }, {
+            model: Version,
+            as: 'versions',
+            attributes: ['id', 'name', 'price', 'deletedAt'],
+            paranoid: false,
+        }, {
             model: Image,
             as: 'images',
             attributes: ['id', 'link'],
+            paranoid: false
         }
-        ]});
+        ],
+        paranoid: false 
+        });
         return model;
     } catch (err) {
         console.log(err);
@@ -71,8 +79,24 @@ var getAll = async () => {
     }
 }
 
+var remove = async(id) => {
+    try {
+        const model = await MODEL.findByPk(id);
+        if(!model) {
+            throw "model not found"
+        } else {
+            await model.destroy();
+            return true;
+        }
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
 module.exports = {
     addModel,
     info,
     getAll,
+    remove,
 }

@@ -3,7 +3,7 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var {body, query, validationResult} = require('express-validator');
 
-const {addManager, createModel, createVersion, getAllProducts} = require('../Controllers/CoporationController');
+const {addManager, createModel, createVersion, getAllProducts, deleteModel} = require('../Controllers/CoporationController');
 
 const {validateCoporation} = require('../Middlewares/roleValidator');
 const { finalCheck } = require('../Validators/checkErrors');
@@ -29,5 +29,7 @@ router.post('/products/all', body('condition').optional({checkFalsy: null}).isOb
 body('managers').optional({checkFalsy: null}).isArray().withMessage('must be array').custom(checkIntArray),
 finalCheck,
 getAllProducts);
+
+router.delete('/model/:id', deleteModel);
 
 module.exports = router;

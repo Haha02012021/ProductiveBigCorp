@@ -12,7 +12,14 @@ const {
   Image,
   Manager,
   Error,
-  sequelize
+  sequelize,
+  Chassis,
+  Engine,
+  Exterior,
+  Interior,
+  Iactivsense,
+  Safety,
+  Size,
 } = require("../models");
 
 var addProducts = async (amount, color_id, model_id, version_id, batch_id) => {
@@ -66,7 +73,7 @@ var productInfo = async (id) => {
         {
           model: MODEL,
           as: "model",
-          attributes: ["id", "name"],
+          attributes: ["id", "name", 'deletedAt'],
           include: [
             {
               model: Color,
@@ -80,22 +87,53 @@ var productInfo = async (id) => {
               model: Image,
               as: "images",
               attributes: ["id", "link"],
+              paranoid: false,
             },
           ],
+          paranoid: false,
         },
         {
           model: Version,
           as: "version",
-          attributes: ["id", "name", "price"],
+          attributes: ["id", "name", "price", 'deletedAt'],
           include: [
-            "chassis",
-            "engine",
-            "exterior",
-            "interior",
-            "i_activesense",
-            "safety",
-            "size",
+            {
+              model: Chassis,
+              as: "chassis",
+              paranoid: false,
+            },
+            {
+              model: Engine,
+              as: "engine",
+              paranoid: false,
+            },
+            {
+              model: Exterior,
+              as: "exterior",
+              paranoid: false,
+            },
+            {
+              model: Interior,
+              as: "interior",
+              paranoid: false,
+            },
+            {
+              model: Iactivsense,
+              as: "i_activsense",
+              paranoid: false,
+            },
+            {
+              model: Safety,
+              as: "safety",
+              paranoid: false,
+            },
+            {
+              model: Size,
+              as: "size",
+              paranoid: false,
+            },
           ],
+          paranoid: false,
         },
         {
           model: Color,
@@ -172,12 +210,14 @@ var allProducts = async (condition, managers) => {
         {
           model: MODEL,
           as: "model",
-          attributes: ["id", "name"],
+          attributes: ["id", "name", "deletedAt"],
+          paranoid: false
         },
         {
           model: Version,
           as: "version",
-          attributes: ["id", "name", "price"],
+          attributes: ["id", "name", "price", "deletedAt"],
+          paranoid: false
         },
         {
           model: Color,
@@ -212,7 +252,40 @@ var allProducts = async (condition, managers) => {
 
 var findByUuid = async (uuid) => {
   try {
-    const product = await Product.findOne({ where: { uuid } });
+    const product = await Product.findOne({ 
+      where: { uuid }, 
+      include: [
+        {
+          model: MODEL,
+          as: "model",
+          attributes: ["id", "name", "deletedAt"],
+          paranoid: false
+        },
+        {
+          model: Version,
+          as: "version",
+          attributes: ["id", "name", "price", "deletedAt"],
+          paranoid: false
+        },
+        {
+          model: Color,
+          as: "color",
+          attributes: ["id", "name", "code"],
+        },
+        {
+          required: false,
+          model: Manager,
+          as: "managers",
+          through: {
+            attributes: [],
+          },
+          where: {
+            role: [2, 3, 4],
+          },
+          attributes: ["id", "name", "role"],
+        },
+      ]
+    });
     if (!product) {
       throw "product not found";
     } else {

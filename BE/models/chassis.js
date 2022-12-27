@@ -55,8 +55,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    deletedAt: {
+      allowNull: true,
+      type: DataTypes.DATE
+    }
   }, {
     sequelize,
+    paranoid: true,
     tableName: 'chassises',
     modelName: 'Chassis',
   });

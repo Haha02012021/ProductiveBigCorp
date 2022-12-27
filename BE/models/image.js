@@ -22,9 +22,14 @@ module.exports = (sequelize, DataTypes) => {
     link: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    deletedAt: {
+      allowNull: true,
+      type: DataTypes.DATE
     }
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'Image',
     tableName: 'images'
   });
