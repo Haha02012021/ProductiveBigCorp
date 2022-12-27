@@ -13,6 +13,7 @@ import { AuthContext } from "../../../Provider/AuthProvider";
 import ProductLotForm from "./ProductLotForm";
 import invertColor from "../../../utils/invertColor";
 import { ThemeContext } from "../../../Provider/ThemeProvider";
+import SummonReqForm from "./SummonReqForm";
 
 export default function ProductLot() {
   const { authUser } = useContext(AuthContext);
@@ -21,6 +22,7 @@ export default function ProductLot() {
   const [summoningLotsSource, setSummoningLotsSource] = useState([]);
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
+  const [summonReqModalVisible, setSummonReqModalVisible] = useState(false);
   const [selectedBatch, setSelectedBatch] = useState();
   const [form] = Form.useForm();
   const columns = [
@@ -69,7 +71,10 @@ export default function ProductLot() {
           hasView={false}
           deleteText="Triệu hồi"
           onEdit={() => handleEdit(record)}
-          onDelete={() => handleSummon(record)}
+          onDelete={() => {
+            setSelectedBatch(record);
+            setSummonReqModalVisible(true);
+          }}
         />
       ),
     },
@@ -90,7 +95,10 @@ export default function ProductLot() {
       key: "2",
       children: (
         <PageContent>
-          <CustomTable dataSource={summoningLotsSource} columns={columns} />
+          <CustomTable
+            dataSource={summoningLotsSource}
+            columns={columns.filter((column) => column.key !== "actions")}
+          />
         </PageContent>
       ),
     },
@@ -104,7 +112,6 @@ export default function ProductLot() {
   }, [authUser, addModalVisible, editModalVisible]);
 
   const handleEdit = (data) => {
-    console.log(data);
     setSelectedBatch(data);
     setEditModalVisible(true);
   };
@@ -112,7 +119,7 @@ export default function ProductLot() {
   const getBatches = async () => {
     const condition = {
       condition: {
-        color_id: 3,
+        isSummoned: 0,
       },
     };
     const res = await getBatchesByFactoryId(authUser.id, condition);
@@ -124,7 +131,7 @@ export default function ProductLot() {
   const getSummoningBatches = async () => {
     const condition = {
       condition: {
-        color_id: 3,
+        isSummoned: 1,
       },
     };
     const res = await getBatchesByFactoryId(authUser.id, condition);
@@ -138,15 +145,15 @@ export default function ProductLot() {
       const date = new Date(batch.createdAt);
       const time = date.toLocaleString("vi-VN").split(",")[1];
       return {
-        key: batch.id,
-        factory_id: batch.factory_id,
+        key: batch?.id,
+        factory_id: batch?.factory_id,
         time,
-        model_id: batch.model_id,
-        model: batch.model.name,
-        version: batch.version.name,
-        version_id: batch.version_id,
-        amount: batch.amount,
-        color: { ...batch.color, id: batch.color_id },
+        model_id: batch?.model_id,
+        model: batch?.model.name,
+        version: batch?.version.name,
+        version_id: batch?.version_id,
+        amount: batch?.amount,
+        color: batch?.color,
       };
     });
 
@@ -176,13 +183,21 @@ export default function ProductLot() {
     }
   };
 
-  const handleSummon = async (record) => {
+  const handleSummon = async () => {
     try {
-      const res = await requestSummon(record.key, authUser.id);
+      const res = await requestSummon(
+        selectedBatch.key,
+        authUser.id,
+        form.getFieldsValue()
+      );
       if (res.success) {
-        message.success("Bạn đã yêu cầu triệu hồi", 2);
+        message.success(
+          `Bạn đã yêu cầu triệu hồi cho lô sản phẩm mã ${selectedBatch.key}`,
+          2
+        );
         getBatches();
         getSummoningBatches();
+        setSummonReqModalVisible(false);
       }
     } catch (error) {
       message.error(error.message, 2);
@@ -220,6 +235,17 @@ export default function ProductLot() {
           width={isMobile ? "80%" : "40%"}
         >
           <ProductLotForm form={form} batch={selectedBatch} />
+        </CustomModal>
+      )}
+      {summonReqModalVisible && (
+        <CustomModal
+          open={summonReqModalVisible}
+          onCancel={() => setSummonReqModalVisible(false)}
+          onOk={() => handleSummon()}
+          title="Yêu cầu triệu hồi"
+          width={isMobile ? "80%" : "40%"}
+        >
+          <SummonReqForm form={form} />
         </CustomModal>
       )}
     </>

@@ -157,7 +157,7 @@ export default function MaintainProduct() {
         },
       });
     }
-  }, [authUser]);
+  }, [authUser, transportModalVisible]);
 
   const getSummonProducts = async (condition) => {
     const res = await indexApi.getProductsByManagerId(authUser.id, condition);
