@@ -39,13 +39,6 @@ export default function MaintainProduct() {
       key: "id",
       width: 50,
       fixed: true,
-      filterIcon: (filtered) => (
-        <SearchOutlined
-          style={{
-            color: filtered ? "#1890ff" : undefined,
-          }}
-        />
-      ),
     },
     {
       title: "Phiên bản",
@@ -88,10 +81,10 @@ export default function MaintainProduct() {
         <ActionsCell
           hasConfirm={record.status.id === 8}
           hasEdit={record.status.id === 7}
-          hasDelete={record.status.id === 7 || record.status.id === 8}
+          hasDelete={record.status.id === 8}
           confirmText="Bảo hành xong"
           editText="Bảo hành"
-          deleteText={record.status.id === 7 ? "Từ chối" : "Hỏng"}
+          deleteText="Hỏng"
           onEdit={() => handleMaintain(record)}
           onDelete={() => handleDelete(record)}
           onConfirm={() => handleDoneMaintain(record)}
