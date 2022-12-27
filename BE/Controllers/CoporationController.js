@@ -3,6 +3,7 @@ const {addModel, remove} = require('../Services/Model');
 const {addVersion, removeVersion} = require('../Services/Version');
 const {allProducts} = require('../Services/Product');
 
+
 var addManager = async (req, res) => {
     try {
         const manager = await createManager(
@@ -20,9 +21,16 @@ var addManager = async (req, res) => {
 
 var createModel = async (req, res) => {
     try {
-        const newModel = await addModel(req.body.name, req.body.colors);
+        const images = req.files.images.map(element => {
+            return 'http://localhost:5000/' + element.filename
+        });
+        const color_images = req.files.colors.map(element => {
+            return 'http://localhost:5000/' + element.filename
+        });
+        console.log(images, color_images);
+        const newModel = await addModel(req.body.name, req.body.color_id, color_images, images);
         res.json({success: true, data: newModel});
-    } catch {
+    } catch (err) {
         res.status(500).json({success: false, message: 'error from newModel', error: err});
     }
 }
