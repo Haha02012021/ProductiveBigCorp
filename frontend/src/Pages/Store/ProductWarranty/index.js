@@ -10,6 +10,7 @@ import ModelSendWarranty from "./modelSendWarranty";
 import moment from "moment";
 import TabProductWarranty from "./tabProductWarranty";
 import TabProductMantained from "./tabProductMaintained";
+import TabProductMoving from "./tabProductMoving";
 
 const ProductWarranty = () => {
   const [currentTab, setCurrentTab] = useState(1);
@@ -17,7 +18,6 @@ const ProductWarranty = () => {
   const [isModalWarrantyOpen, setIsModalWarrantyOpen] = useState(false);
   const { authUser } = useContext(AuthContext);
   const [selledProducts, setSelledProducts] = useState([]);
-
   const [idProduct, setIdProduct] = useState(0);
   const [idProductWarranty, setIdProductWarranty] = useState(1);
   const [summonProducts, setSummonProducts] = useState([]);
@@ -231,12 +231,12 @@ const ProductWarranty = () => {
       ),
     },
     {
-      label: `Sản phẩm triệu hồi`,
+      label: `Sản phẩm chờ vận chuyển`,
       key: "3",
       children: (
-        <CustomTable
-          dataSource={summonProducts}
-          columns={summonProductColumns}
+        <TabProductMoving
+          showModal={() => setIsModalOpen(true)}
+          selectProduct={(id) => setIdProduct(id)}
         />
       ),
     },
@@ -247,6 +247,16 @@ const ProductWarranty = () => {
         <TabProductMantained
           showModal={() => setIsModalOpen(true)}
           selectProduct={(id) => setIdProduct(id)}
+        />
+      ),
+    },
+    {
+      label: `Sản phẩm triệu hồi`,
+      key: "5",
+      children: (
+        <CustomTable
+          dataSource={summonProducts}
+          columns={summonProductColumns}
         />
       ),
     },
