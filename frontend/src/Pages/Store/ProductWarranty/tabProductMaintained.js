@@ -5,11 +5,17 @@ import ActionsCell from "../../../Components/Table/ActionsCell";
 import indexApi from "../../../apis";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import moment from "moment";
+import ModalConfirm from "../StoreProduct/modalConfirm";
+
+import { toast } from "react-toastify";
+import { sendBackCustomer } from "../../../apis/store";
 
 const TabProductMantained = (props) => {
   const [maintainedProducts, setMaintainedProducts] = useState([]);
   const { authUser } = useContext(AuthContext);
   const [onChange, setOnChange] = useState(false);
+  const [isModalConfirm, setIsModalConfirm] = useState(false);
+  const [idProduct, setIdProduct] = useState(0);
 
   const productWarrantyColumns = [
     {
@@ -64,6 +70,10 @@ const TabProductMantained = (props) => {
             props.selectProduct(record.id);
             props.showModal();
           }}
+          onConfirm={() => {
+            setIdProduct(record.id);
+            setIsModalConfirm(true);
+          }}
         />
       ),
     },
@@ -102,8 +112,8 @@ const TabProductMantained = (props) => {
   useEffect(() => {
     getMaintainedProductsStore({
       condition: {
-        isSold: 1,
-        status_id: 27,
+        isSold: 2,
+        status_id: 11,
       },
     });
   }, [onChange]);
@@ -119,12 +129,33 @@ const TabProductMantained = (props) => {
     }
   };
 
+  const acceptProduct = async () => {
+    const res = await sendBackCustomer(idProduct, authUser.id);
+    if (res.success === true) {
+      setIsModalConfirm(false);
+      setOnChange(!onChange);
+      toast.success(res.message);
+    } else {
+      toast.error(res.message);
+    }
+  };
+
   return (
     <div>
       <CustomTable
         dataSource={[...maintainedProducts]}
         columns={productWarrantyColumns}
       />
+      {isModalConfirm && (
+        <ModalConfirm
+          isModalOpen={isModalConfirm}
+          handleOk={() => {
+            acceptProduct();
+          }}
+          handleCancel={() => setIsModalConfirm(false)}
+          idProduct={idProduct}
+        />
+      )}
     </div>
   );
 };
