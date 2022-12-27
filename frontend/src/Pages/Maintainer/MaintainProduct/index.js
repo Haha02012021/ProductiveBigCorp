@@ -1,4 +1,4 @@
-import { Badge, Form, message, Tabs } from "antd";
+import { Badge, Button, Form, message, Tabs } from "antd";
 import { useContext, useEffect, useState } from "react";
 import {
   doneMaintian,
@@ -12,26 +12,28 @@ import CustomTable from "../../../Components/Table/CustomTable";
 import { statuses } from "../../../const";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import DoneMaintainForm from "./DoneMaintainForm";
+import indexApi from "../../../apis/index";
+import moment from "moment";
+import TransportForm from "./TransportForm";
 
 export default function MaintainProduct() {
   const { authUser } = useContext(AuthContext);
   const [maintainProductsDataSource, setMaintainProductsDataSource] = useState(
     []
   );
+  const [summonProducts, setSummonProducts] = useState([]);
   const [doneMaintainModalVisible, setDoneMaintainModalVisible] =
     useState(false);
   const [selectedProduct, setSelectedProduct] = useState();
+  const [transportModalVisible, setTransportModalVisible] = useState(false);
   const [form] = Form.useForm();
   const columns = [
     {
-      title: "Mã sản phẩm",
+      title: "Mã",
       dataIndex: "id",
       key: "id",
-    },
-    {
-      title: "Dòng sản phẩm",
-      dataIndex: "model",
-      key: "model",
+      width: 50,
+      fixed: true,
     },
     {
       title: "Phiên bản",
@@ -86,6 +88,7 @@ export default function MaintainProduct() {
       ),
     },
   ];
+
   const tabItems = [
     {
       key: "1",
@@ -108,6 +111,7 @@ export default function MaintainProduct() {
             columns={columns.filter(
               (column) => column.key !== "id" && column.key !== "store"
             )}
+            dataSource={summonProducts}
           />
         </PageContent>
       ),
@@ -115,17 +119,78 @@ export default function MaintainProduct() {
   ];
 
   useEffect(() => {
-    getAllProducts();
-  }, []);
+    // getWarrantyProductsStore({
+    //   condition: {
+    //     isSold: 1,
+    //     status_id: 6,
+    //   },
+    // });
 
-  const getAllProducts = async () => {
+    if (authUser) {
+      getMaintainProducts();
+
+      getSummonProducts({
+        condition: {
+          status_id: 16,
+        },
+      });
+    }
+  }, [authUser]);
+
+  // const getWarrantyProductsStore = async (condition) => {
+  //   const res = await indexApi.getProductsByManagerId(authUser.id, condition);
+  //   if (res.data && res.data.products) {
+  //     setWarrantyProducts(buildData(res.data.products));
+  //   }
+  // };
+
+  const getSummonProducts = async (condition) => {
+    const res = await indexApi.getProductsByManagerId(authUser.id, condition);
+    if (res.data && res.data.products) {
+      setSummonProducts(buildSummonData(res.data.products));
+    }
+  };
+
+  const buildSummonData = (data) => {
+    const result = new Array();
+    for (let i = 0; i < data.length; i++) {
+      const o = {};
+      if (data[i]) {
+        o.key = data[i]?.id;
+        o.code = data[i]?.id;
+        o.version = data[i]?.version?.name;
+        o.sellDate = moment(data[i]?.soldAt).calendar();
+        o.factory = data[i]?.managers[0]?.name;
+        o.status = data[i]?.status?.context;
+        o.statusWarranty = data[i]?.statusWarranty;
+        o.model = data[i]?.model?.name;
+        o.color = data[i]?.color?.name;
+        o.id = data[i]?.id;
+        o.error =
+          data[i] && data[i].errors && data[i].errors.length > 0
+            ? data[i].errors[0]?.content
+            : "Chưa đính kèm lỗi";
+        o.requestDate = moment(
+          data[i] && data[i].errors && data[i].errors.length > 0
+            ? data[i].errors[0]?.updatedAt
+            : null
+        ).calendar();
+        o.store = data[i]?.managers[1]?.name;
+      }
+      result.push(o);
+    }
+    return result;
+  };
+
+  const getMaintainProducts = async () => {
     let data = [];
+
     try {
       const res7 = await getAllMaintainProducts(authUser.id, 7);
 
       console.log(res7);
       if (res7.success) {
-        data = [...data, ...buildData(res7.data.products)];
+        data = [...data, ...buildMaintainData(res7.data.products)];
       }
     } catch (error) {}
 
@@ -134,7 +199,7 @@ export default function MaintainProduct() {
 
       console.log(res8);
       if (res8.success) {
-        data = [...data, ...buildData(res8.data.products)];
+        data = [...data, ...buildMaintainData(res8.data.products)];
       }
     } catch (error) {}
 
@@ -143,7 +208,7 @@ export default function MaintainProduct() {
 
       console.log(res9);
       if (res9.success) {
-        data = [...data, ...buildData(res9.data.products)];
+        data = [...data, ...buildMaintainData(res9.data.products)];
       }
     } catch (error) {}
 
@@ -152,7 +217,7 @@ export default function MaintainProduct() {
 
       console.log(res12);
       if (res12.success) {
-        data = [...data, ...buildData(res12.data.products)];
+        data = [...data, ...buildMaintainData(res12.data.products)];
       }
     } catch (error) {}
 
@@ -161,7 +226,7 @@ export default function MaintainProduct() {
 
       console.log(res10);
       if (res10.success) {
-        data = [...data, ...buildData(res10.data.products)];
+        data = [...data, ...buildMaintainData(res10.data.products)];
       }
     } catch (error) {}
 
@@ -170,14 +235,14 @@ export default function MaintainProduct() {
 
       console.log(res11);
       if (res11.success) {
-        data = [...data, ...buildData(res11.data.products)];
+        data = [...data, ...buildMaintainData(res11.data.products)];
       }
     } catch (error) {}
 
     setMaintainProductsDataSource(data);
   };
 
-  const buildData = (data) => {
+  const buildMaintainData = (data) => {
     const builtData = data.map((product) => {
       return {
         key: product.id,
@@ -207,7 +272,7 @@ export default function MaintainProduct() {
 
       if (res.success) {
         message.success(`Sản phẩm mã ${data.id} đang được bảo hành`, 2);
-        getAllProducts();
+        getMaintainProducts();
       }
     } catch (error) {
       message.error(error.message, 2);
@@ -243,12 +308,16 @@ export default function MaintainProduct() {
   };
 
   const handleSave = async () => {
-    const data = {
+    let data = {
       product_id: selectedProduct.id,
       warranty_id: authUser.id,
-      ...form.getFieldsValue(),
-      done: selectedProduct.done,
     };
+
+    if (selectedProduct.done) {
+      data.done = true;
+    } else {
+      data.error = form.getFieldValue("error");
+    }
     try {
       console.log(data);
 
@@ -261,7 +330,7 @@ export default function MaintainProduct() {
             content.substring(1, content.length, 2)
         );
         setDoneMaintainModalVisible(false);
-        getAllProducts();
+        getMaintainProducts();
       }
     } catch (error) {
       message.error(error.message, 2);
@@ -272,7 +341,7 @@ export default function MaintainProduct() {
       <PageContent
         pageHeaderProps={{
           title: "Sản phẩm bảo hành/triệu hồi",
-          hasAction: false,
+          customAction: <Button type="primary">Gửi đi</Button>,
         }}
         showSearch={false}
       >
@@ -286,6 +355,16 @@ export default function MaintainProduct() {
           onOk={() => handleSave()}
         >
           <DoneMaintainForm form={form} product={selectedProduct} />
+        </CustomModal>
+      )}
+      {transportModalVisible && (
+        <CustomModal
+          title="Gửi về cơ sở"
+          open={transportModalVisible}
+          onCancel={() => setTransportModalVisible(false)}
+          onOk={() => handleSave()}
+        >
+          <TransportForm form={form} />
         </CustomModal>
       )}
     </>

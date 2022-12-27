@@ -81,11 +81,11 @@ export const statuses = {
     color: "",
   },
   10: {
-    content: "Đã bảo hành và trả về",
+    content: "Gửi lại đại lý",
     color: "",
   },
   11: {
-    content: "Đã bảo hành và thu hồi",
+    content: "Trả về nhà máy",
     color: "",
   },
   12: {

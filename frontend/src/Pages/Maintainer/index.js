@@ -9,7 +9,6 @@ export default function Maintainer() {
     <Routes>
       <Route path="/*" element={<MaintainerLayout />}>
         <Route path="maintain-products" element={<MaintainProduct />} />
-        <Route path="transport-products" element={<TransportProduct />} />
         <Route path="statistical" element={<Report />} />
       </Route>
     </Routes>

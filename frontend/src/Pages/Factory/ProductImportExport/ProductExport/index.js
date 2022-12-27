@@ -17,69 +17,68 @@ export default function ProductExport() {
   const [canceledReqDataSource, setCanceledReqDataSource] = useState([]);
   const [selectedReqId, setSelectedReqId] = useState();
   const [form] = Form.useForm();
-  const columns = useMemo(() => {
-    return [
-      {
-        title: "Dòng sản phẩm",
-        dataIndex: "model",
-        key: "model",
+  const columns = [
+    {
+      title: "Dòng sản phẩm",
+      dataIndex: "model",
+      key: "model",
+    },
+    {
+      title: "Phiên bản",
+      dataIndex: "version",
+      key: "version",
+    },
+    {
+      title: "Số lượng",
+      dataIndex: "amount",
+      key: "amount",
+    },
+    {
+      title: "Đại lý",
+      dataIndex: "store",
+      key: "store",
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "progress",
+      key: "progress",
+      render: (_, record) => {
+        return (
+          <Badge
+            text={progress[record.progress].context}
+            color={progress[record.progress].color}
+          />
+        );
       },
-      {
-        title: "Phiên bản",
-        dataIndex: "version",
-        key: "version",
+    },
+    {
+      title: "Ngày xuất/nhận",
+      dataIndex: "inExportDate",
+      key: "inExportDate",
+    },
+    {
+      title: "Lý do hủy",
+      dataIndex: "cancelReason",
+      key: "cancelReason",
+    },
+    {
+      title: "Thao tác",
+      dataIndex: "actions",
+      key: "actions",
+      render: (_, record) => {
+        return (
+          <ActionsCell
+            hasView={false}
+            hasEdit={false}
+            hasConfirm={record.progress === 0}
+            hasDelete={record.progress === 0}
+            onConfirm={() => handleConfirm(record)}
+            onDelete={() => handleCancel(record)}
+          />
+        );
       },
-      {
-        title: "Số lượng",
-        dataIndex: "amount",
-        key: "amount",
-      },
-      {
-        title: "Đại lý",
-        dataIndex: "store",
-        key: "store",
-      },
-      {
-        title: "Trạng thái",
-        dataIndex: "progress",
-        key: "progress",
-        render: (_, record) => {
-          return (
-            <Badge
-              text={progress[record.progress].context}
-              color={progress[record.progress].color}
-            />
-          );
-        },
-      },
-      {
-        title: "Ngày xuất/nhận",
-        dataIndex: "inExportDate",
-        key: "inExportDate",
-      },
-      {
-        title: "Lý do hủy",
-        dataIndex: "cancelReason",
-        key: "cancelReason",
-      },
-      {
-        title: "Thao tác",
-        dataIndex: "actions",
-        key: "actions",
-        render: (_, record) => {
-          if (record.progress !== 2) {
-            <ActionsCell
-              hasView={false}
-              hasEdit={false}
-              hasConfirm={record.progress === 0}
-              onConfirm={() => handleConfirm(record)}
-              onDelete={() => handleCancel(record)}
-            />;
-          }
-        },
-      },
-    ];
-  }, []);
+    },
+  ];
 
   useEffect(() => {
     getRequestsByManagerId();

@@ -112,12 +112,14 @@ export default function ModalViewProduct(props) {
           {
             title: listTable[i].title,
             dataIndex: "name",
-            width: "40%",
+            width: "35%",
+            fixed: true,
           },
           {
             title: "",
             dataIndex: "value",
             height: 34,
+            minWidth: 200,
           },
         ];
       }
@@ -127,10 +129,10 @@ export default function ModalViewProduct(props) {
   const Specification = () => {
     return (
       <>
-        <Row>
-          <Col span={12}>
+        <Row gutter={[8, 8]} style={{ paddingBottom: 20 }}>
+          <Col xs={{ span: 24 }} md={{ span: 8, offset: 0 }}>
             <Image
-              width={270}
+              width={"100%"}
               src={
                 colors &&
                 colors.length > 0 &&
@@ -141,7 +143,7 @@ export default function ModalViewProduct(props) {
               }
             />
           </Col>
-          <Col span={12}>
+          <Col xs={{ span: 24 }} md={{ span: 8, offset: 4 }}>
             <Row
               style={{
                 fontWeight: "bold",
@@ -205,9 +207,12 @@ export default function ModalViewProduct(props) {
             <BoldText>Giá: {version?.price + " VND"}</BoldText>
           </Col>
         </Row>
-        <Row style={{ display: "flex", flexDirection: "column" }}>
+        <hr />
+        <Row
+          style={{ display: "flex", flexDirection: "column", width: "100%" }}
+        >
           <BoldText style={{ marginTop: 10 }}>Thông số kỹ thuật</BoldText>
-          <Row>
+          <Col span={24} style={{ width: "100%", overflowX: "auto" }}>
             {listTable.map((table, index) => {
               return Object.keys(table.columns).length > 0 ? (
                 <TableHidenRow
@@ -219,7 +224,7 @@ export default function ModalViewProduct(props) {
                 <div key={index}></div>
               );
             })}
-          </Row>
+          </Col>
         </Row>
       </>
     );

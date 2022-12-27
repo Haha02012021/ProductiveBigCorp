@@ -15,6 +15,7 @@ export default function CustomTable({
         className="custom-table"
         bordered
         dataSource={dataSource}
+        style={{ width: "100%", overflowX: "auto" }}
         columns={columns}
         pagination={
           showPagination === true
