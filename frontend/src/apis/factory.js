@@ -20,10 +20,15 @@ const receiveBrokenProducts = (data) => {
   return instance.post("/factory/receiveBrokenProducts", data);
 };
 
+const requestSummon = (batchId, factoryId) => {
+  return instance.get(`/factory/products/summon/${batchId}/${factoryId}`);
+};
+
 export {
   getBatchesByFactoryId,
   addNewProducts,
   refuseRequestById,
   acceptRequest,
   receiveBrokenProducts,
+  requestSummon,
 };

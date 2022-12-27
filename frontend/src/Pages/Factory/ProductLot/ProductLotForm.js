@@ -70,9 +70,10 @@ export default function ProductLotForm({ form, batch }) {
 
   return (
     <Form
-      labelCol={{ md: { span: 6 } }}
+      // labelCol={{ md: { span: 6 } }}
       style={{ paddingTop: 24, paddingBottom: 24 }}
       form={form}
+      layout="vertical"
     >
       <Form.Item label="Dòng sản phẩm" required name="model_id">
         <Select
@@ -101,13 +102,8 @@ export default function ProductLotForm({ form, batch }) {
         ></Select>
       </Form.Item>
       <Row gutter={[24]}>
-        <Col span={13}>
-          <Form.Item
-            labelCol={{ span: 11 }}
-            label="Màu"
-            required
-            name="color_id"
-          >
+        <Col span={12}>
+          <Form.Item label="Màu" required name="color_id">
             <Select
               mode="multiple"
               placeholder="Chọn màu"
@@ -149,9 +145,8 @@ export default function ProductLotForm({ form, batch }) {
             />
           </Form.Item>
         </Col>
-        <Col span={11}>
+        <Col span={12}>
           <Form.Item
-            labelCol={{ span: 8 }}
             label="Số lượng"
             required
             name="amount"

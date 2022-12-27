@@ -25,7 +25,6 @@ export default function VersionManage() {
   }, []);
 
   const showModal = (data) => {
-    console.log(data.id);
     if (data.id !== versionId) {
       setVersionId(data.id);
     }
@@ -146,7 +145,6 @@ export default function VersionManage() {
         message.error("Dường như có lỗi gì đó!", 2);
       }
     } catch (error) {
-      console.log(error);
       setErrorPanelKey(error.errorFields.map(({ name }) => name[0]));
     }
   };
@@ -174,7 +172,7 @@ export default function VersionManage() {
           onOk={handleSave}
           onCancel={() => setEditModalVisible(false)}
           title="Sửa phiên bản"
-          width={isMobile ? "80%" : "68%"}
+          width={isMobile ? "80%" : "52%"}
         >
           <VersionForm
             form={form}
@@ -189,7 +187,7 @@ export default function VersionManage() {
           onOk={handleSave}
           onCancel={() => setAddModalVisible(false)}
           title="Thêm phiên bản"
-          width={isMobile ? "80%" : "68%"}
+          width={isMobile ? "80%" : "52%"}
         >
           <VersionForm form={form} errorPanelKey={errorPanelKey} />
         </CustomModal>
