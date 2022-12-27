@@ -1,19 +1,24 @@
+import { useEffect, useContext, useState } from "react";
 import { Tabs } from "antd";
 import PageContent from "../../../Components/PageContent";
 import ActionsCell from "../../../Components/Table/ActionsCell";
 import CustomTable from "../../../Components/Table/CustomTable";
+import indexApi from "../../../apis";
+import { AuthContext } from "../../../Provider/AuthProvider";
+import moment from "moment";
 
 export default function MaintainProduct() {
+  const { authUser } = useContext(AuthContext);
+  const [warrantyProducts, setWarrantyProducts] = useState([]);
+  const [summonProducts, setSummonProducts] = useState([]);
+
   const columns = [
     {
-      title: "Mã sản phẩm",
+      title: "Mã",
       dataIndex: "id",
       key: "id",
-    },
-    {
-      title: "Dòng sản phẩm",
-      dataIndex: "model",
-      key: "model",
+      width: 50,
+      fixed: true,
     },
     {
       title: "Phiên bản",
@@ -42,13 +47,8 @@ export default function MaintainProduct() {
     },
     {
       title: "Ngày gửi",
-      dataIndex: "giveDate",
-      key: "giveDate",
-    },
-    {
-      title: "Ngày xử lý xong",
-      dataIndex: "finishedDate",
-      key: "finishedDate",
+      dataIndex: "requestDate",
+      key: "requestDate",
     },
     {
       title: "Thao tác",
@@ -57,6 +57,67 @@ export default function MaintainProduct() {
       render: () => <ActionsCell hasView={false} hasConfirm={false} />,
     },
   ];
+
+  useEffect(() => {
+    getWarrantyProductsStore({
+      condition: {
+        isSold: 1,
+        status_id: 6,
+      },
+    });
+
+    getSummonProducts({
+      condition: {
+        status_id: 16,
+      },
+    });
+  }, []);
+
+  const getWarrantyProductsStore = async (condition) => {
+    const res = await indexApi.getProductsByManagerId(authUser.id, condition);
+    if (res.data && res.data.products) {
+      setWarrantyProducts(buildData(res.data.products));
+    }
+  };
+
+  const getSummonProducts = async (condition) => {
+    const res = await indexApi.getProductsByManagerId(authUser.id, condition);
+    if (res.data && res.data.products) {
+      setSummonProducts(buildData(res.data.products));
+    }
+  };
+
+  const buildData = (data) => {
+    const result = new Array();
+    for (let i = 0; i < data.length; i++) {
+      const o = {};
+      if (data[i]) {
+        o.key = data[i]?.id;
+        o.code = data[i]?.id;
+        o.version = data[i]?.version?.name;
+        o.sellDate = moment(data[i]?.soldAt).calendar();
+        o.factory = data[i]?.managers[0]?.name;
+        o.status = data[i]?.status?.context;
+        o.statusWarranty = data[i]?.statusWarranty;
+        o.model = data[i]?.model?.name;
+        o.color = data[i]?.color?.name;
+        o.id = data[i]?.id;
+        o.error =
+          data[i] && data[i].errors && data[i].errors.length > 0
+            ? data[i].errors[0]?.content
+            : "Chưa đính kèm lỗi";
+        o.requestDate = moment(
+          data[i] && data[i].errors && data[i].errors.length > 0
+            ? data[i].errors[0]?.updatedAt
+            : null
+        ).calendar();
+        o.store = data[i]?.managers[1]?.name;
+      }
+      result.push(o);
+    }
+    return result;
+  };
+
   const tabItems = [
     {
       key: "1",
@@ -65,6 +126,7 @@ export default function MaintainProduct() {
         <PageContent>
           <CustomTable
             columns={columns.filter((column) => column.key !== "amount")}
+            dataSource={warrantyProducts}
           />
         </PageContent>
       ),
@@ -78,6 +140,7 @@ export default function MaintainProduct() {
             columns={columns.filter(
               (column) => column.key !== "id" && column.key !== "store"
             )}
+            dataSource={summonProducts}
           />
         </PageContent>
       ),
