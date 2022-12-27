@@ -200,8 +200,24 @@ const getAllVers = async () => {
     }
 }
 
+const removeVersion = async (id) => {
+    try {
+        const version = await Version.findByPk(id);
+        if(!version) {
+            throw "version not found"
+        } else {
+            await version.destroy();
+            return true;
+        }
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
 module.exports = {
     addVersion,
     getInfo,
     getAllVers,
+    removeVersion,
 }
