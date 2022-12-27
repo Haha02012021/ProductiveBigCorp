@@ -1,4 +1,4 @@
-import { Badge, Form, message, Modal, Select, Tabs } from "antd";
+import { Badge, Form, message, Modal, Select, Tabs, Tag } from "antd";
 import { useContext, useEffect, useMemo, useState } from "react";
 import indexApi from "../../../../apis";
 import { acceptRequest, refuseRequestById } from "../../../../apis/factory";
@@ -8,6 +8,7 @@ import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
 import { progress } from "../../../../const";
 import { AuthContext } from "../../../../Provider/AuthProvider";
+import invertColor from "../../../../utils/invertColor";
 import CancelForm from "./CancelForm";
 
 export default function ProductExport() {
@@ -32,6 +33,21 @@ export default function ProductExport() {
       title: "Số lượng",
       dataIndex: "amount",
       key: "amount",
+    },
+    {
+      title: "Màu",
+      dataIndex: "color",
+      key: "color",
+      render: (_, record) => {
+        return (
+          <Tag
+            color={record.color.code}
+            style={{ color: invertColor(record.color.code, true) }}
+          >
+            {record.color.name}
+          </Tag>
+        );
+      },
     },
     {
       title: "Đại lý",
@@ -74,6 +90,7 @@ export default function ProductExport() {
             hasDelete={record.progress === 0}
             onConfirm={() => handleConfirm(record)}
             onDelete={() => handleCancel(record)}
+            deleteText="Từ chối"
           />
         );
       },
@@ -155,6 +172,7 @@ export default function ProductExport() {
         key: req.id,
         model: req.model.name,
         version: req.version.name,
+        color: req.color,
         amount: req.amount,
         store: req.store.name,
         progress: req.progress,
