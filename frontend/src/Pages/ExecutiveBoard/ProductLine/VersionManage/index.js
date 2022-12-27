@@ -1,4 +1,4 @@
-import { Form, message } from "antd";
+import { Form, message, Modal } from "antd";
 import { useContext, useEffect, useState } from "react";
 import indexApi from "../../../../apis";
 import coporationApi from "../../../../apis/coporation";
@@ -98,10 +98,33 @@ export default function VersionManage() {
           hasConfirm={false}
           onView={() => showModal(record)}
           onEdit={() => handleEdit(record)}
+          onDelete={() => handleDelete(record.id)}
         />
       ),
     },
   ];
+
+  const handleDelete = (versionId) => {
+    Modal.confirm({
+      content: "Bạn có chắc muốn xóa phiên bản này không?",
+      okText: "Có",
+      cancelText: "Không",
+      onCancel: () => {},
+      onOk: async () => {
+        try {
+          const res = await coporationApi.deleteVersion(versionId);
+          if (res.success) {
+            message.success("Xóa phiên bản thành công!", 2);
+            getAllVersions();
+            Modal.destroyAll();
+          }
+        } catch (error) {
+          message.error(error.message, 2);
+          Modal.destroyAll();
+        }
+      },
+    });
+  };
 
   const handleAddVer = () => {
     form.resetFields();

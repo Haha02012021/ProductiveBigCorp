@@ -110,13 +110,28 @@ export default function ProductLot() {
   };
 
   const getBatches = async () => {
-    const res = await getBatchesByFactoryId(authUser.id);
+    const condition = {
+      condition: {
+        color_id: 3,
+      },
+    };
+    const res = await getBatchesByFactoryId(authUser.id, condition);
     if (res.success) {
       setCreatedLotsSource(buildData(res.data));
     }
   };
 
-  const getSummoningBatches = async () => {};
+  const getSummoningBatches = async () => {
+    const condition = {
+      condition: {
+        color_id: 3,
+      },
+    };
+    const res = await getBatchesByFactoryId(authUser.id, condition);
+    if (res.success) {
+      setSummoningLotsSource(buildData(res.data));
+    }
+  };
 
   const buildData = (data) => {
     const builtData = data.map((batch) => {

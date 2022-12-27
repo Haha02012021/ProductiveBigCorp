@@ -63,7 +63,6 @@ export default function Product() {
       title: "Mã",
       dataIndex: "id",
       key: "id",
-      width: 64,
     },
     {
       title: "Dòng sản phẩm",

@@ -1,4 +1,4 @@
-import { Form, message } from "antd";
+import { Form, message, Modal } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import indexApi from "../../../../apis";
 import coporationApi from "../../../../apis/coporation";
@@ -59,6 +59,7 @@ export default function LineManage() {
             hasView={false}
             onEdit={() => handleEditLine(productLineInfo)}
             hasConfirm={false}
+            onDelete={() => handleDelete(productLineInfo.id)}
           />
         ),
       },
@@ -75,6 +76,28 @@ export default function LineManage() {
     setEditModalVisible(true);
     form.setFieldsValue(productLineInfo);
     setSelectedLineId(productLineInfo.id);
+  };
+
+  const handleDelete = (lineId) => {
+    Modal.confirm({
+      content: "Bạn có chắc muốn xóa dòng này không?",
+      okText: "Có",
+      cancelText: "Không",
+      onCancel: () => {},
+      onOk: async () => {
+        try {
+          const res = await coporationApi.deleteModel(lineId);
+          if (res.success) {
+            message.success("Xóa dòng sản phẩm thành công!", 2);
+            getAllModels();
+            Modal.destroyAll();
+          }
+        } catch (error) {
+          message.error(error.message, 2);
+          Modal.destroyAll();
+        }
+      },
+    });
   };
 
   const handleSave = async () => {
