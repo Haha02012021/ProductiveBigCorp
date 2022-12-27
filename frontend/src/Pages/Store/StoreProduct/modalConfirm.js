@@ -23,7 +23,7 @@ const ModalConfirm = (props) => {
       title="Xác nhận đã nhận được sản phẩm"
       onOk={props.handleOk}
       open={props.isModalOpen}
-      onCancel={props.handleOk}
+      onCancel={props.handleCancel}
       width={880}
     >
       <hr style={{ margin: 0, color: "gray" }} />

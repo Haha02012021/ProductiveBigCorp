@@ -397,6 +397,13 @@ const StoreProduct = () => {
         <CustomTable dataSource={productStore} columns={productColumns} />
       ),
     },
+    {
+      label: `Yêu cầu bị từ chối`,
+      key: "4",
+      children: (
+        <CustomTable dataSource={requests} columns={requestProductColumns} />
+      ),
+    },
   ];
 
   return (

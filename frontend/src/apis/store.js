@@ -31,3 +31,7 @@ export const completeProduct = (id, storeId) => {
 export const deleteRequest = (id) => {
   return axios.delete(`/store/request/delete/${id}`);
 };
+
+export const warrantyReceive = (data) => {
+  return axios.post(`/store/warrantyReceive`, data);
+};

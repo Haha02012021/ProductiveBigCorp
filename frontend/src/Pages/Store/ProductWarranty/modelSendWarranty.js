@@ -5,6 +5,8 @@ import styled from "styled-components";
 import indexApi from "../../../apis/index";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import { sendWarrantService } from "../../../apis/store";
+import { toast } from "react-toastify";
+
 const { TextArea } = Input;
 
 const ModelSendWarranty = (props) => {
@@ -34,6 +36,9 @@ const ModelSendWarranty = (props) => {
       });
       if (res.success === true) {
         props.handleOk();
+        toast.success(res.data);
+      } else {
+        toast.error(res.data);
       }
     }
   };
