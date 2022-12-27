@@ -19,9 +19,11 @@ const addBatch = async (factory_id, color_id, model_id, version_id, amount) => {
 
 const findByFactoryId = async (factory_id, condition) => {
     try{
-        condition.factory_id = factory_id;
+        if(condition) {
+            condition.factory_id = factory_id;
+        }
         const batches = await Batch.findAll({
-          where: condition,
+          where: condition ? condition : {factory_id},
           include: [
             {
                 model: MODEL,
