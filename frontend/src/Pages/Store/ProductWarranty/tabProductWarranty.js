@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import CustomTable from "../../../Components/Table/CustomTable";
-import { Row, Col, Select, Button, Form } from "antd";
+import { Row, Col, Select, Button } from "antd";
 
 import ActionsCell from "../../../Components/Table/ActionsCell";
 import indexApi from "../../../apis";
@@ -121,6 +121,8 @@ const TabProductWarranty = (props) => {
       const res = await indexApi.getProductsByManagerId(authUser.id, condition);
       if (res.data && res.data.products) {
         setWarrantyProducts(buildData(res.data.products));
+      } else {
+        setWarrantyProducts([]);
       }
     } catch {
       setWarrantyProducts([]);

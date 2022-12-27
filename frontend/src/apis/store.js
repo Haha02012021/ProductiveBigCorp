@@ -23,3 +23,11 @@ export const sellProduct = (data) => {
 export const sendWarrant = (data) => {
   return axios.post("/store/sendToWarranty", data);
 };
+
+export const completeProduct = (id, storeId) => {
+  return axios.get(`/store/request/complete/${id}/${storeId}`);
+};
+
+export const deleteRequest = (id) => {
+  return axios.delete(`/store/request/delete/${id}`);
+};
