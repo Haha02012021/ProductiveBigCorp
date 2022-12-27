@@ -197,8 +197,6 @@ export default function MaintainProduct() {
 
     try {
       const res7 = await getAllMaintainProducts(authUser.id, 7);
-
-      console.log(res7);
       if (res7.success) {
         data = [...data, ...buildMaintainData(res7.data.products)];
       }
@@ -206,8 +204,6 @@ export default function MaintainProduct() {
 
     try {
       const res8 = await getAllMaintainProducts(authUser.id, 8);
-
-      console.log(res8);
       if (res8.success) {
         data = [...data, ...buildMaintainData(res8.data.products)];
       }
@@ -215,8 +211,6 @@ export default function MaintainProduct() {
 
     try {
       const res9 = await getAllMaintainProducts(authUser.id, 9);
-
-      console.log(res9);
       if (res9.success) {
         data = [...data, ...buildMaintainData(res9.data.products)];
       }
@@ -224,8 +218,6 @@ export default function MaintainProduct() {
 
     try {
       const res12 = await getAllMaintainProducts(authUser.id, 12);
-
-      console.log(res12);
       if (res12.success) {
         data = [...data, ...buildMaintainData(res12.data.products)];
       }
@@ -233,8 +225,6 @@ export default function MaintainProduct() {
 
     try {
       const res10 = await getAllMaintainProducts(authUser.id, 10);
-
-      console.log(res10);
       if (res10.success) {
         data = [...data, ...buildMaintainData(res10.data.products)];
       }
@@ -242,8 +232,6 @@ export default function MaintainProduct() {
 
     try {
       const res11 = await getAllMaintainProducts(authUser.id, 11);
-
-      console.log(res11);
       if (res11.success) {
         data = [...data, ...buildMaintainData(res11.data.products)];
       }
@@ -329,10 +317,7 @@ export default function MaintainProduct() {
       data.error = form.getFieldValue("error");
     }
     try {
-      console.log(data);
-
       const res = await doneMaintian(data);
-      console.log(res);
       if (res.success) {
         const content = res.data.history.content;
         message.success(
