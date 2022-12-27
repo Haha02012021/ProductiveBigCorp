@@ -1,11 +1,9 @@
-import { Form, Input, Select, Spin, Tag } from "antd";
-import { useCallback, useEffect, useState } from "react";
+import { Form, Input, Select, Tag } from "antd";
+import { useEffect, useState } from "react";
 import indexApi from "../../../../apis";
-import invertColor from "../../../../utils/invertColor";
 import { errorMessages } from "../../../../const";
 
 export default function LineForm({ form, lineId }) {
-  const [initialValues, setInitialValues] = useState(lineId ? null : {});
   const [colors, setAllColors] = useState([]);
   useEffect(() => {
     if (lineId) {
@@ -33,101 +31,106 @@ export default function LineForm({ form, lineId }) {
       const dataColors = res.data.colors.map((color) => color.id);
       form.setFieldValue("name", res.data.name);
       form.setFieldValue("colors", dataColors);
-      setInitialValues({
-        name: res.data.name,
-        colors: dataColors,
-      });
     }
+  };
+
+  const invertHex = (hex) => {
+    if (hex && hex.length > 0) {
+      const color = hex.substr(1);
+      return (
+        "#" +
+        (Number(`0x1${color}`) ^ 0xffffff).toString(16).substr(1).toUpperCase()
+      );
+    }
+    return "#ffffff";
   };
 
   const tagRender = (props) => {
     const { label, value, closable, onClose } = props;
+    const onPreventMouseDown = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+    const color = colors.find((color) => color.id === value);
 
-    if (value) {
-      const onPreventMouseDown = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-      };
-      const color = colors.find((color) => color.id === value);
-      return (
-        <Tag
-          key={color.id}
-          color={color.code}
-          onMouseDown={onPreventMouseDown}
-          closable={closable}
-          onClose={onClose}
-          style={{
-            marginRight: 3,
-            color: invertColor(color.code, true),
-          }}
-        >
-          {color.name}
-        </Tag>
-      );
-    }
+    return (
+      <Tag
+        color={color?.code}
+        onMouseDown={onPreventMouseDown}
+        closable={closable}
+        onClose={onClose}
+        style={{
+          marginRight: 3,
+          color: invertHex(color?.code),
+          border: "1px solid black",
+        }}
+        key={color?.code}
+      >
+        {color?.name}
+      </Tag>
+    );
   };
+  console.log(form.getFieldsValue());
   return (
-    <Spin spinning={lineId && !initialValues}>
-      {initialValues && (
-        <Form
-          labelCol={{ xs: { span: 6 }, sm: { span: 4 } }}
-          form={form}
-          style={{ paddingTop: 24, paddingBottom: 24 }}
-          // initialValues={initialValues}
-        >
-          <Form.Item
-            label="Dòng sản phẩm"
-            required
-            name="name"
-            rules={[
-              { required: true, message: errorMessages.lineForm.name },
-              {
-                type: "string",
-                max: 40,
-                message: errorMessages.lineForm.nameLength,
-              },
-            ]}
-          >
-            <Input placeholder="Nhập dòng sản phẩm mới" />
-          </Form.Item>
-          <Form.Item
-            label="Màu"
-            required
-            name="colors"
-            rules={[{ required: true, message: errorMessages.lineForm.colors }]}
-          >
-            <Select
-              placeholder="Chọn màu"
-              mode="multiple"
-              showArrow
-              tagRender={tagRender}
-              style={{
-                width: "100%",
-              }}
-              showSearch={false}
-              options={colors.map((color) => {
-                return {
-                  value: color.id,
-                  label: (
-                    <div
-                      style={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                      <div
-                        style={{
-                          backgroundColor: color.code,
-                          height: 16,
-                          width: 16,
-                        }}
-                      ></div>
-                      <p style={{ paddingLeft: 8 }}>{color.name}</p>
-                    </div>
-                  ),
-                };
-              })}
-            />
-          </Form.Item>
-        </Form>
-      )}
-    </Spin>
+    <Form
+      labelCol={{ xs: { span: 6 }, sm: { span: 4 } }}
+      form={form}
+      style={{ paddingTop: 24, paddingBottom: 24 }}
+    >
+      <Form.Item
+        label="Dòng sản phẩm"
+        required
+        name="name"
+        rules={[
+          { required: true, message: errorMessages.lineForm.name },
+          {
+            type: "string",
+            max: 40,
+            message: errorMessages.lineForm.nameLength,
+          },
+        ]}
+      >
+        <Input placeholder="Nhập dòng sản phẩm mới" />
+      </Form.Item>
+      <Form.Item
+        label="Màu"
+        required
+        name="colors"
+        rules={[{ required: true, message: errorMessages.lineForm.colors }]}
+      >
+        <Select
+          placeholder="Chọn màu"
+          mode="multiple"
+          showArrow
+          tagRender={tagRender}
+          showSearch={false}
+          dropdownRender={(menu) => (
+            <>
+              <div style={{ backgroundColor: "#cccccccc" }}>{menu}</div>
+            </>
+          )}
+          options={colors.map((color, index) => {
+            return {
+              value: color.id,
+              label: (
+                <div
+                  style={{ display: "inline-flex", alignItems: "center" }}
+                  key={index}
+                >
+                  <div
+                    style={{
+                      backgroundColor: color.code,
+                      height: 16,
+                      width: 16,
+                    }}
+                  ></div>
+                  <p style={{ paddingLeft: 8 }}>{color.name}</p>
+                </div>
+              ),
+            };
+          })}
+        />
+      </Form.Item>
+    </Form>
   );
 }

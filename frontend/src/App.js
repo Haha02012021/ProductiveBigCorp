@@ -9,6 +9,8 @@ import AuthProvider from "./Provider/AuthProvider";
 import ThemeProvider from "./Provider/ThemeProvider";
 import locale from "antd/locale/vi_VN";
 import Maintainer from "./Pages/Maintainer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -33,6 +35,16 @@ function App() {
               <Route path="maintainer/*" element={<Maintainer />} />
             </Routes>
           </BrowserRouter>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={4000}
+            newestOnTop={true}
+            closeOnClick
+            pauseOnHover={false}
+            pauseOnFocusLoss={false}
+            draggable
+            style={{ textAlign: "left" }}
+          />
         </AuthProvider>
       </ThemeProvider>
     </ConfigProvider>

@@ -15,6 +15,7 @@ import DoneMaintainForm from "./DoneMaintainForm";
 import indexApi from "../../../apis/index";
 import moment from "moment";
 import TransportForm from "./TransportForm";
+import ModalViewProduct from "../../ExecutiveBoard/Product/modalViewProduct";
 
 export default function MaintainProduct() {
   const { authUser } = useContext(AuthContext);
@@ -22,10 +23,11 @@ export default function MaintainProduct() {
     []
   );
   const [summonProducts, setSummonProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState();
   const [doneMaintainModalVisible, setDoneMaintainModalVisible] =
     useState(false);
-  const [selectedProduct, setSelectedProduct] = useState();
   const [transportModalVisible, setTransportModalVisible] = useState(false);
+  const [viewProductModalVisible, setViewProductModalVisible] = useState(false);
   const [form] = Form.useForm();
   const columns = [
     {
@@ -74,16 +76,24 @@ export default function MaintainProduct() {
       key: "actions",
       render: (_, record) => (
         <ActionsCell
-          hasView={record.status.id === 8}
-          hasConfirm={false}
+          hasConfirm={record.status.id === 8}
           hasEdit={record.status.id === 7}
           hasDelete={record.status.id === 7 || record.status.id === 8}
-          viewText="Bảo hành xong"
+          confirmText="Bảo hành xong"
           editText="Bảo hành"
           deleteText={record.status.id === 7 ? "Từ chối" : "Hỏng"}
           onEdit={() => handleMaintain(record)}
           onDelete={() => handleDelete(record)}
-          onView={() => handleDoneMaintain(record)}
+          onConfirm={() => handleDoneMaintain(record)}
+          onView={() => {
+            if (record.key !== selectedProduct?.id) {
+              setSelectedProduct({
+                id: record.key,
+                uuid: record.id,
+              });
+            }
+            setViewProductModalVisible(true);
+          }}
         />
       ),
     },
@@ -157,7 +167,7 @@ export default function MaintainProduct() {
       const o = {};
       if (data[i]) {
         o.key = data[i]?.id;
-        o.code = data[i]?.id;
+        o.id = data[i]?.uuid;
         o.version = data[i]?.version?.name;
         o.sellDate = moment(data[i]?.soldAt).calendar();
         o.factory = data[i]?.managers[0]?.name;
@@ -366,6 +376,14 @@ export default function MaintainProduct() {
         >
           <TransportForm form={form} />
         </CustomModal>
+      )}
+      {viewProductModalVisible && selectedProduct && (
+        <ModalViewProduct
+          isModalOpen={viewProductModalVisible}
+          handleOk={() => setViewProductModalVisible(false)}
+          handleCancel={() => setViewProductModalVisible(false)}
+          idProduct={selectedProduct.id}
+        />
       )}
     </>
   );
