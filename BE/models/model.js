@@ -7,7 +7,13 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The models/index file will call this method automatically.
      */
-    static associate({ Version, Color, Model_Color, Batch, Image, Request }) {
+    static associate({ Version, Color, Model_Color, Batch, Image, Request, Product }) {
+      this.hasMany(Product, {
+        foreignKey: "model_id",
+        as: "products",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
       this.hasMany(Request, {
         foreignKey: "model_id",
         as: "requests",
@@ -47,9 +53,29 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
+      deletedAt: {
+        allowNull: true,
+        type: DataTypes.DATE
+      }
     },
     {
       sequelize,
+      paranoid: true,
+      hooks: {
+        afterDestroy: async (instance, options) => {
+          const versions = await instance.getVersions();
+          versions.forEach(async element => {
+            await element.destroy();
+            console.log('after destroy: related versions destroyed');
+          })
+
+          const images = await instance.getImages();
+          images.forEach(async element => {
+            await element.destroy();
+            console.log('after destroy: related images destroyed');
+          })
+        }
+      },
       tableName: "models",
       modelName: "MODEL",
     }

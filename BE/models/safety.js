@@ -82,9 +82,14 @@ module.exports = (sequelize, DataTypes) => {
     canh_bao_that_day_an_toan: {
       type: DataTypes.STRING,
       allowNull: true,
-    },  
+    },
+    deletedAt: {
+      allowNull: true,
+      type: DataTypes.DATE
+    }  
   }, {
     sequelize,
+    paranoid: true,
     tableName: 'safety',
     modelName: 'Safety',
   });

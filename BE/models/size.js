@@ -54,9 +54,14 @@ module.exports = (sequelize, DataTypes) => {
     dung_tich_thung_nhien_lieu: {
       type: DataTypes.STRING,
       allowNull: true,
-    },  
+    },
+    deletedAt: {
+      allowNull: true,
+      type: DataTypes.DATE
+    }  
   }, {
     sequelize,
+    paranoid: true,
     tableName: 'sizes',
     modelName: 'Size',
   });

@@ -34,7 +34,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        version_id: 1,
+        version_id: 2,
         so_tui_khi: 6,
         ABS: 'yes',
         EBD: 'yes',
@@ -54,7 +54,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        version_id: 1,
+        version_id: 3,
         so_tui_khi: 6,
         ABS: 'yes',
         EBD: 'yes',
@@ -74,7 +74,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        version_id: 1,
+        version_id: 4,
         so_tui_khi: 6,
         ABS: 'yes',
         EBD: 'yes',
