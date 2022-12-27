@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Modal, Row, Col, Select, Button } from "antd";
+import { Modal, Row, Col, Button } from "antd";
 import { Input } from "antd";
 import styled from "styled-components";
 import indexApi from "../../../apis/index";
@@ -35,13 +35,14 @@ const ModelSendWarranty = (props) => {
         content: errContent,
       });
       if (res.success === true) {
-        props.handleOk();
         toast.success(res.data);
+        props.handleOk();
       } else {
         toast.error(res.data);
       }
     }
   };
+
   return (
     <Modal
       title="Yêu cầu bảo hành"

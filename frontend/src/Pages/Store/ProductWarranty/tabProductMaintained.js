@@ -149,6 +149,7 @@ const TabProductMantained = (props) => {
       {isModalConfirm && (
         <ModalConfirm
           isModalOpen={isModalConfirm}
+          title={"Xác nhận đã nhận được sản phẩm"}
           handleOk={() => {
             acceptProduct();
           }}

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import CustomTable from "../../../Components/Table/CustomTable";
 import ActionsCell from "../../../Components/Table/ActionsCell";
 import { Tabs } from "antd";
@@ -11,6 +11,7 @@ import moment from "moment";
 import TabProductWarranty from "./tabProductWarranty";
 import TabProductMantained from "./tabProductMaintained";
 import TabProductMoving from "./tabProductMoving";
+import TabSendSummon from "./tabSendSummon";
 
 const ProductWarranty = () => {
   const [currentTab, setCurrentTab] = useState(1);
@@ -20,22 +21,7 @@ const ProductWarranty = () => {
   const [selledProducts, setSelledProducts] = useState([]);
   const [idProduct, setIdProduct] = useState(0);
   const [idProductWarranty, setIdProductWarranty] = useState(1);
-  const [summonProducts, setSummonProducts] = useState([]);
-
-  const showModal = (data) => {
-    if (data.id !== idProduct) {
-      setIdProduct(data.id);
-    }
-    if (isModalOpen === false) {
-      setIsModalOpen(true);
-    }
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+  const [change, setChange] = useState(false);
 
   const productSelledColumns = [
     {
@@ -80,7 +66,7 @@ const ProductWarranty = () => {
       dataIndex: "actions",
       key: "actions",
       width: 150,
-      render: (text, record, index) => (
+      render: (text, record, ) => (
         <ActionsCell
           hasDelete={false}
           hasConfirm={false}
@@ -99,57 +85,20 @@ const ProductWarranty = () => {
     },
   ];
 
-  const summonProductColumns = useMemo(
-    () => [
-      {
-        title: "Mã",
-        dataIndex: "code",
-        key: "code",
-        width: 50,
-        height: 56,
-        align: "center",
-      },
-      {
-        title: "Phiên bản",
-        dataIndex: "version",
-        key: "version",
-        width: 200,
-        align: "center",
-      },
-      {
-        title: "Lỗi",
-        dataIndex: "error",
-        key: "error",
-      },
-      {
-        title: "Trạng thái",
-        dataIndex: "status",
-        key: "status",
-        width: 100,
-      },
-      {
-        title: "Ngày gửi",
-        dataIndex: "requestDate",
-        key: "requestDate",
-        width: 140,
-      },
-      {
-        title: "Thao tác",
-        dataIndex: "actions",
-        key: "actions",
-        width: 80,
-        render: (text, record, index) => (
-          <ActionsCell
-            hasConfirm={false}
-            hasDelete={false}
-            hasEdit={false}
-            onView={() => showModal(record)}
-          />
-        ),
-      },
-    ],
-    []
-  );
+  const showModal = (data) => {
+    if (data.id !== idProduct) {
+      setIdProduct(data.id);
+    }
+    if (isModalOpen === false) {
+      setIsModalOpen(true);
+    }
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     getProductsStore({
@@ -157,13 +106,7 @@ const ProductWarranty = () => {
         isSold: 1,
       },
     });
-
-    getSummonProducts({
-      condition: {
-        status_id: 16,
-      },
-    });
-  }, []);
+  }, [change]);
 
   const buildData = (data) => {
     const result = new Array();
@@ -196,16 +139,15 @@ const ProductWarranty = () => {
   };
 
   const getProductsStore = async (condition) => {
-    const res = await indexApi.getProductsByManagerId(authUser.id, condition);
-    if (res.data && res.data.products) {
-      setSelledProducts(buildData(res.data.products));
-    }
-  };
-
-  const getSummonProducts = async (condition) => {
-    const res = await indexApi.getProductsByManagerId(authUser.id, condition);
-    if (res.data && res.data.products) {
-      setSummonProducts(buildData(res.data.products));
+    try {
+      const res = await indexApi.getProductsByManagerId(authUser.id, condition);
+      if (res.data && res.data.products) {
+        setSelledProducts(buildData(res.data.products));
+      } else {
+        setSelledProducts([]);
+      }
+    } catch (error) {
+      setSelledProducts([]);
     }
   };
 
@@ -254,9 +196,9 @@ const ProductWarranty = () => {
       label: `Sản phẩm triệu hồi`,
       key: "5",
       children: (
-        <CustomTable
-          dataSource={summonProducts}
-          columns={summonProductColumns}
+        <TabSendSummon
+          showModal={() => setIsModalOpen(true)}
+          selectProduct={(id) => setIdProduct(id)}
         />
       ),
     },
@@ -287,7 +229,11 @@ const ProductWarranty = () => {
       {isModalWarrantyOpen && (
         <ModelSendWarranty
           isModalOpen={isModalWarrantyOpen}
-          handleOk={() => setIsModalWarrantyOpen(false)}
+          handleOk={() => {
+            setChange(!change);
+            setCurrentTab(2);
+            setIsModalWarrantyOpen(false);
+          }}
           handleCancel={() => setIsModalWarrantyOpen(false)}
           idProductWarranty={idProductWarranty}
         />

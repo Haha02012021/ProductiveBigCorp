@@ -25,6 +25,7 @@ const StoreProduct = () => {
   const [isModalConfirm, setIsModalConfirm] = useState(false);
   const [addRequest, setAddRequest] = useState(false);
   const [requests, setRequests] = useState([]);
+  const [refuseProducts, setRefuseProducts] = useState([]);
   const [idProductSell, setIdProductSell] = useState(0);
   const [selled, setSelled] = useState(false);
 
@@ -33,7 +34,7 @@ const StoreProduct = () => {
       title: "Mã",
       dataIndex: "code",
       key: "code",
-      width: 100,
+      width: 50,
       height: 56,
       align: "center",
     },
@@ -72,7 +73,7 @@ const StoreProduct = () => {
       title: "Giá",
       dataIndex: "price",
       key: "price",
-      width: 182,
+      width: 150,
       align: "center",
     },
     {
@@ -82,11 +83,16 @@ const StoreProduct = () => {
       width: 104,
     },
     {
-      title: "Thời gian yêu cầu",
+      title: "Thời gian",
       dataIndex: "time",
       key: "time",
       with: 100,
       align: "center",
+    },
+    {
+      title: "Lý do từ chối",
+      dataIndex: "reason",
+      key: "reason",
     },
     {
       title: "Thao tác",
@@ -290,6 +296,7 @@ const StoreProduct = () => {
     if (authUser && authUser.id) {
       getProductMoving(authUser.id);
     }
+    getRefuseReProducts();
   }, [selled]);
 
   const getProductsStore = async () => {
@@ -302,6 +309,25 @@ const StoreProduct = () => {
     const res = await indexApi.getProductsByManagerId(authUser.id, condition);
     if (res.data && res.data.products) {
       setProductStore(buildData(res.data.products));
+    }
+  };
+
+  const getRefuseReProducts = async () => {
+    try {
+      const condition = {
+        condition: {
+          progress: -1,
+        },
+        role: 4,
+      };
+      const res = await indexApi.getRequestsByManagerId(authUser.id, condition);
+      if (res.data && res.data.sentRequests) {
+        setRefuseProducts(buildDataRequest(res.data.sentRequests));
+      } else {
+        setRefuseProducts([]);
+      }
+    } catch (error) {
+      setRefuseProducts([]);
     }
   };
 
@@ -365,6 +391,8 @@ const StoreProduct = () => {
             : data[i]?.progress === 1
             ? "Đang vận chuyển"
             : "Đã hủy";
+
+        o.reason = data[i]?.canceledReason;
       }
       result.push(o);
     }
@@ -377,7 +405,12 @@ const StoreProduct = () => {
       label: `Yêu cầu tới nhà máy`,
       key: "1",
       children: (
-        <CustomTable dataSource={requests} columns={requestProductColumns} />
+        <CustomTable
+          dataSource={requests}
+          columns={requestProductColumns.filter((request) => {
+            return request.key !== "reason";
+          })}
+        />
       ),
     },
     {
@@ -401,7 +434,10 @@ const StoreProduct = () => {
       label: `Yêu cầu bị từ chối`,
       key: "4",
       children: (
-        <CustomTable dataSource={requests} columns={requestProductColumns} />
+        <CustomTable
+          dataSource={refuseProducts}
+          columns={requestProductColumns}
+        />
       ),
     },
   ];
@@ -453,6 +489,7 @@ const StoreProduct = () => {
           handleOk={() => {
             acceptProduct();
           }}
+          title={"Xác nhận đã nhận được sản phẩm"}
           handleCancel={() => setIsModalConfirm(false)}
           idProduct={idProduct}
         />
