@@ -272,14 +272,14 @@ export default function MaintainProduct() {
 
   const handleMaintain = async (data) => {
     const req = {
-      products: [data.key],
+      products: [data.id],
       warranty_id: authUser.id,
     };
     try {
       const res = await maintainProducts(req);
 
       if (res.success) {
-        message.success(`Sản phẩm mã ${data.id} đang được bảo hành`, 2);
+        message.success(`Sản phẩm mã ${data.key} đang được bảo hành`, 2);
         getMaintainProducts();
       }
     } catch (error) {

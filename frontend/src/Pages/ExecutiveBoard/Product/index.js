@@ -132,8 +132,11 @@ export default function Product() {
   ];
 
   const handleSearchResults = (results) => {
-    console.log(results);
-    setProducts(buildData([results]));
+    if (results) {
+      setProducts(buildData([results]));
+    } else {
+      getProducts();
+    }
   };
 
   return (
