@@ -3,7 +3,7 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var {body, query, validationResult} = require('express-validator');
 
-const {addManager, createModel, createVersion, getAllProducts, deleteModel} = require('../Controllers/CoporationController');
+const {addManager, createModel, createVersion, getAllProducts, deleteModel, deleteVersion} = require('../Controllers/CoporationController');
 
 const {validateCoporation} = require('../Middlewares/roleValidator');
 const { finalCheck } = require('../Validators/checkErrors');
@@ -31,5 +31,7 @@ finalCheck,
 getAllProducts);
 
 router.delete('/model/:id', deleteModel);
+
+router.delete('/version/:id', deleteVersion);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const {createManager} = require('../Services/User');
 const {addModel, remove} = require('../Services/Model');
-const {addVersion} = require('../Services/Version');
+const {addVersion, removeVersion} = require('../Services/Version');
 const {allProducts} = require('../Services/Product');
 
 var addManager = async (req, res) => {
@@ -62,10 +62,24 @@ var deleteModel = async (req, res) => {
     }
 }
 
+var deleteVersion = async (req, res) => {
+    try {
+        const check = await removeVersion(req.params.id);
+        if(!check) {
+            res.json({success: false, message: 'failed to delete'});
+        } else {
+            res.json({success: true, message: 'version deleted'});
+        }
+    } catch (err) {
+        res.status(500).json({success: false, message: 'error from delete version', error: err});
+    }
+}
+
 module.exports = {
     addManager,
     createModel,
     createVersion,
     getAllProducts,
     deleteModel,
+    deleteVersion,
 }
