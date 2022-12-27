@@ -11,7 +11,25 @@ const {
 
   var getDetail = async (id) => {
     const detail = await Request.findByPk(id, {
-        include: ['factory', 'store', 'model', 'version', 'color'],
+        include: ['factory', 'store', 
+          {
+            model: MODEL,
+            as: "model",
+            attributes: ["id", "name", "deletedAt"],
+            paranoid: false
+          },
+          {
+            model: Version,
+            as: "version",
+            attributes: ["id", "name", "price", "deletedAt"],
+            paranoid: false
+          },
+          {
+            model: Color,
+            as: "color",
+            attributes: ["id", "name", "code"],
+          },
+        ],
     })
     return detail;
   }

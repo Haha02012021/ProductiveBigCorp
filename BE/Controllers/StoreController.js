@@ -21,7 +21,7 @@ var requestWarranty = async (req, res) => {
     const history = await addOneHistory(
       req.body.product_id,
       6,
-      "yêu cầu được bảo hành",
+      `${req.body.content}, yêu cầu được bảo hành`,
       req.body.store_id
     );
     const error = await addError(product.id, req.body.content);

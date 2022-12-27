@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class I_ACTIVSENSE extends Model {
+  class Iactivsense extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(Version, {foreignKey: 'version_id', as: 'version', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
     }
   }
-  I_ACTIVSENSE.init({
+  Iactivsense.init({
     version_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -71,10 +71,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    deletedAt: {
+      allowNull: true,
+      type: DataTypes.DATE
+    }
   }, {
     sequelize,
+    paranoid: true,
     tableName: 'i_activsense',
-    modelName: 'I_ACTIVSENSE',
+    modelName: 'Iactivsense',
   });
-  return I_ACTIVSENSE;
+  return Iactivsense;
 };
