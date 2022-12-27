@@ -110,92 +110,11 @@ export default function MaintainProduct() {
     }
   };
 
-  const handleSearchSummonProductResults = (results) => {
-    if (results) {
-      setSummonProducts(buildSummonData([results]));
-    } else {
-      getSummonProducts();
-    }
-  };
-
-  const tabItems = [
-    {
-      key: "1",
-      label: "Sản phẩm bảo hành",
-      children: (
-        <PageContent getSearchResults={handleSearchMaintainProductResults}>
-          <CustomTable
-            columns={columns.filter((column) => column.key !== "amount")}
-            dataSource={maintainProductsDataSource}
-          />
-        </PageContent>
-      ),
-    },
-    {
-      key: "2",
-      label: "Sản phẩm triệu hồi",
-      children: (
-        <PageContent getSearchResults={handleSearchSummonProductResults}>
-          <CustomTable
-            columns={columns.filter(
-              (column) => column.key !== "id" && column.key !== "store"
-            )}
-            dataSource={summonProducts}
-          />
-        </PageContent>
-      ),
-    },
-  ];
-
   useEffect(() => {
     if (authUser) {
       getMaintainProducts();
-
-      getSummonProducts({
-        condition: {
-          status_id: 16,
-        },
-      });
     }
   }, [authUser, transportModalVisible]);
-
-  const getSummonProducts = async (condition) => {
-    const res = await indexApi.getProductsByManagerId(authUser.id, condition);
-    if (res.data && res.data.products) {
-      setSummonProducts(buildSummonData(res.data.products));
-    }
-  };
-
-  const buildSummonData = (data) => {
-    const result = new Array();
-    for (let i = 0; i < data.length; i++) {
-      const o = {};
-      if (data[i]) {
-        o.key = data[i]?.uuid;
-        o.id = data[i]?.id;
-        o.version = data[i]?.version?.name;
-        o.sellDate = moment(data[i]?.soldAt).calendar();
-        o.factory = data[i]?.managers[0]?.name;
-        o.status = data[i]?.status?.context;
-        o.statusWarranty = data[i]?.statusWarranty;
-        o.model = data[i]?.model?.name;
-        o.color = data[i]?.color?.name;
-        o.id = data[i]?.id;
-        o.error =
-          data[i] && data[i].errors && data[i].errors.length > 0
-            ? data[i].errors[0]?.content
-            : "Chưa đính kèm lỗi";
-        o.requestDate = moment(
-          data[i] && data[i].errors && data[i].errors.length > 0
-            ? data[i].errors[0]?.updatedAt
-            : null
-        ).calendar();
-        o.store = data[i]?.managers[1]?.name;
-      }
-      result.push(o);
-    }
-    return result;
-  };
 
   const getMaintainProducts = async () => {
     let data = [];
@@ -401,9 +320,11 @@ export default function MaintainProduct() {
             </Button>
           ),
         }}
-        showSearch={false}
       >
-        <Tabs items={tabItems} />
+        <CustomTable
+          columns={columns.filter((column) => column.key !== "amount")}
+          dataSource={maintainProductsDataSource}
+        />
       </PageContent>
       {doneMaintainModalVisible && (
         <CustomModal
