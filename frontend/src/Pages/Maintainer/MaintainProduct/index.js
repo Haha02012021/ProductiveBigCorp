@@ -4,6 +4,8 @@ import {
   doneMaintian,
   getAllMaintainProducts,
   maintainProducts,
+  returnBackToFactory,
+  returnBackToStore,
 } from "../../../apis/maintainer";
 import CustomModal from "../../../Components/CustomModal";
 import PageContent from "../../../Components/PageContent";
@@ -16,6 +18,7 @@ import indexApi from "../../../apis/index";
 import moment from "moment";
 import TransportForm from "./TransportForm";
 import ModalViewProduct from "../../ExecutiveBoard/Product/modalViewProduct";
+import { SearchOutlined } from "@ant-design/icons";
 
 export default function MaintainProduct() {
   const { authUser } = useContext(AuthContext);
@@ -36,6 +39,13 @@ export default function MaintainProduct() {
       key: "id",
       width: 50,
       fixed: true,
+      filterIcon: (filtered) => (
+        <SearchOutlined
+          style={{
+            color: filtered ? "#1890ff" : undefined,
+          }}
+        />
+      ),
     },
     {
       title: "Phiên bản",
@@ -88,8 +98,8 @@ export default function MaintainProduct() {
           onView={() => {
             if (record.key !== selectedProduct?.id) {
               setSelectedProduct({
-                id: record.key,
-                uuid: record.id,
+                id: record.id,
+                uuid: record.key,
               });
             }
             setViewProductModalVisible(true);
@@ -129,13 +139,6 @@ export default function MaintainProduct() {
   ];
 
   useEffect(() => {
-    // getWarrantyProductsStore({
-    //   condition: {
-    //     isSold: 1,
-    //     status_id: 6,
-    //   },
-    // });
-
     if (authUser) {
       getMaintainProducts();
 
@@ -146,13 +149,6 @@ export default function MaintainProduct() {
       });
     }
   }, [authUser]);
-
-  // const getWarrantyProductsStore = async (condition) => {
-  //   const res = await indexApi.getProductsByManagerId(authUser.id, condition);
-  //   if (res.data && res.data.products) {
-  //     setWarrantyProducts(buildData(res.data.products));
-  //   }
-  // };
 
   const getSummonProducts = async (condition) => {
     const res = await indexApi.getProductsByManagerId(authUser.id, condition);
@@ -166,8 +162,8 @@ export default function MaintainProduct() {
     for (let i = 0; i < data.length; i++) {
       const o = {};
       if (data[i]) {
-        o.key = data[i]?.id;
-        o.id = data[i]?.uuid;
+        o.key = data[i]?.uuid;
+        o.id = data[i]?.id;
         o.version = data[i]?.version?.name;
         o.sellDate = moment(data[i]?.soldAt).calendar();
         o.factory = data[i]?.managers[0]?.name;
@@ -231,9 +227,23 @@ export default function MaintainProduct() {
     } catch (error) {}
 
     try {
+      const res13 = await getAllMaintainProducts(authUser.id, 13);
+      if (res13.success) {
+        data = [...data, ...buildMaintainData(res13.data.products)];
+      }
+    } catch (error) {}
+
+    try {
       const res11 = await getAllMaintainProducts(authUser.id, 11);
       if (res11.success) {
         data = [...data, ...buildMaintainData(res11.data.products)];
+      }
+    } catch (error) {}
+
+    try {
+      const res14 = await getAllMaintainProducts(authUser.id, 14);
+      if (res14.success) {
+        data = [...data, ...buildMaintainData(res14.data.products)];
       }
     } catch (error) {}
 
@@ -243,8 +253,8 @@ export default function MaintainProduct() {
   const buildMaintainData = (data) => {
     const builtData = data.map((product) => {
       return {
-        key: product.id,
-        id: product.uuid,
+        key: product.uuid,
+        id: product.id,
         store: product.managers.find((manager) => manager.role === "4")?.name,
         factory: product.managers.find((manager) => manager.role === "2")?.name,
         model: product.model.name,
@@ -285,8 +295,8 @@ export default function MaintainProduct() {
         setDoneMaintainModalVisible(true);
         form.setFieldValue("error", data.error);
         setSelectedProduct({
-          id: data.key,
-          uuid: data.uuid,
+          id: data.id,
+          uuid: data.key,
           done: false,
         });
         break;
@@ -299,13 +309,13 @@ export default function MaintainProduct() {
     setDoneMaintainModalVisible(true);
     form.setFieldValue("error", data.error);
     setSelectedProduct({
-      id: data.key,
-      uuid: data.uuid,
+      id: data.id,
+      uuid: data.key,
       done: true,
     });
   };
 
-  const handleSave = async () => {
+  const handleSaveDoneMaintain = async () => {
     let data = {
       product_id: selectedProduct.id,
       warranty_id: authUser.id,
@@ -331,12 +341,57 @@ export default function MaintainProduct() {
       message.error(error.message, 2);
     }
   };
+
+  const handleTransportProducts = async () => {
+    form.submit();
+    const { managerRole, products } = form.getFieldsValue();
+    const data = {
+      warranty_id: authUser.id,
+      products,
+    };
+    switch (managerRole) {
+      case 2:
+        try {
+          const res2 = await returnBackToStore(data);
+
+          if (res2.success) {
+            message.success("Các sản phẩm sẽ được chuyển về đại lý", 2);
+            setTransportModalVisible(false);
+          }
+        } catch (error) {
+          message.error(error.message, 2);
+        }
+        break;
+
+      default:
+        try {
+          const res4 = await returnBackToFactory(data);
+
+          if (res4.success) {
+            message.success("Các sản phẩm sẽ được chuyển về nhà máy", 2);
+            setTransportModalVisible(false);
+          }
+        } catch (error) {
+          message.error(error.message, 2);
+        }
+        break;
+    }
+  };
   return (
     <>
       <PageContent
         pageHeaderProps={{
           title: "Sản phẩm bảo hành/triệu hồi",
-          customAction: <Button type="primary">Gửi đi</Button>,
+          customAction: (
+            <Button
+              type="primary"
+              onClick={() => {
+                setTransportModalVisible(true);
+              }}
+            >
+              Gửi đi
+            </Button>
+          ),
         }}
         showSearch={false}
       >
@@ -347,7 +402,7 @@ export default function MaintainProduct() {
           title="Hoàn tất bảo hành"
           open={doneMaintainModalVisible}
           onCancel={() => setDoneMaintainModalVisible(false)}
-          onOk={() => handleSave()}
+          onOk={() => handleSaveDoneMaintain()}
         >
           <DoneMaintainForm form={form} product={selectedProduct} />
         </CustomModal>
@@ -357,7 +412,7 @@ export default function MaintainProduct() {
           title="Gửi về cơ sở"
           open={transportModalVisible}
           onCancel={() => setTransportModalVisible(false)}
-          onOk={() => handleSave()}
+          onOk={() => handleTransportProducts()}
         >
           <TransportForm form={form} />
         </CustomModal>
