@@ -67,6 +67,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
+    isCompensate: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
     soldAt: {
       allowNull: true,
       type: DataTypes.DATE

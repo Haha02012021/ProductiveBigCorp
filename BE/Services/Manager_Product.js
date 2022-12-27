@@ -31,7 +31,26 @@ var addOneRelation = async (product_id, manager_id) => {
     }
 }
 
+var deleteOneRelation = async (product_id, manager_id) => {
+    try {
+        const relation = await Manager_Product.findOne({where: {
+            manager_id,
+            product_id
+        }});
+        if(!relation) {
+            throw "relation not found"
+        } else {
+            await relation.destroy();
+            return true;
+        }
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
 module.exports = {
     addRelation,
     addOneRelation,
+    deleteOneRelation,
 }
