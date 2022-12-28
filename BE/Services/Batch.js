@@ -17,10 +17,16 @@ const addBatch = async (factory_id, color_id, model_id, version_id, amount) => {
     }
 }
 
-const findByFactoryId = async (factory_id, condition) => {
+const findByFactoryId = async (factory_id, condition, page) => {
     try{
         if(condition) {
             condition.factory_id = factory_id;
+        }
+        const limit = page ? 5: null;
+        const offset = page ? 0 + (page - 1) * limit : 0;
+        let count = await Batch.count({where: condition ? condition : {factory_id}});
+        if (page) {
+            count = count % limit === 0 ? count / limit : parseInt(count / limit) + 1;
         }
         const batches = await Batch.findAll({
           where: condition ? condition : {factory_id},
@@ -42,9 +48,12 @@ const findByFactoryId = async (factory_id, condition) => {
                 as: 'color',
                 attributes: ['id', 'code', 'name'],
             },
-          ]
+          ],
+          order: [['updatedAt', 'desc']],
+          offset: offset,
+          limit: limit,
         })
-        return batches;
+        return { batches: batches, totalPages: count, currentPage: parseInt(page) };
     } catch (err) {
         console.log(err);
         return null;

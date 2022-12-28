@@ -130,13 +130,13 @@ var createCustomer = async (name, place, phone, email) => {
 
 var getProducts = async (id, condition, page) => {
   try {
-    const limit = 5;
-    const offset = 0 + (page - 1) * limit;
+    const limit = page ? 5 : null;
+    const offset = page ? 0 + (page - 1) * limit : 0;
     let count = await Manager_Product.findAll({ where: {manager_id: id}, attributes: [[sequelize.fn('DISTINCT', sequelize.col('product_id')), 'product_id']] });
     console.log(count.length, condition);
-
-    count = count.length % limit === 0 ? count.length / limit : parseInt(count.length / limit) + 1;
-
+    if(page) {
+      count = count.length % limit === 0 ? count.length / limit : parseInt(count.length / limit) + 1;
+    }
     let products = await Manager.findByPk(id, {
       include: [
         {
@@ -196,7 +196,10 @@ var getProducts = async (id, condition, page) => {
         },
       ],
     });
-    products = products.get({plain: true}).products.slice(offset, offset + limit);
+    products = products.get({plain: true}).products
+    if(page) {
+      products.slice(offset, offset + limit);
+    }
     return { products: products, totalPages: count, currentPage: parseInt(page) };
   } catch (err) {
     console.log(err);
@@ -204,12 +207,20 @@ var getProducts = async (id, condition, page) => {
   }
 };
 
-var getRequests = async (id, condition, role) => {
+var getRequests = async (id, condition, role, page) => {
   try {
-    const requests = await Manager.findByPk(id, {
+    const limit = page ? 5 : null;
+    const offset = page ? 0 + (page - 1) * limit : 0;
+    let count = await Request.count({where: {store_id: id}});
+    if(role === 2) {
+      count = await Request.count({where: {factory_id: id}})
+    }
+    if(page) {
+      count = count % limit === 0 ? count / limit : parseInt(count / limit) + 1;
+    }
+    let requests = await Manager.findByPk(id, {
       include: [
         {
-          required: false,
           model: Request,
           as: role === 4 ? "sentRequests" : "receivedRequests",
           include: [
@@ -242,14 +253,22 @@ var getRequests = async (id, condition, role) => {
             },
           ],
           where: condition,
-          order: [["createdAt", "DESC"]],
+          order: [["updatedAt", "DESC"]],
+          offset: offset,
+          limit: limit,
         },
       ],
     });
     if (!requests) {
       throw "controller error, can not get requests";
     } else {
-      return requests;
+      console.log(requests.get({plain: true}));
+      if(role === 4) {
+        requests = requests.get({plain: true}).sentRequests
+      } else {
+        requests = requests.get({plain: true}).receivedRequests
+      }
+      return { requests: requests, totalPages: count, currentPage: parseInt(page) };
     }
   } catch (err) {
     console.log(err);
@@ -311,7 +330,7 @@ var allManagers = async (role, page) => {
           },
           order: [["createdAt", "desc"]],
         });
-        return managers;
+        return {managers: managers};
       }
     }
   } catch (err) {
