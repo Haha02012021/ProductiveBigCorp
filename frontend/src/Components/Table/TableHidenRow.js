@@ -27,6 +27,7 @@ export default function TableHidenRow({ columns, data }) {
 
 const MyTable = styled(Table)`
   thead {
+    width: "35%";
     tr {
       th {
         padding-top: 8px !important;
@@ -35,15 +36,37 @@ const MyTable = styled(Table)`
         text-transform: uppercase;
         font-size: 12px;
         cursor: pointer;
-        maxwidth: "35%";
+        width: "35%!important";
+      }
+      td {
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+        background-color: white !important;
+        text-transform: uppercase;
+        font-size: 12px;
+        cursor: pointer;
+        width: "35%!important";
+        border-bottom: 1px solid gray;
       }
     }
   }
+  tbody {
+    tr {
+      td {
+        white-space: nowrap;
+      word-break:break-word;
+      word-break: break-all
+        width: "35%!important";
+      }
+    }
+  }
+
   td {
     padding-top: 5px !important;
     padding-bottom: 5px !important;
     // background-color: white !important;
     border: none !important;
+    border-bottom: 1px solid gray;
   }
   tr {
     // border: none;
