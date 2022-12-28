@@ -140,7 +140,7 @@ var getAll = async (page) => {
         },
       ],
       offset: offset,
-      limit: count,
+      limit: limit,
     });
     return { models: models, totalPages: count, currentPage: parseInt(page) };
   } catch (err) {
