@@ -10,6 +10,7 @@ const {
   Status,
   Request,
   Error,
+  Manager_Product,
 } = require("../models");
 const { QueryTypes, Op } = require("sequelize");
 
@@ -127,10 +128,16 @@ var createCustomer = async (name, place, phone, email) => {
   }
 };
 
-var getProducts = async (id, condition) => {
+var getProducts = async (id, condition, page) => {
   try {
-    console.log(condition);
-    const products = await Manager.findByPk(id, {
+    const limit = 5;
+    const offset = 0 + (page - 1) * limit;
+    let count = await Manager_Product.findAll({ where: {manager_id: id}, attributes: [[sequelize.fn('DISTINCT', sequelize.col('product_id')), 'product_id']] });
+    console.log(count.length, condition);
+
+    count = count.length % limit === 0 ? count.length / limit : parseInt(count.length / limit) + 1;
+
+    let products = await Manager.findByPk(id, {
       include: [
         {
           model: Product,
@@ -185,10 +192,12 @@ var getProducts = async (id, condition) => {
             },
           ],
           where: condition,
+          order: [["updatedAt", "desc"]],
         },
       ],
     });
-    return products;
+    products = products.get({plain: true}).products.slice(offset, offset + limit);
+    return { products: products, totalPages: count, currentPage: parseInt(page) };
   } catch (err) {
     console.log(err);
     return null;
