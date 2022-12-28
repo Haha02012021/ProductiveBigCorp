@@ -21,11 +21,12 @@ var addManager = async (req, res) => {
 
 var createModel = async (req, res) => {
     try {
+        //res.send(req.files)
         const images = req.files.images.map(element => {
-            return 'http://localhost:5000/' + element.filename
+            return element.filename
         });
         const color_images = req.files.colors.map(element => {
-            return 'http://localhost:5000/' + element.filename
+            return element.filename
         });
         console.log(images, color_images);
         const newModel = await addModel(req.body.name, req.body.color_id, color_images, images);
