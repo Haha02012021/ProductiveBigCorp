@@ -14,7 +14,8 @@ var {
   getAllRequests,
   getAllStatuses,
   findOneProduct,
-  analizeProducts
+  analizeProducts,
+  getSold
 } = require("../Controllers/index");
 var { param, query, body, validationResult } = require("express-validator");
 
@@ -71,5 +72,7 @@ finalCheck,
 findOneProduct);
 
 router.get("/analize/status/:manager_id", analizeProducts);
+
+router.get("/analize/sold/:manager_id", getSold);
 
 module.exports = router;

@@ -101,6 +101,15 @@ var requestSummon = async (req, res) => {
     }
 }
 
+var destroyProducts = async (req, res) => {
+    try {
+        const check = await updateProducts({status_id: 15}, req.body.products);
+        res.json({success: true, message: 'destroyed'});
+    } catch (err) {
+        res.status(500).json({error: err, success: false, message: 'error from destroying products'});
+    }
+}
+
 module.exports = {
     createProducts,
     getBatches,
@@ -108,4 +117,5 @@ module.exports = {
     refuseRequest,
     acceptRequest,
     requestSummon,
+    destroyProducts,
 }
