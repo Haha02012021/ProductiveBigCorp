@@ -47,15 +47,6 @@ export default function AuthLayout({ menuProps = {}, children }) {
     setOpen(false);
   };
 
-  useEffect(() => {
-    window.screen.width <= 1000 ? setIsMobile(true) : setIsMobile(false);
-  }, [window.screen.width]);
-
-  function detectWindowSize() {
-    window.innerWidth <= 1000 ? setIsMobile(true) : setIsMobile(false);
-  }
-  window.onresize = detectWindowSize;
-
   const handleDropdown = async ({ key }) => {
     switch (key) {
       case "logout":

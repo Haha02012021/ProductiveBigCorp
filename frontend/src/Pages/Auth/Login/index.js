@@ -1,6 +1,7 @@
 import {
   Button,
   Col,
+  Divider,
   Form,
   Image,
   Input,
@@ -17,8 +18,10 @@ import loginImg from "../../../assets/toppng.com-car-front-vector-png-clipart-li
 import { AuthContext } from "../../../Provider/AuthProvider";
 import authApi from "../../../apis/auth";
 import { toast } from "react-toastify";
+import { ThemeContext } from "../../../Provider/ThemeProvider";
 
 export default function Login() {
+  const { isMobile } = useContext(ThemeContext);
   const { authUser, setAuthUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -71,22 +74,49 @@ export default function Login() {
   };
   return (
     <Spin spinning={loading}>
-      <Row gutter={[2, 24]} className="login">
-        <Col span={13} className="left-side">
+      {isMobile && (
+        <div
+          style={{
+            backgroundColor: "#47B5FF",
+            height: "64px",
+            width: "100vw",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              color: "white",
+              fontSize: "40px",
+              fontWeight: "600",
+              marginLeft: 20,
+            }}
+          >
+            LOGO
+          </div>
+        </div>
+      )}
+      <Row gutter={[0, 24]} className="login">
+        <Col span={isMobile ? 24 : 13} className="left-side">
           <Form
-            labelCol={{ xs: 10, sm: 6 }}
+            labelCol={{ xs: 10, sm: isMobile ? 24 : 6 }}
             labelAlign="left"
-            wrapperCol={{ span: 18 }}
-            style={{ width: "64%" }}
+            wrapperCol={{ span: isMobile ? 24 : 18 }}
+            style={{ width: "64%", display: "flex", justifyContent: "center" }}
             onFinish={handleLogin}
+            layout={isMobile ? "vertical" : "horizontal"}
           >
             <Space
               direction="vertical"
-              style={{ width: "100%" }}
+              style={{ width: isMobile ? "92%" : "100%" }}
               size={[0, 24]}
             >
               <Typography.Title
-                style={{ display: "flex", justifyContent: "center" }}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "100%",
+                }}
                 level={2}
               >
                 Đăng nhập
@@ -151,21 +181,23 @@ export default function Login() {
             </Space>
           </Form>
         </Col>
-        <Col span={11} className="right-side">
-          <Space direction="vertical">
-            <p
-              style={{
-                fontSize: 80,
-                fontWeight: 800,
-                color: "white",
-                textAlign: "center",
-              }}
-            >
-              LOGO
-            </p>
-            <Image src={loginImg} style={{ height: 244 }} />
-          </Space>
-        </Col>
+        {!isMobile && (
+          <Col span={11} className="right-side">
+            <Space direction="vertical">
+              <p
+                style={{
+                  fontSize: 80,
+                  fontWeight: 800,
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                LOGO
+              </p>
+              <Image src={loginImg} style={{ height: 244 }} />
+            </Space>
+          </Col>
+        )}
       </Row>
     </Spin>
   );
