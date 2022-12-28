@@ -36,7 +36,7 @@ function App() {
             </Routes>
           </BrowserRouter>
           <ToastContainer
-            position="bottom-right"
+            position="top-right"
             autoClose={2000}
             newestOnTop={true}
             closeOnClick
