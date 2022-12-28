@@ -114,6 +114,10 @@ export default function LineForm({ form, lineId }) {
   );
 
   const changeSelectedColor = (file, value) => {
+    console.log(file);
+    if (file.fileList && file.fileList.length > 0) {
+      file.fileList[0].status = "done";
+    }
     const imageColors = colors;
     imageColors[value].file = file.file.originFileObj;
     setAllColors(imageColors);
@@ -139,8 +143,9 @@ export default function LineForm({ form, lineId }) {
                   style={{
                     width: "100%",
                     padding: "10px 0 10px 5px",
-                    backgroundColor: "#cccccc85",
+                    backgroundColor: "#fafafa",
                     borderRadius: "5px",
+                    border: "1px dashed #d9d9d9",
                     marginTop: 10,
                   }}
                   key={index}
@@ -169,7 +174,10 @@ export default function LineForm({ form, lineId }) {
                       {colors[value].name}
                     </Tag>
                   </Col>
-                  <Col span={24}>
+                  <Col
+                    span={24}
+                    style={{ width: "100%", margin: "0 10px 0 0" }}
+                  >
                     <Upload
                       listType="picture"
                       maxCount={1}

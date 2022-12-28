@@ -52,7 +52,7 @@ const TabSendSummon = (props) => {
       dataIndex: "actions",
       key: "actions",
       width: 80,
-      render: (text, record, index) => (
+      render: (text, record, ) => (
         <ActionsCell
           hasDelete={false}
           hasEdit={false}
@@ -75,7 +75,7 @@ const TabSendSummon = (props) => {
   }, [change]);
 
   const buildData = (data) => {
-    const result = new Array();
+    const result = [];
     for (let i = 0; i < data.length; i++) {
       const o = {};
       if (data[i]) {
@@ -150,15 +150,15 @@ const TabSendSummon = (props) => {
 
   const getWarranties = async () => {
     const res = await indexApi.getManagerByRole(3);
-    if (res.data) {
-      setWarranties(buildDataModel(res.data));
+    if (res.data && res.data.managers) {
+      setWarranties(buildDataModel(res.data.managers));
     } else {
       setWarranties([]);
     }
   };
 
   const buildDataModel = (data) => {
-    const results = new Array();
+    const results = [];
     for (let i = 0; i < data.length; i++) {
       results.push({ value: data[i].id, label: data[i].name });
     }
