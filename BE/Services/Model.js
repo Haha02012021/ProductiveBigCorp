@@ -8,14 +8,14 @@ const {
   Version,
 } = require("../models");
 const { QueryTypes, Model } = require("sequelize");
-const fs = require('fs');
+const fs = require("fs");
 
 var addModel = async (name, colors, colorImages, images) => {
   try {
     const oldModel = await sequelize.query(
       "SELECT * FROM models WHERE BINARY name = $1 limit 1",
       {
-        bind: ["name"],
+        bind: [name],
         type: QueryTypes.SELECT,
       }
     );
@@ -27,22 +27,25 @@ var addModel = async (name, colors, colorImages, images) => {
         name: name,
       });
       const relation = [];
-      for (let i = 0; i< colorImages.length; i++) {
-        realtion.push({model_id: newModel.id, color_id: colors[i], image: 'http://localhost:5000/' + colorImages[i], name: colorImages[i]});
+      for (let i = 0; i < colorImages.length; i++) {
+        relation.push({
+          model_id: newModel.id,
+          color_id: colors[i],
+          image: "http://localhost:5000/" + colorImages[i],
+          name: colorImages[i],
+        });
       }
-      await Model_Color.bulkCreate(
-        relation
-      );
-      if(images) {
+      await Model_Color.bulkCreate(relation);
+      if (images) {
         await Image.bulkCreate(
-          images.map(element => {
+          images.map((element) => {
             return {
-              link: 'http://localhost:5000/' + element,
+              link: "http://localhost:5000/" + element,
               model_id: newModel.id,
-              name: element
-            }
+              name: element,
+            };
           })
-        )
+        );
       }
       return newModel;
     }
@@ -97,9 +100,9 @@ var info = async (id) => {
           model: Color,
           as: "colors",
           through: {
-            attributes: ['image'],
+            attributes: ["image"],
           },
-          attributes: ['id', 'name', 'code'],
+          attributes: ["id", "name", "code"],
         },
         {
           model: Version,
@@ -125,7 +128,7 @@ var info = async (id) => {
 
 var getAll = async (page) => {
   try {
-    const limit = page ? 5: null;
+    const limit = page ? 5 : null;
     const offset = page ? 0 + (page - 1) * limit : 0;
     let count = await MODEL.count();
     if (page) {

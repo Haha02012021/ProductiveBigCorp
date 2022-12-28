@@ -1,4 +1,4 @@
-import { Form, message, Modal } from "antd";
+import { Form } from "antd";
 import { useContext, useEffect, useMemo, useState } from "react";
 import indexApi from "../../../../apis";
 import coporationApi from "../../../../apis/coporation";
@@ -10,6 +10,7 @@ import LineForm from "./LineForm";
 import ModalConfirmDelete from "./modalConfirmDelete";
 import { toast } from "react-toastify";
 import { ThemeContext } from "../../../../Provider/ThemeProvider";
+import axios from "axios";
 
 export default function LineManage() {
   const { isMobile } = useContext(ThemeContext);
@@ -120,12 +121,59 @@ export default function LineManage() {
 
   const handleSave = async () => {
     form.submit();
-    const res = await coporationApi.addModel(form.getFieldsValue());
-    if (res.success) {
-      toast.success("Thêm dòng sản phẩm thành công!", 2);
-      setAddModalVisible(false);
+    console.log(form.getFieldsValue());
+    const data = form.getFieldsValue();
+
+    let check = true;
+    if (
+      data.colors === undefined ||
+      data.name === undefined ||
+      data.files === undefined
+    ) {
+      toast.error("Chưa chọn ảnh");
+      return;
+    }
+    const fileColors = data.colors.map((color) => {
+      if (color.file === undefined) check = false;
+      return color.file;
+    });
+
+    const fileId = data.colors.map((color) => color.id);
+    console.log();
+    console.log(fileColors);
+    console.log(data.files);
+    if (check && data.files.length > 0) {
+      let formData = new FormData();
+      fileColors.map((id) => {
+        formData.append("colors", id);
+        return id;
+      });
+      data.files.map((id) => {
+        formData.append("images", id);
+        return id;
+      });
+      formData.append("name", data.name);
+      fileId.map((id) => {
+        formData.append("color_id", id);
+        return id;
+      });
+      console.log(formData);
+      const res = await axios({
+        method: "POST",
+        url: "http://localhost:5000/coporation/newModel",
+        data: formData,
+        headers: {
+          "Content-Type": `multipart/form-data;`,
+        },
+      });
+      if (res.data.success) {
+        toast.success("Thêm dòng sản phẩm thành công!", 2);
+        setAddModalVisible(false);
+      } else {
+        toast.error("Dường như có lỗi gì đó!", 2);
+      }
     } else {
-      toast.error("Dường như có lỗi gì đó!", 2);
+      toast.error("Chưa chọn ảnh");
     }
   };
 
