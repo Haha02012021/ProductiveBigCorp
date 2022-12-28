@@ -20,6 +20,8 @@ import { toast } from "react-toastify";
 
 export default function Login() {
   const { authUser, setAuthUser } = useContext(AuthContext);
+  const [isMobile, setIsMobile] = useState(false);
+
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -28,6 +30,19 @@ export default function Login() {
       navigate(-1);
     }
   }, [authUser, navigate]);
+
+  const handleResize = () => {
+    if (window.innerWidth < 786) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+  });
+
   const handleLogin = async (values) => {
     try {
       setLoading(true);
@@ -72,7 +87,25 @@ export default function Login() {
   return (
     <Spin spinning={loading}>
       <Row gutter={[2, 24]} className="login">
-        <Col span={13} className="left-side">
+        {isMobile === true ? (
+          <Col span={24} className="right-side">
+            <Space direction="vertical">
+              <p
+                style={{
+                  fontSize: 60,
+                  fontWeight: 800,
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                LOGO
+              </p>
+            </Space>
+          </Col>
+        ) : (
+          <></>
+        )}
+        <Col md={13} xs={24} className="left-side">
           <Form
             labelCol={{ xs: 10, sm: 6 }}
             labelAlign="left"
@@ -124,20 +157,22 @@ export default function Login() {
               <Space
                 direction="vertical"
                 style={{ width: "100%" }}
-                size={[0, 2]}
+                size={[0, 1]}
               >
-                <div
+                <Row
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
                   }}
                 >
-                  <span>
+                  <Col sx={24} md={10}>
                     Chưa có tài khoản? <Link>Đăng ký!</Link>
-                  </span>
-                  <Link>Quên mật khẩu?</Link>
-                </div>
+                  </Col>
+                  <Col sx={24} md={10}>
+                    <Link>Quên mật khẩu?</Link>
+                  </Col>
+                </Row>
                 <Form.Item wrapperCol={{ span: 24 }}>
                   <Button
                     type="primary"
@@ -151,19 +186,23 @@ export default function Login() {
             </Space>
           </Form>
         </Col>
-        <Col span={11} className="right-side">
+        <Col md={11} xs={24} className="right-side">
           <Space direction="vertical">
-            <p
-              style={{
-                fontSize: 80,
-                fontWeight: 800,
-                color: "white",
-                textAlign: "center",
-              }}
-            >
-              LOGO
-            </p>
-            <Image src={loginImg} style={{ height: 244 }} />
+            {isMobile === false ? (
+              <p
+                style={{
+                  fontSize: 80,
+                  fontWeight: 800,
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                LOGO
+              </p>
+            ) : (
+              <></>
+            )}
+            <Image src={loginImg} style={{ height: "60%" }} />
           </Space>
         </Col>
       </Row>
