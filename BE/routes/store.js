@@ -13,7 +13,6 @@ const {
   getCustomer, 
   sell, 
   addCustomer, 
-  analizeProducts, 
   createRequest, 
   deleteRequest, 
   completeRequest,
@@ -121,8 +120,6 @@ router.post(
   finalCheck,
   sell
 );
-
-router.get("/analize/status/:manager_id", analizeProducts);
 
 router.post(
   "/request/new",
