@@ -1,4 +1,4 @@
-import { Form, message, Modal } from "antd";
+import { Form, Modal } from "antd";
 import { useContext, useEffect, useState } from "react";
 import indexApi from "../../../../apis";
 import coporationApi from "../../../../apis/coporation";
@@ -77,7 +77,6 @@ export default function VersionManage() {
       title: "STT",
       dataIndex: "index",
       key: "index",
-      fixed: true,
       width: 64,
     },
     {
@@ -96,7 +95,7 @@ export default function VersionManage() {
       key: "actions",
       fixed: "center",
       width: 236,
-      render: (text, record, index) => (
+      render: (text, record, ) => (
         <ActionsCell
           hasConfirm={false}
           onView={() => showModal(record)}

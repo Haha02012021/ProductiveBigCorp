@@ -1,4 +1,4 @@
-import { Button, Space } from "antd";
+import { Button, Row, Col } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -21,33 +21,34 @@ export default function PageHeader({
         height: "fit-content",
       }}
     >
-      <div
+      <Row
         style={{
-          height: 72,
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           width: "100%",
         }}
       >
-        <Space
+        <Col
           style={{
             display: "flex",
             alignItems: "center",
           }}
-          size={[16, 0]}
           align="center"
         >
           <ArrowLeftOutlined size={16} onClick={handleBack} />
           <p style={{ fontSize: 20, fontWeight: 600 }}>{title}</p>
-        </Space>
-        {hasAction && !customAction && (
-          <Button type="primary" onClick={onAdd}>
-            Thêm
-          </Button>
-        )}
+        </Col>
+        <Col>
+          {hasAction && !customAction && (
+            <Button type="primary" onClick={onAdd}>
+              Thêm
+            </Button>
+          )}
+        </Col>
+
         {customAction}
-      </div>
+      </Row>
     </div>
   );
 }
