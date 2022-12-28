@@ -1,11 +1,11 @@
 import axios from "./axios";
 
 const indexApi = {
-  getAllModels() {
-    return axios.get("/models/all");
+  getAllModels(page) {
+    return axios.get(`/models/all/?page=${page}`);
   },
-  getAllVersions() {
-    return axios.get("/versions/all");
+  getAllVersions(page) {
+    return axios.get(`/versions/all/?page=${page}`);
   },
   getModelById(modelId) {
     return axios.get(`/model/${modelId}`);

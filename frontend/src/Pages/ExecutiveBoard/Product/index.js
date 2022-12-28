@@ -33,8 +33,8 @@ export default function Product() {
     getProducts();
   }, []);
 
-  const getProducts = async () => {
-    const res = await coporationApi.getProducts();
+  const getProducts = async (condition) => {
+    const res = await coporationApi.getProducts(condition);
     if (res.data) {
       const data = res.data;
       setProducts(buildData(data));
@@ -91,7 +91,9 @@ export default function Product() {
         })
       ),
       filterSearch: true,
-      onFilter: () => {},
+      onFilter: (values) => {
+        console.log(values);
+      },
     },
     {
       title: "Phiên bản",
