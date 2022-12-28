@@ -11,11 +11,11 @@ import { ThemeContext } from "../Provider/ThemeProvider";
 const { Header, Content } = Layout;
 
 const dropdownMenu = [
-  {
-    label: "Thông tin chi tiết",
-    key: "profile",
-    icon: <UserOutlined />,
-  },
+  // {
+  //   label: "Thông tin chi tiết",
+  //   key: "profile",
+  //   icon: <UserOutlined />,
+  // },
   {
     label: "Đăng xuất",
     key: "logout",
