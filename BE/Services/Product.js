@@ -206,10 +206,12 @@ var allProducts = async (condition, managers, page) => {
       condition.id = condition.id.map(element => { return element.product_id });
     }
     console.log(condition);
-    const limit = 5;
-    const offset = 0 + (page - 1) * limit;
+    const limit = page ? 5 : null;
+    const offset = page ? 0 + (page - 1) * limit : 0;
     let count = await Product.count({ where: condition });
-    count = count % limit === 0 ? count / limit : parseInt(count / limit) + 1;
+    if (page) {
+      count = count % limit === 0 ? count / limit : parseInt(count / limit) + 1;
+    }
     const products = await Product.findAll({
       where: condition,
       include: [

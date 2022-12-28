@@ -175,7 +175,8 @@ var getAllRequests = async (req, res) => {
     const requests = await getRequests(
       req.params.manager_id,
       req.body.condition,
-      req.body.role
+      req.body.role,
+      req.body.page
     );
     if (requests) {
       res.json({

@@ -41,7 +41,7 @@ var receiveBrokenProducts = async (req, res) => {
 
 var getBatches = async (req, res) => {
     try {
-        const batches = await findByFactoryId(req.params.factory_id, req.body.condition);
+        const batches = await findByFactoryId(req.params.factory_id, req.body.condition, req.body.page);
         res.json({success: true, data: batches});
     } catch (err) {
         res.status(500).json({success: false, message: 'error from get batches', error: err});
