@@ -114,7 +114,6 @@ export default function LineForm({ form, lineId }) {
   );
 
   const changeSelectedColor = (file, value) => {
-    console.log(file);
     const imageColors = colors;
     imageColors[value].file = file.file.originFileObj;
     setAllColors(imageColors);
@@ -122,6 +121,10 @@ export default function LineForm({ form, lineId }) {
       "colors",
       selectedColors.map((value) => imageColors[value])
     );
+  };
+
+  const onClose = (value) => {
+    setSelectedColors(selectedColors.filter((color) => color !== value));
   };
 
   const renderSelectImage = useMemo(() => {
@@ -149,6 +152,7 @@ export default function LineForm({ form, lineId }) {
                     <Tag
                       color={colors[value].code}
                       closable={true}
+                      onClose={() => onClose(value)}
                       style={{
                         marginRight: 3,
                         color: invertHex(colors[value].code),
