@@ -28,21 +28,21 @@ export default function UnitManage() {
   const getFactories = async () => {
     const res = await indexApi.getManagerByRole(2);
     if (res.data) {
-      setFactocies(buildManageData(res.data));
+      setFactocies(buildManageData(res.data.managers));
     }
   };
 
   const getStore = async () => {
     const res = await indexApi.getManagerByRole(4);
     if (res.data) {
-      setStores(buildManageData(res.data));
+      setStores(buildManageData(res.data.managers));
     }
   };
 
   const getWarranties = async () => {
     const res = await indexApi.getManagerByRole(3);
     if (res.data) {
-      setWarranties(buildManageData(res.data));
+      setWarranties(buildManageData(res.data.managers));
     }
   };
 

@@ -321,8 +321,8 @@ const StoreProduct = () => {
         role: 4,
       };
       const res = await indexApi.getRequestsByManagerId(authUser.id, condition);
-      if (res.data && res.data.sentRequests) {
-        setRefuseProducts(buildDataRequest(res.data.sentRequests));
+      if (res.data && res.data.requests) {
+        setRefuseProducts(buildDataRequest(res.data.requests));
       } else {
         setRefuseProducts([]);
       }
@@ -337,6 +337,8 @@ const StoreProduct = () => {
       setIsModalConfirm(false);
       setSelled(!selled);
       toast.success(res.message);
+      getProductsStore();
+      getProductMoving();
     } else {
       toast.error(res.message);
     }
@@ -351,8 +353,8 @@ const StoreProduct = () => {
     };
     const res = await indexApi.getRequestsByManagerId(id, condition);
     console.log(res);
-    if (res.data && res.data.sentRequests) {
-      setRequests(buildDataRequest(res.data.sentRequests));
+    if (res.data && res.data.requests) {
+      setRequests(buildDataRequest(res.data.requests));
     }
   };
 
@@ -364,8 +366,8 @@ const StoreProduct = () => {
       role: 4,
     };
     const res = await indexApi.getRequestsByManagerId(id, condition);
-    if (res.data && res.data.sentRequests) {
-      setProductMoving(buildDataRequest(res.data.sentRequests));
+    if (res.data && res.data.requests) {
+      setProductMoving(buildDataRequest(res.data.requests));
     }
   };
 
