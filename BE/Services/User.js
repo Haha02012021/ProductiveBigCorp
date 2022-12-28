@@ -279,8 +279,7 @@ var allManagers = async (role, page) => {
         const limit = 5;
         const offset = 0 + (page - 1) * limit;
         let count = await Manager.count({ where: { role } });
-        count =
-          count % limit === 0 ? count / limit : parseInt(count / limit) + 1;
+        count = count % limit === 0 ? count / limit : parseInt(count / limit) + 1;
         const managers = await Manager.findAll({
           where: { role },
           attributes: {

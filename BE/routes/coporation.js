@@ -3,7 +3,7 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var {body, query, validationResult} = require('express-validator');
 
-const {addManager, createModel, createVersion, getAllProducts, deleteModel, deleteVersion} = require('../Controllers/CoporationController');
+const {addManager, createModel, createVersion, getAllProducts, deleteModel, deleteVersion, editVersion} = require('../Controllers/CoporationController');
 
 const {validateCoporation} = require('../Middlewares/roleValidator');
 const { finalCheck } = require('../Validators/checkErrors');
@@ -35,12 +35,20 @@ finalCheck,
 addManager);
 
 
-router.post('/newModel', 
-body('name').exists().withMessage('need a name').isString('must be a string'),
-body('color_id').isArray().withMessage('must be an array').custom(checkIntArray),
-body('images').isArray().withMessage('must be an array'),
-body('colors').isArray().withMessage('must be an array'),
-finalCheck, upload.fields([{name: 'colors'}, {name: 'images'}]), createModel);
+router.post('/newModel', upload.fields([{name: 'colors'}, {name: 'images'}]),
+//body('name').exists().withMessage('need a name').isString('must be a string'),
+//body('color_id').isArray().withMessage('must be an array').custom(checkIntArray),
+//body('images').optional({checkFalsy: null}).isArray().withMessage('must be an array'),
+//body('colors').isArray().withMessage('must be an array'),
+//finalCheck, 
+createModel
+);
+
+router.put('/version/edit/:id', editVersion);
+
+router.post('/model/edit',
+upload.fields([{name: 'colors'}, {name: 'images'}]),
+)
 
 router.post('/newVersion', createVersion);
 

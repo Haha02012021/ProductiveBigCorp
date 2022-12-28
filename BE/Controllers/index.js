@@ -80,7 +80,7 @@ var getAllProducts = async (req, res) => {
 
 var getAllVersions = async (req, res) => {
   try {
-    const versions = await getAllVers();
+    const versions = await getAllVers(req.query.page);
     if (!versions) {
       res.status(404).json({ success: false, message: "not found" });
     } else {
@@ -97,7 +97,7 @@ var getAllVersions = async (req, res) => {
 
 var getAllModels = async (req, res) => {
   try {
-    const models = await getAll();
+    const models = await getAll(req.query.page);
     if (!models) {
       res.status(404).json({ success: false, message: "not found" });
     } else {
