@@ -62,7 +62,8 @@ var getAllProducts = async (req, res) => {
   try {
     const products = await getProducts(
       req.params.manager_id,
-      req.body.condition
+      req.body.condition,
+      req.body.page,
     );
     if (!products) {
       res.status(404).json({ success: false, message: "products not found" });
@@ -174,7 +175,8 @@ var getAllRequests = async (req, res) => {
     const requests = await getRequests(
       req.params.manager_id,
       req.body.condition,
-      req.body.role
+      req.body.role,
+      req.body.page
     );
     if (requests) {
       res.json({

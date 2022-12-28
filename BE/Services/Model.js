@@ -125,9 +125,12 @@ var info = async (id) => {
 
 var getAll = async (page) => {
   try {
-    const limit = 5;
-    const offset = 0 + (page - 1) * limit;
+    const limit = page ? 5: null;
+    const offset = page ? 0 + (page - 1) * limit : 0;
     let count = await MODEL.count();
+    if (page) {
+      count = count % limit === 0 ? count / limit : parseInt(count / limit) + 1;
+    }
     const models = await MODEL.findAll({
       include: [
         {
@@ -140,7 +143,7 @@ var getAll = async (page) => {
         },
       ],
       offset: offset,
-      limit: count,
+      limit: limit,
     });
     return { models: models, totalPages: count, currentPage: parseInt(page) };
   } catch (err) {
