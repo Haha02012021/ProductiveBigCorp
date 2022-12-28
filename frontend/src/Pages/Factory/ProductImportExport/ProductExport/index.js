@@ -1,5 +1,5 @@
-import { Badge, Form, message, Modal, Select, Tabs, Tag } from "antd";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { Badge, Form, Modal, Tabs, Tag } from "antd";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import indexApi from "../../../../apis";
 import { acceptRequest, refuseRequestById } from "../../../../apis/factory";
@@ -29,6 +29,8 @@ export default function ProductExport() {
       title: "Phiên bản",
       dataIndex: "version",
       key: "version",
+      width: 240,
+      fixed: true,
     },
     {
       title: "Số lượng",
@@ -45,7 +47,9 @@ export default function ProductExport() {
             color={record.color.code}
             style={{ color: invertColor(record.color.code, true) }}
           >
-            {record.color.name}
+            {record.color.name.length > 10
+              ? record.color.name.substring(0, 10) + "..."
+              : record.color.name}
           </Tag>
         );
       },
@@ -72,6 +76,7 @@ export default function ProductExport() {
       title: "Ngày xuất/nhận",
       dataIndex: "inExportDate",
       key: "inExportDate",
+      width: 80,
     },
     {
       title: "Lý do hủy",

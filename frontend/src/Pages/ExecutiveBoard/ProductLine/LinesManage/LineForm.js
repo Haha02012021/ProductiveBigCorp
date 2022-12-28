@@ -231,15 +231,16 @@ export default function LineForm({ form, lineId }) {
 
   return (
     <Form
-      labelCol={{ xs: { span: 6 }, sm: { span: 4 } }}
+      labelCol={{ xs: { span: 6 }, sm: { span: 6 } }}
       form={form}
-      style={{ paddingTop: 24, paddingBottom: 24 }}
+      style={{ paddingTop: 24, paddingBottom: 24, width: "100%" }}
       layout="vertical"
     >
       <Form.Item
         label="Dòng sản phẩm"
         required
         name="name"
+        style={{ width: "100%" }}
         rules={[
           { required: true, message: errorMessages.lineForm.name },
           {

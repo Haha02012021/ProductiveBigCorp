@@ -1,4 +1,4 @@
-import { Input, message, Space } from "antd";
+import { Input, message, Space, Row, Col } from "antd";
 import PageHeader from "./PageHeader";
 import indexApi from "../apis/index";
 
@@ -39,7 +39,7 @@ export default function PageContent({
         </Space>
       )}
       {showSearch && (
-        <div
+        <Row
           style={{
             display: "flex",
             justifyContent: searchBarExtraAction ? "space-between" : "right",
@@ -48,13 +48,15 @@ export default function PageContent({
           }}
         >
           {searchBarExtraAction}
-          <Input.Search
-            onSearch={onSearch || handleSearch}
-            placeholder={searchPlaceholder}
-            style={{ width: "36%" }}
-            allowClear
-          />
-        </div>
+          <Col sx={24} md={8}>
+            <Input.Search
+              onSearch={onSearch || handleSearch}
+              placeholder={searchPlaceholder}
+              style={{ width: "100%" }}
+              allowClear
+            />
+          </Col>
+        </Row>
       )}
       {children}
     </>
