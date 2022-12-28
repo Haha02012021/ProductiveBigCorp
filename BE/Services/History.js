@@ -1,5 +1,5 @@
 const {db, History, sequelize} = require('../models');
-const {QueryTypes} = require('sequelize');
+const {QueryTypes, Op} = require('sequelize');
 
 var addHistory = async (products, status_id, content, manager_id) => {
     try {
@@ -51,7 +51,7 @@ var getHistoryOfProduct = async (product_id) => {
     }
 }
 
-var productsByStatus = async (manager_id) => {
+var productsByStatus = async (manager_id, option, year, secondYear) => {
     try {
         //const manager = await sequelize.query(
         //    `SELECT count(*), histories.createdAt, quarter(histories.createdAt), content, status_id 
@@ -65,14 +65,36 @@ var productsByStatus = async (manager_id) => {
         //      raw: false,
         //    }
         //);
-        const manager = await History.count({
-            where: {
-              manager_id,
-            },
-            group: [sequelize.fn("QUARTER", sequelize.col("createdAt")), 'status_id'],
-            nest: true,
-        })
-        return manager;
+        if(!year) {
+            throw "invalid year";
+        }
+        let data = null;
+        if(option === 'quarter' || option === 'month'){
+            data = await History.count({
+                where: {
+                    [Op.and] : [
+                        sequelize.where(sequelize.fn('YEAR', sequelize.col('createdAt')), year),
+                        {manager_id}
+                    ]
+                },
+                group: [sequelize.fn(option === 'month' ? "MONTH" : "QUARTER", sequelize.col("createdAt")), 'status_id'],
+            })
+        } else if (option === 'year'){
+            if(!secondYear) {
+                throw "invalid secondYear"
+            }
+            data = await History.count({
+                where: {
+                    [Op.and] : [
+                        sequelize.where(sequelize.fn('YEAR', sequelize.col('createdAt')), Op.gte, year),
+                        sequelize.where(sequelize.fn('YEAR', sequelize.col('createdAt')), Op.lte, secondYear),
+                        {manager_id}
+                    ]
+                },
+                group: [sequelize.fn("YEAR", sequelize.col("createdAt")), 'status_id'],
+            })
+        }
+        return data;
     } catch (err) {
         console.log(err);
         return null;

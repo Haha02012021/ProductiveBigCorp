@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Modal, Row, Col, Button } from "antd";
+import { Modal, Row, Col, Button, Form } from "antd";
 import { Input } from "antd";
 import styled from "styled-components";
 import indexApi from "../../../apis/index";
@@ -113,24 +113,45 @@ const ModelSendWarranty = (props) => {
           Thông tin chi tiết bảo hành
         </BoldText>
 
-        <Col span={24}>
-          <label>Mô tả lỗi: </label>
-          <TextArea
-            autoSize={{
-              minRows: 4,
-              maxRows: 6,
-            }}
-            style={{ width: "100%" }}
-            placeholder="Mô tả lỗi bạn gặp phải tại đây"
-            onChange={(e) => setErrorContent(e.target.value)}
-          ></TextArea>
-        </Col>
-      </Row>
-
-      <Row style={{ paddingTop: 20 }}>
-        <Button type="primary" onClick={() => sendWarrant()}>
-          Gửi yêu cầu
-        </Button>
+        <Form layout="vertical" autoComplete="off" style={{ width: "100%" }}>
+          <Col span={24}>
+            <Form.Item
+              label={"Mô tả lỗi: "}
+              required
+              name="reason"
+              style={{ width: "100%" }}
+              rules={[
+                { required: true, message: "Không được bỏ trống" },
+                {
+                  type: "string",
+                  min: 1,
+                  message: "Giá trị không phù hợp",
+                },
+              ]}
+            >
+              <TextArea
+                autoSize={{
+                  minRows: 4,
+                  maxRows: 6,
+                }}
+                style={{ width: "100%" }}
+                placeholder="Mô tả lỗi bạn gặp phải tại đây"
+                onChange={(e) => setErrorContent(e.target.value)}
+              />
+            </Form.Item>
+          </Col>
+          <Row style={{ paddingTop: 20 }}>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                onClick={() => sendWarrant()}
+              >
+                Gửi yêu cầu
+              </Button>
+            </Form.Item>
+          </Row>
+        </Form>
       </Row>
     </Modal>
   );

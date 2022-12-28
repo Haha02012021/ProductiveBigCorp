@@ -61,7 +61,7 @@ const TabProductMoving = (props) => {
       dataIndex: "actions",
       key: "actions",
       width: 100,
-      render: (text, record, index) => (
+      render: (text, record, ) => (
         <ActionsCell
           hasDelete={false}
           hasEdit={false}
@@ -79,7 +79,7 @@ const TabProductMoving = (props) => {
   ];
 
   const buildData = (data) => {
-    const result = new Array();
+    const result = [];
     for (let i = 0; i < data.length; i++) {
       const o = {};
       if (data[i]) {
@@ -134,6 +134,9 @@ const TabProductMoving = (props) => {
       store_id: authUser.id,
     });
     if (res.success === true) {
+      if (maintainedProducts.length === 1) {
+        props.setTab();
+      }
       setIsModalConfirm(false);
       setOnChange(!onChange);
       toast.success(res.message);
@@ -150,6 +153,7 @@ const TabProductMoving = (props) => {
       />
       {isModalConfirm && (
         <ModalConfirm
+          title="Xác nhận đã nhận được sản phẩm"
           isModalOpen={isModalConfirm}
           handleOk={() => {
             acceptProduct();

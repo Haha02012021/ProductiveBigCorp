@@ -14,7 +14,7 @@ import TabProductMoving from "./tabProductMoving";
 import TabSendSummon from "./tabSendSummon";
 
 const ProductWarranty = () => {
-  const [currentTab, setCurrentTab] = useState(1);
+  const [currentTab, setCurrentTab] = useState("1");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalWarrantyOpen, setIsModalWarrantyOpen] = useState(false);
   const { authUser } = useContext(AuthContext);
@@ -66,7 +66,7 @@ const ProductWarranty = () => {
       dataIndex: "actions",
       key: "actions",
       width: 150,
-      render: (text, record, ) => (
+      render: (text, record) => (
         <ActionsCell
           hasDelete={false}
           hasConfirm={false}
@@ -109,7 +109,7 @@ const ProductWarranty = () => {
   }, [change]);
 
   const buildData = (data) => {
-    const result = new Array();
+    const result = [];
     for (let i = 0; i < data.length; i++) {
       const o = {};
       if (data[i]) {
@@ -179,6 +179,7 @@ const ProductWarranty = () => {
         <TabProductMoving
           showModal={() => setIsModalOpen(true)}
           selectProduct={(id) => setIdProduct(id)}
+          setTab={() => setCurrentTab("4")}
         />
       ),
     },
@@ -213,8 +214,11 @@ const ProductWarranty = () => {
     >
       <Tabs
         defaultActiveKey="1"
+        tabPosition="top"
         items={tabItems}
+        activeKey={currentTab}
         onChange={(key) => {
+          console.log(key);
           setCurrentTab(key);
         }}
       />
@@ -231,7 +235,7 @@ const ProductWarranty = () => {
           isModalOpen={isModalWarrantyOpen}
           handleOk={() => {
             setChange(!change);
-            setCurrentTab(2);
+            setCurrentTab("2");
             setIsModalWarrantyOpen(false);
           }}
           handleCancel={() => setIsModalWarrantyOpen(false)}

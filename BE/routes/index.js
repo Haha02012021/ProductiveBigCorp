@@ -13,7 +13,8 @@ var {
   getRequestInfo,
   getAllRequests,
   getAllStatuses,
-  findOneProduct
+  findOneProduct,
+  analizeProducts
 } = require("../Controllers/index");
 var { param, query, body, validationResult } = require("express-validator");
 
@@ -68,5 +69,7 @@ router.get("/statuses/all", getAllStatuses);
 router.get('/product/:uuid', param('uuid').exists().withMessage('need a uuid').isUUID().withMessage('must be a uuid'),
 finalCheck,
 findOneProduct);
+
+router.get("/analize/status/:manager_id", analizeProducts);
 
 module.exports = router;

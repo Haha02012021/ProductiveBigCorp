@@ -5,6 +5,7 @@ const { allColors } = require("../Services/Color");
 const { productInfo, findByUuid } = require("../Services/Product");
 const { getDetail } = require("../Services/Request");
 const { allStatuses } = require("../Services/Status");
+const { productsByStatus } = require("../Services/History");
 
 var getVersionInfo = async (req, res) => {
   try {
@@ -234,6 +235,24 @@ var findOneProduct = async (req, res) => {
   }
 };
 
+var analizeProducts = async (req, res) => {
+  try {
+    console.log(req.params.manager_id);
+    const data = await productsByStatus(req.params.manager_id, req.query.option, req.query.year, req.query.secondYear);
+    if (!data) {
+      res.json({ success: false, message: "data not returned" });
+    } else {
+      res.json({ success: true, message: "analized", data });
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err,
+      success: false,
+      message: "error from analize products",
+    });
+  }
+};
+
 module.exports = {
   getVersionInfo,
   getModelInfo,
@@ -247,4 +266,5 @@ module.exports = {
   getAllRequests,
   getAllStatuses,
   findOneProduct,
+  analizeProducts,
 };
