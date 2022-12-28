@@ -106,12 +106,12 @@ export default function LineManage() {
   //       try {
   //         const res = await coporationApi.deleteModel(lineId);
   //         if (res.success) {
-  //           message.success("Xóa dòng sản phẩm thành công!", 2);
+  //           toast.success("Xóa dòng sản phẩm thành công!", 2);
   //           getAllModels();
   //           Modal.destroyAll();
   //         }
   //       } catch (error) {
-  //         message.error(error.message, 2);
+  //         toast.error(error.message, 2);
   //         Modal.destroyAll();
   //       }
   //     },

@@ -9,6 +9,7 @@ import CustomTable from "../../../../Components/Table/CustomTable";
 import VersionForm from "./VersionForm";
 import ModalViewVersion from "./modalViewVersion";
 import { ThemeContext } from "../../../../Provider/ThemeProvider";
+import { toast } from "react-toastify";
 
 export default function VersionManage() {
   const { isMobile } = useContext(ThemeContext);
@@ -118,12 +119,12 @@ export default function VersionManage() {
         try {
           const res = await coporationApi.deleteVersion(data.id);
           if (res.success) {
-            message.success(`Xóa phiên bản ${data.id} thành công!`, 2);
+            toast.success(`Xóa phiên bản ${data.id} thành công!`, 2);
             getAllVersions();
             Modal.destroyAll();
           }
         } catch (error) {
-          message.error(error.message, 2);
+          toast.error(error.message, 2);
           Modal.destroyAll();
         }
       },
@@ -167,9 +168,9 @@ export default function VersionManage() {
       const res = await coporationApi.addVersion(data);
       if (res.success) {
         setAddModalVisible(false);
-        message.success("Thêm phiên bản thành công!", 2);
+        toast.success("Thêm phiên bản thành công!", 2);
       } else {
-        message.error("Dường như có lỗi gì đó!", 2);
+        toast.error("Dường như có lỗi gì đó!", 2);
       }
     } catch (error) {
       setErrorPanelKey(error.errorFields.map(({ name }) => name[0]));

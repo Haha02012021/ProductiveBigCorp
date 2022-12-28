@@ -1,5 +1,6 @@
-import { message, Modal, Tabs } from "antd";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { Button, message, Modal, Tabs } from "antd";
+import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import indexApi from "../../../../apis";
 import { receiveBrokenProducts } from "../../../../apis/factory";
 import PageContent from "../../../../Components/PageContent";
@@ -7,32 +8,12 @@ import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
 import { AuthContext } from "../../../../Provider/AuthProvider";
 import { ThemeContext } from "../../../../Provider/ThemeProvider";
-
-const waitingProducts = [
-  {
-    id: 1,
-    productLine: "ABC",
-    version: "1",
-    error: "Error",
-    key: 1,
-  },
-];
-
-const errorProducts = [
-  {
-    id: 1,
-    model: "ABC MNPQ MNPQMNPQ MNPQMNPQ MNPQ",
-    version: "1",
-    error:
-      "Error Error Error Error Error Error Error ErrorErrorError ErrorErrorErrorErrorError     ErrorErrorErrorErrorErrorErrorErrorErrorErrorError ErrorErrorErrorErrorError ErrorErrorErrorErrorError",
-  },
-];
-
 export default function ProductImport() {
   const { isMobile } = useContext(ThemeContext);
   const { authUser } = useContext(AuthContext);
   const [brokenProducts, setBrokenProducts] = useState([]);
   const [destroyedProducts, setDestroyedProducts] = useState([]);
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const columns = [
     {
       title: "Mã sản phẩm",
@@ -61,10 +42,12 @@ export default function ProductImport() {
       width: 130,
       render: (_, record) => (
         <ActionsCell
-          hasDelete={false}
+          hasDelete={record.statusId === 14}
+          hasConfirm={record.statusId === 13}
           hasEdit={false}
           hasView={false}
           onConfirm={() => handleConfirm(record)}
+          onDelete={() => handleDestroy(record)}
         />
       ),
     },
@@ -86,13 +69,92 @@ export default function ProductImport() {
     }
   };
 
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      setSelectedProducts(selectedRows.map((row) => row.key));
+    },
+    onSelect: (record, selected, selectedRows) => {},
+    onSelectAll: (selected, selectedRows, changeRows) => {},
+  };
+
+  const handleConfirmAll = () => {
+    const req = {
+      products: selectedProducts,
+      factory_id: authUser.id,
+    };
+    Modal.confirm({
+      content: "Bạn có chắc chắn xác nhận các sản phẩm này bị lỗi không?",
+      okText: "Có",
+      cancelText: "Không",
+      closable: true,
+      width: isMobile ? "80%" : "40%",
+      onCancel: () => {},
+      onOk: async () => {
+        try {
+          const res = await receiveBrokenProducts(req);
+
+          if (res.success) {
+            toast.success("Đã xác nhận sản phẩm lỗi", 2);
+            setSelectedProducts([]);
+            getBrokenProducts();
+            getDestroyedProducts();
+          }
+        } catch (error) {
+          toast.error(error.message, 2);
+        }
+      },
+    });
+  };
+
+  const handleDestroyAll = () => {
+    const req = {
+      products: selectedProducts,
+      factory_id: authUser.id,
+    };
+
+    Modal.confirm({
+      content: "Bạn có chắc chắn muốn tiêu hủy các sản phẩm này không?",
+      okText: "Có",
+      cancelText: "Không",
+      closable: true,
+      width: isMobile ? "80%" : "40%",
+      onCancel: () => {},
+      onOk: async () => {
+        try {
+          const res = await receiveBrokenProducts(req);
+
+          if (res.success) {
+            toast.success("Đã tiêu hủy các sản phẩm", 2);
+            getBrokenProducts();
+            getDestroyedProducts();
+          }
+        } catch (error) {
+          toast.error(error.message, 2);
+        }
+      },
+    });
+  };
+
   const tabItems = [
     {
       label: `Chờ xác nhận`,
       key: "1",
       children: (
-        <PageContent getSearchResults={handleSearchBrokenProductResults}>
-          <CustomTable dataSource={brokenProducts} columns={columns} />
+        <PageContent
+          getSearchResults={handleSearchBrokenProductResults}
+          searchBarExtraAction={
+            selectedProducts.length > 0 && (
+              <Button type="primary" onClick={handleConfirmAll}>
+                Xác nhận hết
+              </Button>
+            )
+          }
+        >
+          <CustomTable
+            dataSource={brokenProducts}
+            columns={columns}
+            rowSelection={{ ...rowSelection }}
+          />
         </PageContent>
       ),
     },
@@ -100,10 +162,20 @@ export default function ProductImport() {
       label: `Sản phẩm lỗi`,
       key: "2",
       children: (
-        <PageContent getSearchResults={handleSearchDestroyedProductResults}>
+        <PageContent
+          getSearchResults={handleSearchDestroyedProductResults}
+          searchBarExtraAction={
+            selectedProducts.length > 0 && (
+              <Button type="primary" danger onClick={handleDestroyAll}>
+                Tiêu hủy hết
+              </Button>
+            )
+          }
+        >
           <CustomTable
             dataSource={destroyedProducts}
             columns={columns.filter((column) => column.key !== "actions")}
+            rowSelection={{ ...rowSelection }}
           />
         </PageContent>
       ),
@@ -178,6 +250,7 @@ export default function ProductImport() {
         model: product.model.name,
         version: product.version.name,
         error: product.errors[0]?.content,
+        statusId: product.status_id,
       };
     });
     return builtData;
@@ -190,8 +263,7 @@ export default function ProductImport() {
     };
 
     Modal.confirm({
-      content:
-        "Bạn có chắc chắn xác nhận sản phẩm này bị lỗi và sẽ bị tiêu hủy không?",
+      content: "Bạn có chắc chắn xác nhận sản phẩm này bị lỗi không?",
       okText: "Có",
       cancelText: "Không",
       closable: true,
@@ -202,17 +274,45 @@ export default function ProductImport() {
           const res = await receiveBrokenProducts(req);
 
           if (res.success) {
-            message.success("Đã xác nhận sản phẩm lỗi", 2);
+            toast.success("Đã xác nhận sản phẩm lỗi", 2);
             getBrokenProducts();
             getDestroyedProducts();
           }
         } catch (error) {
-          message.error(error.message, 2);
+          toast.error(error.message, 2);
         }
       },
     });
   };
 
+  const handleDestroy = (data) => {
+    const req = {
+      products: [data.key],
+      factory_id: authUser.id,
+    };
+
+    Modal.confirm({
+      content: "Bạn có chắc chắn muốn tiêu hủy sản phẩm này không?",
+      okText: "Có",
+      cancelText: "Không",
+      closable: true,
+      width: isMobile ? "80%" : "40%",
+      onCancel: () => {},
+      onOk: async () => {
+        try {
+          const res = await receiveBrokenProducts(req);
+
+          if (res.success) {
+            toast.success("Đã tiêu hủy sản phẩm", 2);
+            getBrokenProducts();
+            getDestroyedProducts();
+          }
+        } catch (error) {
+          toast.error(error.message, 2);
+        }
+      },
+    });
+  };
   return (
     <PageContent
       pageHeaderProps={{

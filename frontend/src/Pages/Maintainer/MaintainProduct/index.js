@@ -19,6 +19,7 @@ import moment from "moment";
 import TransportForm from "./TransportForm";
 import ModalViewProduct from "../../ExecutiveBoard/Product/modalViewProduct";
 import { SearchOutlined } from "@ant-design/icons";
+import { toast } from "react-toastify";
 
 export default function MaintainProduct() {
   const { authUser } = useContext(AuthContext);
@@ -206,11 +207,11 @@ export default function MaintainProduct() {
       const res = await maintainProducts(req);
 
       if (res.success) {
-        message.success(`Sản phẩm mã ${data.key} đang được bảo hành`, 2);
+        toast.success(`Sản phẩm mã ${data.key} đang được bảo hành`, 2);
         getMaintainProducts();
       }
     } catch (error) {
-      message.error(error.message, 2);
+      toast.error(error.message, 2);
     }
   };
   const handleDelete = (data) => {
@@ -257,7 +258,7 @@ export default function MaintainProduct() {
       const res = await doneMaintian(data);
       if (res.success) {
         const content = res.data.history.content;
-        message.success(
+        toast.success(
           content.substring(0, 1).toUpperCase() +
             content.substring(1, content.length, 2)
         );
@@ -265,7 +266,7 @@ export default function MaintainProduct() {
         getMaintainProducts();
       }
     } catch (error) {
-      message.error(error.message, 2);
+      toast.error(error.message, 2);
     }
   };
 
@@ -282,11 +283,11 @@ export default function MaintainProduct() {
           const res2 = await returnBackToFactory(data);
 
           if (res2.success) {
-            message.success("Các sản phẩm sẽ được chuyển về nhà máy", 2);
+            toast.success("Các sản phẩm sẽ được chuyển về nhà máy", 2);
             setTransportModalVisible(false);
           }
         } catch (error) {
-          message.error(error.message, 2);
+          toast.error(error.message, 2);
         }
         break;
 
@@ -295,11 +296,11 @@ export default function MaintainProduct() {
           const res4 = await returnBackToStore(data);
 
           if (res4.success) {
-            message.success("Các sản phẩm sẽ được chuyển về đại lý", 2);
+            toast.success("Các sản phẩm sẽ được chuyển về đại lý", 2);
             setTransportModalVisible(false);
           }
         } catch (error) {
-          message.error(error.message, 2);
+          toast.error(error.message, 2);
         }
         break;
     }

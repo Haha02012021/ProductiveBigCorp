@@ -4,6 +4,7 @@ export default function CustomTable({
   dataSource,
   columns,
   paginationProps = {},
+  rowSelection,
 }) {
   return (
     <div style={{ width: "100%", overflowX: "auto" }}>
@@ -14,6 +15,7 @@ export default function CustomTable({
         style={{ width: "100%", overflowX: "auto" }}
         columns={columns}
         pagination={paginationProps}
+        rowSelection={rowSelection}
       />
     </div>
   );

@@ -14,6 +14,7 @@ import ProductLotForm from "./ProductLotForm";
 import invertColor from "../../../utils/invertColor";
 import { ThemeContext } from "../../../Provider/ThemeProvider";
 import SummonReqForm from "./SummonReqForm";
+import { toast } from "react-toastify";
 
 export default function ProductLot() {
   const { authUser } = useContext(AuthContext);
@@ -173,13 +174,13 @@ export default function ProductLot() {
     try {
       const res = await addNewProducts(data);
       if (res.success) {
-        message.success("Thêm lô sản phẩm thành công!", 2);
+        toast.success("Thêm lô sản phẩm thành công!", 2);
         setAddModalVisible(false);
       } else {
-        message.error(res.message);
+        toast.error(res.message);
       }
     } catch (error) {
-      message.error(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -191,7 +192,7 @@ export default function ProductLot() {
         form.getFieldsValue()
       );
       if (res.success) {
-        message.success(
+        toast.success(
           `Bạn đã yêu cầu triệu hồi cho lô sản phẩm mã ${selectedBatch.key}`,
           2
         );
@@ -200,7 +201,7 @@ export default function ProductLot() {
         setSummonReqModalVisible(false);
       }
     } catch (error) {
-      message.error(error.message, 2);
+      toast.error(error.message, 2);
     }
   };
 

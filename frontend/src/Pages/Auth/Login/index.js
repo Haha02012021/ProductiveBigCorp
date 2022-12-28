@@ -16,6 +16,7 @@ import { ttl } from "../../../const";
 import loginImg from "../../../assets/toppng.com-car-front-vector-png-clipart-library-clip-art-library-car-clipart-png-transparent-1979x1054.png";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import authApi from "../../../apis/auth";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const { authUser, setAuthUser } = useContext(AuthContext);
@@ -34,7 +35,7 @@ export default function Login() {
 
       setLoading(false);
       if (data?.user) {
-        message.success("Đăng nhập thành công!", 2);
+        toast.success("Đăng nhập thành công!", 2);
         const now = new Date();
         const item = { value: data.accessToken, expiry: now.getTime() + ttl };
         localStorage.setItem("accessToken", JSON.stringify(item));
@@ -61,11 +62,11 @@ export default function Login() {
         }, 2000);
       } else {
         console.log(data);
-        message.error(data?.message, 2);
+        toast.error(data?.message, 2);
       }
     } catch (error) {
       setLoading(false);
-      message.error(error.message, 2);
+      toast.error(error.message, 2);
     }
   };
   return (

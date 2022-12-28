@@ -8,6 +8,7 @@ import PageContent from "../../../Components/PageContent";
 import { errorMessages } from "../../../const";
 import coporationApi from "../../../apis/coporation";
 import indexApi from "../../../apis/index";
+import { toast } from "react-toastify";
 
 export default function UnitManage() {
   const [currentTab, setCurrentTab] = useState(1);
@@ -159,11 +160,11 @@ export default function UnitManage() {
       const res = await coporationApi.addManager(form.getFieldsValue());
 
       if (res.success) {
-        message.success(res.message, 2);
+        toast.success(res.message, 2);
         setAddModalVisible(false);
       }
     } catch (error) {
-      message.error(errorMessages.unitForm.errorSubmit, 2);
+      toast.error(errorMessages.unitForm.errorSubmit, 2);
     }
   };
 

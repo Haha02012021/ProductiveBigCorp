@@ -1,5 +1,6 @@
 import { Badge, Form, message, Modal, Select, Tabs, Tag } from "antd";
 import { useContext, useEffect, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 import indexApi from "../../../../apis";
 import { acceptRequest, refuseRequestById } from "../../../../apis/factory";
 import CustomModal from "../../../../Components/CustomModal";
@@ -196,11 +197,11 @@ export default function ProductExport() {
       const res = await acceptRequest(data.key, authUser.id);
 
       if (res.success) {
-        message.success("Đã xác nhận gửi đơn hàng", 2);
+        toast.success("Đã xác nhận gửi đơn hàng", 2);
         getRequestsByManagerId();
       }
     } catch (error) {
-      message.error(error.message, 2);
+      toast.error(error.message, 2);
     }
   };
 
@@ -223,9 +224,9 @@ export default function ProductExport() {
 
         if (res.success) {
           setCancelModalVisible(false);
-          message.success("Hủy đơn hàng thành công!", 2);
+          toast.success("Hủy đơn hàng thành công!", 2);
         } else {
-          message.error(res.message, 2);
+          toast.error(res.message, 2);
         }
       },
     });

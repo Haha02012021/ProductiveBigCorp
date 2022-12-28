@@ -9,6 +9,7 @@ export default function PageContent({
   pageHeaderProps,
   onSearch,
   getSearchResults = () => {},
+  searchBarExtraAction,
 }) {
   const handleSearch = async (value) => {
     if (value) {
@@ -41,10 +42,12 @@ export default function PageContent({
         <div
           style={{
             display: "flex",
-            justifyContent: "right",
+            justifyContent: searchBarExtraAction ? "space-between" : "right",
+            alignItems: "center",
             marginBottom: "16px",
           }}
         >
+          {searchBarExtraAction}
           <Input.Search
             onSearch={onSearch || handleSearch}
             placeholder={searchPlaceholder}
