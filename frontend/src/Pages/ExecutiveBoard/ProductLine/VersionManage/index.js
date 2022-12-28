@@ -53,7 +53,7 @@ export default function VersionManage() {
   };
 
   const getAllVersions = async () => {
-    const res = await indexApi.getAllVersions(currentPage);
+    const res = await indexApi.getAllVersions();
 
     if (res.success === true) {
       setCurrentPage(res.data.currentPage);

@@ -111,9 +111,9 @@ export default function ProductExport() {
       role: 2,
     };
     const res0 = await indexApi.getRequestsByManagerId(authUser.id, condition0);
-
+    console.log(res0);
     if (res0.success) {
-      data = [...data, ...buildData(res0.data.receivedRequests)];
+      data = [...data, ...buildData(res0.data.requests)];
     }
 
     const condition1 = {
@@ -126,7 +126,7 @@ export default function ProductExport() {
     const res1 = await indexApi.getRequestsByManagerId(authUser.id, condition1);
 
     if (res1.success) {
-      data = [...data, ...buildData(res1.data.receivedRequests)];
+      data = [...data, ...buildData(res1.data.requests)];
     }
 
     const condition2 = {
@@ -139,7 +139,7 @@ export default function ProductExport() {
     const res2 = await indexApi.getRequestsByManagerId(authUser.id, condition2);
 
     if (res2.success) {
-      data = [...data, ...buildData(res2.data.receivedRequests)];
+      data = [...data, ...buildData(res2.data.requests)];
     }
 
     setReqDataSource(data);
@@ -155,7 +155,7 @@ export default function ProductExport() {
     try {
       const res = await indexApi.getRequestsByManagerId(authUser.id, condition);
       if (res.success) {
-        setCanceledReqDataSource(buildData(res.data.receivedRequests));
+        setCanceledReqDataSource(buildData(res.data.requests));
       }
     } catch (error) {
       setCanceledReqDataSource([]);

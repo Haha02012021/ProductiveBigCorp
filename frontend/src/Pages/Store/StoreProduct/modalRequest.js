@@ -106,7 +106,7 @@ const ModalRequest = (props) => {
   const getAllModels = async () => {
     const res = await indexApi.getAllModels();
     if (res.data) {
-      setModels(buildDataModel(res.data));
+      setModels(buildDataModel(res.data.models));
     }
   };
 
@@ -121,7 +121,7 @@ const ModalRequest = (props) => {
   const getFactories = async () => {
     const res = await indexApi.getManagerByRole(2);
     if (res.data) {
-      setFactories(buildDataModel(res.data));
+      setFactories(buildDataModel(res.data.managers));
     }
   };
 

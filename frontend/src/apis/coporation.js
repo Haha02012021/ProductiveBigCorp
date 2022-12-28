@@ -7,8 +7,8 @@ const coporationApi = {
   addVersion(versionInfo) {
     return axios.post("/coporation/newVersion", versionInfo);
   },
-  getProducts(data) {
-    return axios.post(`/coporation/products/all`, data);
+  getProducts(data, page) {
+    return axios.post(`/coporation/products/all?page=${page}`, data);
   },
   addModel(modelInfo) {
     return axios.post("/coporation/newModel", modelInfo);

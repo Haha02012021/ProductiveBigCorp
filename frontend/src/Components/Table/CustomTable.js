@@ -13,6 +13,7 @@ export default function CustomTable({
         dataSource={[...dataSource]}
         style={{ width: "100%", overflowX: "auto" }}
         columns={columns}
+        pagination={paginationProps}
       />
     </div>
   );

@@ -12,7 +12,7 @@ export default function Product() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idProduct, setIdProduct] = useState(0);
   const [products, setProducts] = useState([]);
-  const [filterConditions, setFilterConditions] = useState();
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const showModal = (data) => {
     if (data.id !== idProduct) {
@@ -37,7 +37,9 @@ export default function Product() {
     const res = await coporationApi.getProducts(condition);
     if (res.data) {
       const data = res.data;
-      setProducts(buildData(data));
+      const builtData = buildData(data.products);
+      setProducts(builtData);
+      // setFilteredProducts(builtData);
     }
   };
 
@@ -91,8 +93,8 @@ export default function Product() {
         })
       ),
       filterSearch: true,
-      onFilter: (values) => {
-        console.log(values);
+      onFilter: (values, record) => {
+        return record.productLineId === values;
       },
     },
     {
@@ -108,7 +110,9 @@ export default function Product() {
         })
       ),
       filterSearch: true,
-      onFilter: () => {},
+      onFilter: (values, record) => {
+        return record.versionId === values;
+      },
     },
     {
       title: "Cơ sở sản xuất",
@@ -123,7 +127,9 @@ export default function Product() {
         })
       ),
       filterSearch: true,
-      onFilter: () => {},
+      onFilter: (values, record) => {
+        return record.factoryId === values;
+      },
     },
     {
       title: "Đại lý phân phối",
@@ -138,7 +144,9 @@ export default function Product() {
         })
       ),
       filterSearch: true,
-      onFilter: () => {},
+      onFilter: (values, record) => {
+        return record.storeId === values;
+      },
     },
     {
       title: "Trung tâm bảo hành",
@@ -153,7 +161,9 @@ export default function Product() {
         })
       ),
       filterSearch: true,
-      onFilter: () => {},
+      onFilter: (values, record) => {
+        return record.maintainerId === values;
+      },
     },
     {
       title: "Trạng thái",
@@ -169,7 +179,9 @@ export default function Product() {
         })
       ),
       filterSearch: true,
-      onFilter: () => {},
+      onFilter: (values, record) => {
+        return record.stateId === values;
+      },
     },
     {
       title: "Thao tác",
