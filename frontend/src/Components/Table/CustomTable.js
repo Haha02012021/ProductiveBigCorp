@@ -3,11 +3,7 @@ import { Table } from "antd";
 export default function CustomTable({
   dataSource,
   columns,
-  paginationProps = {
-    total: 5,
-    onChangePagination: (page, pageSize) => {},
-  },
-  showPagination = true,
+  paginationProps = {},
 }) {
   return (
     <div style={{ width: "100%", overflowX: "auto" }}>
@@ -17,17 +13,6 @@ export default function CustomTable({
         dataSource={[...dataSource]}
         style={{ width: "100%", overflowX: "auto" }}
         columns={columns}
-        pagination={
-          showPagination === true
-            ? {
-                showQuickJumper: true,
-                showSizeChanger: true,
-                defaultCurrent: 1,
-                total: paginationProps.total,
-                onChange: paginationProps.onChangePagination,
-              }
-            : false
-        }
       />
     </div>
   );

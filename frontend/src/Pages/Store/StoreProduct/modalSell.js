@@ -48,12 +48,17 @@ const ModalSell = (props) => {
   const onFinish = async (values) => {
     setError("");
     const data = { ...values, product_id: props.idProduct };
-    const res = await newCustomer(data);
-    if (res.success === true) {
-      props.handleSell();
-      props.handleOk();
-    } else {
-      setError(res.message);
+    try {
+      const res = await newCustomer(data);
+      if (res.success === true) {
+        props.handleSell();
+        props.handleOk();
+        toast.success(res.message);
+      } else {
+        setError(res.message);
+      }
+    } catch (err) {
+      toast.error("Error");
     }
   };
   const onFinishFailed = (errorInfo) => {
@@ -62,17 +67,21 @@ const ModalSell = (props) => {
 
   const sellProductClick = async () => {
     if (customer && customer.id && props.idProduct) {
-      const res = await sellProduct({
-        customer_id: customer.id,
-        product_id: props.idProduct,
-        store_id: authUser.id,
-      });
-      if (res.success === true) {
-        props.handleSell();
-        props.handleOk();
-        toast.success(res.message);
-      } else {
-        toast.success(res.message);
+      try {
+        const res = await sellProduct({
+          customer_id: customer.id,
+          product_id: props.idProduct,
+          store_id: authUser.id,
+        });
+        if (res.success === true) {
+          props.handleSell();
+          props.handleOk();
+          toast.success(res.message);
+        } else {
+          toast.success(res.message);
+        }
+      } catch (err) {
+        toast.err(err);
       }
     }
   };
