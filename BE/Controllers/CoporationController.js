@@ -1,6 +1,6 @@
 const {createManager} = require('../Services/User');
 const {addModel, remove} = require('../Services/Model');
-const {addVersion, removeVersion} = require('../Services/Version');
+const {addVersion, removeVersion, editVer} = require('../Services/Version');
 const {allProducts} = require('../Services/Product');
 
 
@@ -47,7 +47,7 @@ var createVersion = async (req, res) => {
 
 var getAllProducts = async (req, res) => {
     try {
-        const products = await allProducts(req.body.condition, req.body.managers);
+        const products = await allProducts(req.body.condition, req.body.managers, req.body.page);
         if(!products) {
             res.status(404).json({success: false, message: 'not found'});
         } else {
@@ -84,6 +84,19 @@ var deleteVersion = async (req, res) => {
     }
 }
 
+const editVersion = async (req, res) => {
+    try {
+        const check = await editVer(req.params.id, req.body.updateInfo);
+        if(check) {
+            res.json({success: true, message: 'version edited'});
+        } else {
+            res.json({success: false, message: 'failed to edit, check if version not found'});
+        }
+    } catch (err) {
+        res.status(500).json({success: false, message: 'error from edit version', error: err});
+    }
+}
+
 module.exports = {
     addManager,
     createModel,
@@ -91,4 +104,5 @@ module.exports = {
     getAllProducts,
     deleteModel,
     deleteVersion,
+    editVersion,
 }

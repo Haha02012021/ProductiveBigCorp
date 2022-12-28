@@ -190,9 +190,9 @@ var getCustomerInfo = async (id) => {
   }
 };
 
-var allProducts = async (condition, managers) => {
+var allProducts = async (condition, managers, page) => {
   try {
-    console.log(managers, condition);
+    //console.log(managers, condition, page);
     if(managers && managers.length > 0) {
       condition.id = await sequelize.query(
         `SELECT product_id FROM manager_product where manager_id in (${managers.toString()})
@@ -202,8 +202,14 @@ var allProducts = async (condition, managers) => {
           type: QueryTypes.SELECT,
         }
       );
+      console.log(condition.id);
       condition.id = condition.id.map(element => { return element.product_id });
     }
+    console.log(condition);
+    const limit = 5;
+    const offset = 0 + (page - 1) * limit;
+    let count = await Product.count({ where: condition });
+    count = count % limit === 0 ? count / limit : parseInt(count / limit) + 1;
     const products = await Product.findAll({
       where: condition,
       include: [
@@ -242,8 +248,11 @@ var allProducts = async (condition, managers) => {
           attributes: ["id", "name", "role"],
         },
       ],
+      order: [["createdAt", "desc"]],
+      offset: offset,
+      limit: limit,
     });
-    return products;
+    return { products: products, totalPages: count, currentPage: parseInt(page) };
   } catch (err) {
     console.log(err);
     return null;

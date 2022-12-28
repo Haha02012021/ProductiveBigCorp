@@ -123,8 +123,11 @@ var info = async (id) => {
   }
 };
 
-var getAll = async () => {
+var getAll = async (page) => {
   try {
+    const limit = 5;
+    const offset = 0 + (page - 1) * limit;
+    let count = await MODEL.count();
     const models = await MODEL.findAll({
       include: [
         {
@@ -136,8 +139,10 @@ var getAll = async () => {
           attributes: ["id", "name", "code"],
         },
       ],
+      offset: offset,
+      limit: count,
     });
-    return models;
+    return { models: models, totalPages: count, currentPage: parseInt(page) };
   } catch (err) {
     console.log(err);
     return null;

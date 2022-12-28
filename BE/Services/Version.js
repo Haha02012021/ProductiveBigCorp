@@ -118,6 +118,43 @@ var addVersion = async (data) => {
     }
 }
 
+const editVer = async (id, updateInfo) => {
+    try {
+        const version = await Version.findByPk(id);
+        if(!version) {
+            throw "version not found"
+        }
+        if(updateInfo.name) {
+            await version.update({name: updateInfo.name});
+        }
+        if(updateInfo.chassis) {
+            await Chassis.update(updateInfo.chassis, {where: {version_id: id}});
+        }
+        if(updateInfo.engine) {
+            await Engine.update(updateInfo.engine, {where: {version_id: id}});
+        }
+        if(updateInfo.interior) {
+            await Interior.update(updateInfo.interior, {where: {version_id: id}});
+        }
+        if(updateInfo.exterior) {
+            await Exterior.update(updateInfo.exterior, {where: {version_id: id}});
+        }
+        if(updateInfo.iactivsense) {
+            await Iactivsense.update(updateInfo.iactivsense, {where: {version_id: id}});
+        }
+        if(updateInfo.safety) {
+            await Safety.update(updateInfo.safety, {where: {version_id: id}});
+        }
+        if(updateInfo.size) {
+            await Size.update(updateInfo.size, {where: {version_id: id}});
+        }
+        return true;
+    } catch (err) {
+        console.log(err);
+        return null
+    }
+}
+
 const getInfo = async (id) => {
     try {
         const versionInfo = await Version.findByPk(id, {include: [
@@ -182,8 +219,12 @@ const getInfo = async (id) => {
     }
 }
 
-const getAllVers = async () => {
+const getAllVers = async (page) => {
     try {
+        const limit = 5;
+        const offset = 0 + (page - 1) * limit;
+        let count = await Version.count();
+        count = count % limit === 0 ? count / limit : parseInt(count / limit) + 1;
         const versions = await Version.findAll({
             include: [
                 {
@@ -191,9 +232,12 @@ const getAllVers = async () => {
                     as: 'model',
                     attributes: ['id', 'name', 'deletedAt'],
                 },
-            ]
+            ],
+            order: [["createdAt", "desc"]],
+            offset: offset,
+            limit: limit,
         });
-        return versions;
+        return { versions: versions, totalPages: count, currentPage: parseInt(page) };
     } catch (err) {
         console.log(err);
         return null;
@@ -220,4 +264,5 @@ module.exports = {
     getInfo,
     getAllVers,
     removeVersion,
+    editVer,
 }

@@ -3,7 +3,7 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var {body, query, validationResult} = require('express-validator');
 
-const {addManager, createModel, createVersion, getAllProducts, deleteModel, deleteVersion} = require('../Controllers/CoporationController');
+const {addManager, createModel, createVersion, getAllProducts, deleteModel, deleteVersion, editVersion} = require('../Controllers/CoporationController');
 
 const {validateCoporation} = require('../Middlewares/roleValidator');
 const { finalCheck } = require('../Validators/checkErrors');
@@ -43,6 +43,8 @@ router.post('/newModel', upload.fields([{name: 'colors'}, {name: 'images'}]),
 //finalCheck, 
 createModel
 );
+
+router.put('/version/edit/:id', editVersion);
 
 router.post('/model/edit',
 upload.fields([{name: 'colors'}, {name: 'images'}]),
