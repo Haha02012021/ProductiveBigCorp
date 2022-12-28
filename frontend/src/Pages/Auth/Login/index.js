@@ -1,11 +1,9 @@
 import {
   Button,
   Col,
-  Divider,
   Form,
   Image,
   Input,
-  message,
   Row,
   Space,
   Spin,
@@ -23,6 +21,7 @@ import { ThemeContext } from "../../../Provider/ThemeProvider";
 export default function Login() {
   const { isMobile } = useContext(ThemeContext);
   const { authUser, setAuthUser } = useContext(AuthContext);
+
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -31,6 +30,7 @@ export default function Login() {
       navigate(-1);
     }
   }, [authUser, navigate]);
+
   const handleLogin = async (values) => {
     try {
       setLoading(true);
@@ -74,30 +74,26 @@ export default function Login() {
   };
   return (
     <Spin spinning={loading}>
-      {isMobile && (
-        <div
-          style={{
-            backgroundColor: "#47B5FF",
-            height: "64px",
-            width: "100vw",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              color: "white",
-              fontSize: "40px",
-              fontWeight: "600",
-              marginLeft: 20,
-            }}
-          >
-            LOGO
-          </div>
-        </div>
-      )}
-      <Row gutter={[0, 24]} className="login">
-        <Col span={isMobile ? 24 : 13} className="left-side">
+      <Row gutter={[2, 24]} className="login">
+        {isMobile ? (
+          <Col span={24} className="right-side">
+            <Space direction="vertical">
+              <p
+                style={{
+                  fontSize: 60,
+                  fontWeight: 800,
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                LOGO
+              </p>
+            </Space>
+          </Col>
+        ) : (
+          <></>
+        )}
+        <Col md={13} xs={24} className="left-side">
           <Form
             labelCol={{ xs: 10, sm: isMobile ? 24 : 6 }}
             labelAlign="left"
@@ -154,20 +150,22 @@ export default function Login() {
               <Space
                 direction="vertical"
                 style={{ width: "100%" }}
-                size={[0, 2]}
+                size={[0, 1]}
               >
-                <div
+                <Row
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
                   }}
                 >
-                  <span>
+                  <Col sx={24} md={10}>
                     Chưa có tài khoản? <Link>Đăng ký!</Link>
-                  </span>
-                  <Link>Quên mật khẩu?</Link>
-                </div>
+                  </Col>
+                  <Col sx={24} md={10}>
+                    <Link>Quên mật khẩu?</Link>
+                  </Col>
+                </Row>
                 <Form.Item wrapperCol={{ span: 24 }}>
                   <Button
                     type="primary"
@@ -181,9 +179,9 @@ export default function Login() {
             </Space>
           </Form>
         </Col>
-        {!isMobile && (
-          <Col span={11} className="right-side">
-            <Space direction="vertical">
+        <Col md={11} xs={24} className="right-side">
+          <Space direction="vertical">
+            {!isMobile ? (
               <p
                 style={{
                   fontSize: 80,
@@ -194,10 +192,12 @@ export default function Login() {
               >
                 LOGO
               </p>
-              <Image src={loginImg} style={{ height: 244 }} />
-            </Space>
-          </Col>
-        )}
+            ) : (
+              <></>
+            )}
+            <Image src={loginImg} style={{ height: "60%" }} />
+          </Space>
+        </Col>
       </Row>
     </Spin>
   );

@@ -1,5 +1,5 @@
-import { Form, message, Tabs, Tag } from "antd";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { Form, Tabs, Tag } from "antd";
+import { useContext, useEffect, useState } from "react";
 import {
   addNewProducts,
   getBatchesByFactoryId,

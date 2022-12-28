@@ -1,4 +1,4 @@
-import { Badge, Button, Form, message, Tabs } from "antd";
+import { Badge, Button, Form } from "antd";
 import { useContext, useEffect, useState } from "react";
 import {
   doneMaintian,
@@ -14,11 +14,8 @@ import CustomTable from "../../../Components/Table/CustomTable";
 import { statuses } from "../../../const";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import DoneMaintainForm from "./DoneMaintainForm";
-import indexApi from "../../../apis/index";
-import moment from "moment";
 import TransportForm from "./TransportForm";
 import ModalViewProduct from "../../ExecutiveBoard/Product/modalViewProduct";
-import { SearchOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 
 export default function MaintainProduct() {
@@ -26,7 +23,6 @@ export default function MaintainProduct() {
   const [maintainProductsDataSource, setMaintainProductsDataSource] = useState(
     []
   );
-  const [summonProducts, setSummonProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState();
   const [doneMaintainModalVisible, setDoneMaintainModalVisible] =
     useState(false);
