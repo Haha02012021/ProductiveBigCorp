@@ -62,7 +62,7 @@ const TabProductWarranty = (props) => {
       dataIndex: "actions",
       key: "actions",
       width: 80,
-      render: (text, record, index) => (
+      render: (text, record, ) => (
         <ActionsCell
           hasDelete={false}
           hasConfirm={false}
@@ -77,7 +77,7 @@ const TabProductWarranty = (props) => {
   ];
 
   const buildData = (data) => {
-    const result = new Array();
+    const result = [];
     for (let i = 0; i < data.length; i++) {
       const o = {};
       if (data[i]) {
@@ -113,7 +113,6 @@ const TabProductWarranty = (props) => {
         status_id: 6,
       },
     });
-    console.log(warrantyProducts);
   }, [onChange]);
 
   const getWarrantyProductsStore = async (condition) => {
@@ -143,7 +142,7 @@ const TabProductWarranty = (props) => {
   };
 
   const buildDataModel = (data) => {
-    const results = new Array();
+    const results = [];
     for (let i = 0; i < data.length; i++) {
       results.push({ value: data[i].id, label: data[i].name });
     }

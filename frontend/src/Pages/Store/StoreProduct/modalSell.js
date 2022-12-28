@@ -46,6 +46,7 @@ const ModalSell = (props) => {
   };
 
   const onFinish = async (values) => {
+    console.log(1);
     setError("");
     const data = { ...values, product_id: props.idProduct };
     try {
@@ -98,6 +99,7 @@ const ModalSell = (props) => {
             <LabelInput>Tên người mua: </LabelInput>
             <Form.Item
               style={{ width: "100%", margin: 0 }}
+              required
               rules={[
                 {
                   required: true,
@@ -114,6 +116,7 @@ const ModalSell = (props) => {
             <LabelInput>Địa chỉ: </LabelInput>
             <Form.Item
               style={{ width: "100%", margin: 0 }}
+              required
               rules={[
                 {
                   required: true,
@@ -129,6 +132,7 @@ const ModalSell = (props) => {
             <LabelInput>Email: </LabelInput>
             <Form.Item
               style={{ width: "100%", margin: 0 }}
+              required
               rules={[
                 {
                   type: "email",
@@ -149,10 +153,17 @@ const ModalSell = (props) => {
             <LabelInput>Sdt: </LabelInput>
             <Form.Item
               style={{ width: "100%", margin: 0 }}
+              required
               rules={[
                 {
                   required: true,
                   message: "Please input your phoneNumber",
+                },
+                {
+                  pattern: new RegExp(
+                    /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
+                  ),
+                  message: "Nhập số điện thoại ",
                 },
               ]}
               name="phone"

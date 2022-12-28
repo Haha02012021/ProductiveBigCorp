@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useMemo, useContext } from "react";
-import { Modal, Select, Row, Col, Radio, ConfigProvider } from "antd";
-import { InputNumber, Button } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import React, {useContext, useEffect, useMemo, useState} from "react";
+import {Button, Col, ConfigProvider, Form, InputNumber, Modal, Radio, Row, Select} from "antd";
+import {DeleteOutlined} from "@ant-design/icons";
 import indexApi from "../../../apis";
-import { sendRequest } from "../../../apis/store";
-import { AuthContext } from "../../../Provider/AuthProvider";
-import { toast } from "react-toastify";
+import {sendRequest} from "../../../apis/store";
+import {AuthContext} from "../../../Provider/AuthProvider";
+import {toast} from "react-toastify";
 
 const ModalRequest = (props) => {
   const [versions, setVersions] = useState([]);
@@ -79,18 +78,22 @@ const ModalRequest = (props) => {
   };
 
   const sendRequestToDb = async () => {
-    try {
-      const res = await sendRequest({ requests: requests });
-      if (res.success === true) {
-        setRequests([]);
-        props.addRequest();
-        props.handleOk();
-        toast.success(res.message);
-      } else {
-        toast.error(res.message);
+    if (requests.length > 0) {
+      try {
+        const res = await sendRequest({ requests: requests });
+        if (res.success === true) {
+          setRequests([]);
+          props.addRequest();
+          props.handleOk();
+          toast.success(res.message);
+        } else {
+          toast.error(res.message);
+        }
+      } catch (error) {
+        toast.error("error service");
       }
-    } catch (error) {
-      toast.error("error service");
+    } else {
+      toast.error("Vui lòng chọn các sản phẩm🤪");
     }
   };
 
@@ -126,7 +129,7 @@ const ModalRequest = (props) => {
   };
 
   const buildDataModel = (data) => {
-    const results = new Array();
+    const results = [];
     for (let i = 0; i < data.length; i++) {
       results.push({ value: data[i].id, label: data[i].name, index: i });
     }
@@ -134,36 +137,35 @@ const ModalRequest = (props) => {
   };
 
   const renderRequest = useMemo(() => {
-    const node = requests.map((request, index) => {
+    return requests.map((request, index) => {
       return (
-        <Row
-          key={index}
-          style={{
-            backgroundColor: `${index % 2 === 0 ? "#ececec" : "#faf9f9"}`,
-            padding: "5px 0 5px 10px",
-          }}
-        >
-          <Col span={7}>
-            <div>Model: {request.model_id}</div>
-          </Col>
-          <Col span={7}>
-            <div>Version: {request.version_id}</div>
-          </Col>
-          <Col span={4}>
-            <div>Color: {request.color_id}</div>
-          </Col>
-          <Col span={4}>
-            <div>Amount: {request.amount}</div>
-          </Col>
-          <Col span={2}>
-            <div className="hoverRed" onClick={() => deleteRequest(index)}>
-              <DeleteOutlined />
-            </div>
-          </Col>
-        </Row>
+          <Row
+              key={index}
+              style={{
+                backgroundColor: `${index % 2 === 0 ? "#ececec" : "#faf9f9"}`,
+                padding: "5px 0 5px 10px",
+              }}
+          >
+            <Col span={7}>
+              <div>Model: {request.model_id}</div>
+            </Col>
+            <Col span={7}>
+              <div>Version: {request.version_id}</div>
+            </Col>
+            <Col span={4}>
+              <div>Color: {request.color_id}</div>
+            </Col>
+            <Col span={4}>
+              <div>Amount: {request.amount}</div>
+            </Col>
+            <Col span={2}>
+              <div className="hoverRed" onClick={() => deleteRequest(index)}>
+                <DeleteOutlined/>
+              </div>
+            </Col>
+          </Row>
       );
     });
-    return node;
   }, [changeRequest]);
 
   return (
@@ -177,121 +179,215 @@ const ModalRequest = (props) => {
       centered={true}
     >
       <hr style={{ margin: 0, color: "gray" }} />
-      <Row gutter={[8, 8]} style={{ paddingTop: 20 }}>
-        <Col span={12}>
-          <label>Model: </label>
-          <Select
-            showSearch
-            placeholder="Select a person"
-            optionFilterProp="children"
-            onChange={onChangeModel}
-            style={{
-              width: "100%",
-            }}
-            onSearch={onSearch}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
-            options={models}
-          />
-        </Col>
+      <Form layout="vertical" autoComplete="off">
+        <Row gutter={[8, 0]} style={{ paddingTop: 20 }}>
+          <Col span={12}>
+            <Form.Item
+              label="Model: "
+              required
+              name="model"
+              style={{ width: "100%" }}
+              rules={[
+                { required: true, message: "Không được bỏ trống" },
+                {
+                  type: "number",
+                  min: 1,
+                  max:
+                    models && models.length > 0
+                      ? models[models.length - 1].id
+                      : 10000,
+                  message: "Giá trị không phù hợp",
+                },
+              ]}
+            >
+              <Select
+                showSearch
+                placeholder="Select a model"
+                optionFilterProp="children"
+                onChange={onChangeModel}
+                style={{
+                  width: "100%",
+                }}
+                onSearch={onSearch}
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={models}
+              />
+            </Form.Item>
+          </Col>
 
-        <Col span={12}>
-          <label>Version: </label>
-          <Select
-            showSearch
-            title={"Version"}
-            placeholder="Select a person"
-            optionFilterProp="children"
-            style={{
-              width: "100%",
-            }}
-            onChange={onChangeVersion}
-            onSearch={onSearch}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
-            value={idVersion}
-            options={versions}
-          />
-        </Col>
+          <Col span={12}>
+            <Form.Item
+              label="Version: "
+              required
+              name="version"
+              style={{ width: "100%" }}
+              rules={[
+                { required: true, message: "Chọn Version" },
+                {
+                  type: "number",
+                  min: 1,
+                  max:
+                    versions && versions.length > 0
+                      ? versions[versions.length - 1].id
+                      : 10000,
+                  message: "Giá trị không phù hợp",
+                },
+              ]}
+            >
+              <Select
+                showSearch
+                title={"Version"}
+                placeholder="Select a version"
+                optionFilterProp="children"
+                style={{
+                  width: "100%",
+                }}
+                onChange={onChangeVersion}
+                onSearch={onSearch}
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                value={idVersion}
+                options={versions}
+              />
+            </Form.Item>
+          </Col>
 
-        <Col span={8}>
-          <label>Factory: </label>
-          <Select
-            showSearch
-            title={"Version"}
-            placeholder="Select a person"
-            optionFilterProp="children"
-            style={{
-              width: "100%",
-            }}
-            onChange={onChangeFactory}
-            onSearch={onSearch}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
-            options={factories}
-          />
-        </Col>
+          <Col span={8}>
+            <Form.Item
+              label={"Factory: "}
+              required
+              name="factory"
+              style={{ width: "100%" }}
+              rules={[
+                { required: true, message: "Không được bỏ trống" },
+                {
+                  type: "number",
+                  min: 1,
+                  max:
+                    factories && factories.length > 0
+                      ? factories[factories.length - 1].id
+                      : 10000,
+                  message: "Giá trị không phù hợp",
+                },
+              ]}
+            >
+              <Select
+                showSearch
+                title={"Version"}
+                placeholder="Select a factory"
+                optionFilterProp="children"
+                style={{
+                  width: "100%",
+                }}
+                onChange={onChangeFactory}
+                onSearch={onSearch}
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={factories}
+              />
+            </Form.Item>
+          </Col>
 
-        <Col span={4}>
-          <label>Số lượng: </label>
-          <InputNumber
-            min={1}
-            max={10}
-            defaultValue={mount}
-            style={{ width: "100%" }}
-            onChange={onChangeMount}
-          />
-        </Col>
+          <Col span={4}>
+            <Form.Item
+              label={"Số lượng: "}
+              name="amount"
+              style={{ width: "100%" }}
+              rules={[
+                {
+                  type: "number",
+                  max: 10,
+                  min: 1,
+                  message: "Giá trị không phù hợp",
+                },
+              ]}
+            >
+              <InputNumber
+                min={1}
+                max={10}
+                defaultValue={mount}
+                style={{ width: "100%" }}
+                onChange={onChangeMount}
+              />
+            </Form.Item>
+          </Col>
 
-        <Col>
-          <label>Màu: </label>
-          {colors.length > 0 ? (
-            <Row style={{ width: "100%" }}>
-              <Radio.Group
-                name="radiogroup"
-                defaultValue={idColor}
-                onChange={(e) => setIdColor(e.target.value)}
+          <Col>
+            <Form.Item
+              label={"Màu: "}
+              required
+              name="color"
+              style={{ width: "100%" }}
+              rules={[{ required: true, message: "Không được bỏ trống" }]}
+            >
+              {colors.length > 0 ? (
+                <Row style={{ width: "100%" }}>
+                  <Radio.Group
+                    name="radiogroup"
+                    defaultValue={idColor}
+                    onChange={(e) => setIdColor(e.target.value)}
+                  >
+                    {colors.map((color, index) => {
+                      return (
+                        <ConfigProvider
+                          key={index}
+                          theme={{
+                            components: {
+                              Radio: {
+                                colorPrimary: `${color.code}`,
+                              },
+                            },
+                          }}
+                        >
+                          <Radio value={color.id} key={index}></Radio>
+                        </ConfigProvider>
+                      );
+                    })}
+                  </Radio.Group>
+                </Row>
+              ) : (
+                <></>
+              )}
+            </Form.Item>
+          </Col>
+
+          <Col style={{ display: "flex", alignItems: "flex-end" }}>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                onClick={() => addRequest()}
               >
-                {colors.map((color, index) => {
-                  return (
-                    <ConfigProvider
-                      key={index}
-                      theme={{
-                        components: {
-                          Radio: {
-                            colorPrimary: `${color.code}`,
-                          },
-                        },
-                      }}
-                    >
-                      <Radio value={color.id} key={index}></Radio>
-                    </ConfigProvider>
-                  );
-                })}
-              </Radio.Group>
-            </Row>
-          ) : (
-            <></>
-          )}
-        </Col>
-
-        <Col style={{ display: "flex", alignItems: "flex-end" }}>
-          <Button type="primary" onClick={() => addRequest()}>
-            Thêm
-          </Button>
-        </Col>
-      </Row>
-      <div style={{ width: "100%", padding: "20px 0 20px 0" }}>
-        {requests.length > 0 ? renderRequest : <></>}
-      </div>
-      <Row>
-        <Button type="primary" onClick={() => sendRequestToDb()}>
-          Gửi yêu cầu
-        </Button>
-      </Row>
+                Thêm
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
+        <div style={{ width: "100%", padding: "20px 0 20px 0" }}>
+          {requests.length > 0 ? renderRequest : <></>}
+        </div>
+        <Row>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              onClick={() => sendRequestToDb()}
+            >
+              Gửi yêu cầu
+            </Button>
+          </Form.Item>
+        </Row>
+      </Form>
     </Modal>
   );
 };

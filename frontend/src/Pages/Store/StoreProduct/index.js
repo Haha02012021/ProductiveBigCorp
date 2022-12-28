@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 const StoreProduct = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idProduct, setIdProduct] = useState(0);
-  const [currentTab, setCurrentTab] = useState(1);
+  const [currentTab, setCurrentTab] = useState("1");
   const [productStore, setProductStore] = useState([]);
   const [productMoving, setProductMoving] = useState([]);
   const [isModalRequest, setIsModalRequest] = useState(false);
@@ -99,18 +99,23 @@ const StoreProduct = () => {
       dataIndex: "actions",
       key: "actions",
       width: 80,
-      render: (text, record, index) => (
+      render: (text, record, ) => (
         <ActionsCell
           hasEdit={false}
           hasView={false}
           hasConfirm={false}
           onDelete={async () => {
-            const res = await deleteRequest(record.id);
-            if (res.success === true) {
-              setAddRequest(!addRequest);
-              toast.success(res.message);
+            if (record.progress === "Chờ xác nhận") {
+              const res = await deleteRequest(record.id);
+              if (res.success === true) {
+                setAddRequest(!addRequest);
+                setSelled(!selled);
+                toast.success(res.message);
+              } else {
+                toast.error(res.message);
+              }
             } else {
-              toast.error(res.message);
+              toast.error("Không được phép xóa");
             }
           }}
         />
@@ -183,7 +188,7 @@ const StoreProduct = () => {
       dataIndex: "actions",
       key: "actions",
       width: 80,
-      render: (text, record, index) => (
+      render: (text, record, ) => (
         <ActionsCell
           hasEdit={false}
           hasView={false}
@@ -239,7 +244,7 @@ const StoreProduct = () => {
       dataIndex: "actions",
       key: "actions",
       width: 80,
-      render: (text, record, index) => (
+      render: (text, record, ) => (
         <ActionsCell
           hasConfirm={false}
           hasDelete={false}
@@ -332,47 +337,60 @@ const StoreProduct = () => {
   };
 
   const acceptProduct = async () => {
-    const res = await completeProduct(idProduct, authUser.id);
-    if (res.success === true) {
-      setIsModalConfirm(false);
-      setSelled(!selled);
-      toast.success(res.message);
-      getProductsStore();
-      getProductMoving();
-    } else {
-      toast.error(res.message);
+    try {
+      const res = await completeProduct(idProduct, authUser.id);
+      if (res.success === true) {
+        setIsModalConfirm(false);
+        setSelled(!selled);
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   const getRequest = async (id) => {
-    const condition = {
-      condition: {
-        progress: 0,
-      },
-      role: 4,
-    };
-    const res = await indexApi.getRequestsByManagerId(id, condition);
-    console.log(res);
-    if (res.data && res.data.requests) {
-      setRequests(buildDataRequest(res.data.requests));
+    try {
+      const condition = {
+        condition: {
+          progress: 0,
+        },
+        role: 4,
+      };
+      const res = await indexApi.getRequestsByManagerId(id, condition);
+      if (res.data && res.data.requests) {
+        setRequests(buildDataRequest(res.data.requests));
+      } else {
+        setRequests([]);
+      }
+    } catch (error) {
+      setRequests([]);
     }
   };
 
   const getProductMoving = async (id) => {
-    const condition = {
-      condition: {
-        progress: 1,
-      },
-      role: 4,
-    };
-    const res = await indexApi.getRequestsByManagerId(id, condition);
-    if (res.data && res.data.requests) {
-      setProductMoving(buildDataRequest(res.data.requests));
+    try {
+      const condition = {
+        condition: {
+          progress: 1,
+        },
+        role: 4,
+      };
+      const res = await indexApi.getRequestsByManagerId(id, condition);
+      if (res.data && res.data.requests) {
+        setProductMoving(buildDataRequest(res.data.requests));
+      } else {
+        setProductMoving([]);
+      }
+    } catch (error) {
+      setProductMoving([]);
     }
   };
 
   const buildDataRequest = (data) => {
-    const result = new Array();
+    const result = [];
     for (let i = 0; i < data.length; i++) {
       const o = {};
       if (data[i]) {
@@ -456,6 +474,7 @@ const StoreProduct = () => {
       <Tabs
         defaultActiveKey="1"
         items={tabItems}
+        activeKey={currentTab}
         onChange={(key) => {
           setCurrentTab(key);
         }}

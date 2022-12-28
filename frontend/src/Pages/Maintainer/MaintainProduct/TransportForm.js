@@ -52,11 +52,21 @@ export default function TransportForm({ form }) {
     }
   };
 
-  console.log(products);
-
   return (
     <Form form={form} style={{ paddingTop: 16 }} layout="vertical">
-      <Form.Item label="Vận chuyển đến" name="managerRole">
+      <Form.Item
+        label="Vận chuyển đến"
+        name="managerRole"
+        rules={[
+          { required: true, message: "Không được bỏ trống" },
+          {
+            type: "number",
+            min: 2,
+            max: 4,
+            message: "Giá trị không phù hợp",
+          },
+        ]}
+      >
         <Select
           placeholder="Chọn loại đơn vị"
           options={options}
@@ -64,7 +74,18 @@ export default function TransportForm({ form }) {
           onChange={(op) => setSelectedManagerRole(op)}
         />
       </Form.Item>
-      <Form.Item label="Vận chuyển sản phẩm" name="products">
+      <Form.Item
+        label="Vận chuyển sản phẩm"
+        name="products"
+        rules={[
+          { required: true, message: "Không được bỏ trống" },
+          {
+            type: "number",
+            min: 1,
+            message: "Giá trị không phù hợp",
+          },
+        ]}
+      >
         <Select
           mode="multiple"
           placeholder="Chọn sản phẩm"
