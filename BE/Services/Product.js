@@ -1,4 +1,4 @@
-const {QueryTypes, Op} = require('sequelize');
+const { QueryTypes, Op } = require("sequelize");
 const {
   db,
   Product,
@@ -73,7 +73,7 @@ var productInfo = async (id) => {
         {
           model: MODEL,
           as: "model",
-          attributes: ["id", "name", 'deletedAt'],
+          attributes: ["id", "name", "deletedAt"],
           include: [
             {
               model: Color,
@@ -95,7 +95,7 @@ var productInfo = async (id) => {
         {
           model: Version,
           as: "version",
-          attributes: ["id", "name", "price", 'deletedAt'],
+          attributes: ["id", "name", "price", "deletedAt"],
           include: [
             {
               model: Chassis,
@@ -193,7 +193,7 @@ var getCustomerInfo = async (id) => {
 var allProducts = async (condition, managers, page) => {
   try {
     //console.log(managers, condition, page);
-    if(managers && managers.length > 0) {
+    if (managers && managers.length > 0) {
       condition.id = await sequelize.query(
         `SELECT product_id FROM manager_product where manager_id in (${managers.toString()})
         group by product_id having count(manager_id) > $1 or count(manager_id) = $1`,
@@ -203,7 +203,9 @@ var allProducts = async (condition, managers, page) => {
         }
       );
       console.log(condition.id);
-      condition.id = condition.id.map(element => { return element.product_id });
+      condition.id = condition.id.map((element) => {
+        return element.product_id;
+      });
     }
     console.log(condition);
     const limit = page ? 5 : null;
@@ -219,13 +221,13 @@ var allProducts = async (condition, managers, page) => {
           model: MODEL,
           as: "model",
           attributes: ["id", "name", "deletedAt"],
-          paranoid: false
+          paranoid: false,
         },
         {
           model: Version,
           as: "version",
           attributes: ["id", "name", "price", "deletedAt"],
-          paranoid: false
+          paranoid: false,
         },
         {
           model: Color,
@@ -254,7 +256,11 @@ var allProducts = async (condition, managers, page) => {
       offset: offset,
       limit: limit,
     });
-    return { products: products, totalPages: count, currentPage: parseInt(page) };
+    return {
+      products: products,
+      totalPages: count,
+      currentPage: parseInt(page),
+    };
   } catch (err) {
     console.log(err);
     return null;
@@ -263,20 +269,20 @@ var allProducts = async (condition, managers, page) => {
 
 var findByUuid = async (uuid) => {
   try {
-    const product = await Product.findOne({ 
-      where: { uuid }, 
+    const product = await Product.findOne({
+      where: { uuid },
       include: [
         {
           model: MODEL,
           as: "model",
           attributes: ["id", "name", "deletedAt"],
-          paranoid: false
+          paranoid: false,
         },
         {
           model: Version,
           as: "version",
           attributes: ["id", "name", "price", "deletedAt"],
-          paranoid: false
+          paranoid: false,
         },
         {
           model: Color,
@@ -295,7 +301,13 @@ var findByUuid = async (uuid) => {
           },
           attributes: ["id", "name", "role"],
         },
-      ]
+        {
+          required: false,
+          model: Error,
+          as: "errors",
+          attributes: ["content"],
+        },
+      ],
     });
     if (!product) {
       throw "product not found";

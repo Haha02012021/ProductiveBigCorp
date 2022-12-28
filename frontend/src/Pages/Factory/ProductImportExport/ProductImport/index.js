@@ -57,7 +57,7 @@ export default function ProductImport() {
     if (results) {
       setBrokenProducts(buildData([results]));
     } else {
-      getBrokenProducts();
+      getBrokenProducts([]);
     }
   };
 
@@ -65,7 +65,7 @@ export default function ProductImport() {
     if (results) {
       setDestroyedProducts(buildData([results]));
     } else {
-      getDestroyedProducts();
+      getDestroyedProducts([]);
     }
   };
 
@@ -174,7 +174,7 @@ export default function ProductImport() {
         >
           <CustomTable
             dataSource={destroyedProducts}
-            columns={columns.filter((column) => column.key !== "actions")}
+            columns={columns}
             rowSelection={{ ...rowSelection }}
           />
         </PageContent>
