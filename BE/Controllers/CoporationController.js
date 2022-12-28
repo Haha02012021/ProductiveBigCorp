@@ -21,7 +21,7 @@ var addManager = async (req, res) => {
 
 var createModel = async (req, res) => {
     try {
-        //res.send(req.files)
+        res.send(req.files)
         const images = req.files.images.map(element => {
             return element.filename
         });

@@ -15,7 +15,7 @@ var addModel = async (name, colors, colorImages, images) => {
     const oldModel = await sequelize.query(
       "SELECT * FROM models WHERE BINARY name = $1 limit 1",
       {
-        bind: ["name"],
+        bind: [name],
         type: QueryTypes.SELECT,
       }
     );
@@ -28,7 +28,7 @@ var addModel = async (name, colors, colorImages, images) => {
       });
       const relation = [];
       for (let i = 0; i< colorImages.length; i++) {
-        realtion.push({model_id: newModel.id, color_id: colors[i], image: 'http://localhost:5000/' + colorImages[i], name: colorImages[i]});
+        relation.push({model_id: newModel.id, color_id: colors[i], image: 'http://localhost:5000/' + colorImages[i], name: colorImages[i]});
       }
       await Model_Color.bulkCreate(
         relation
