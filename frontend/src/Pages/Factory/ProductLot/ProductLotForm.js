@@ -30,7 +30,7 @@ export default function ProductLotForm({ form, batch }) {
     const res = await indexApi.getAllModels();
 
     if (res.success) {
-      setAllModels(res.data);
+      setAllModels(res.data.models);
     }
   };
 

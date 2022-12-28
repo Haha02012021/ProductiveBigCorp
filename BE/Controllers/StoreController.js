@@ -5,7 +5,6 @@ const {
 const {
   addOneHistory,
   addHistory,
-  productsByStatus,
 } = require("../Services/History");
 const { createCustomer, findCustomerByPhoneNum } = require("../Services/User");
 const { makeRequests, destroy, complete } = require("../Services/Request");
@@ -172,23 +171,6 @@ var sell = async (req, res) => {
   }
 };
 
-var analizeProducts = async (req, res) => {
-  try {
-    const data = await productsByStatus(req.params.manager_id);
-    if (!data) {
-      res.json({ success: false, message: "data not returned" });
-    } else {
-      res.json({ success: true, message: "analized", data });
-    }
-  } catch (err) {
-    res.status(500).json({
-      error: err,
-      success: false,
-      message: "error from analize products",
-    });
-  }
-};
-
 var createRequest = async (req, res) => {
   try {
     const request = await makeRequests(req.body.requests);
@@ -306,7 +288,6 @@ module.exports = {
   getCustomer,
   sell,
   addCustomer,
-  analizeProducts,
   createRequest,
   deleteRequest,
   completeRequest,

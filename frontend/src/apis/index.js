@@ -1,11 +1,11 @@
 import axios from "./axios";
 
 const indexApi = {
-  getAllModels() {
-    return axios.get("/models/all");
+  getAllModels(page) {
+    return axios.get(`/models/all/?page=${page || ""}`);
   },
-  getAllVersions() {
-    return axios.get("/versions/all");
+  getAllVersions(page) {
+    return axios.get(`/versions/all/?page=${page || ""}`);
   },
   getModelById(modelId) {
     return axios.get(`/model/${modelId}`);
@@ -30,8 +30,8 @@ const indexApi = {
     return axios.get(`/managers/all?role=${roleId}`);
   },
 
-  getRequestsByManagerId(Id, data) {
-    return axios.post(`/requests/all/${Id}`, data);
+  getRequestsByManagerId(id, data, page) {
+    return axios.post(`/requests/all/${id}?page=${page || ""}`, data);
   },
   getRequestById(id) {
     return axios.get(`/request/${id}`);

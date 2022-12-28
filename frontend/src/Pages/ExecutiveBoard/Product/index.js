@@ -12,6 +12,7 @@ export default function Product() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idProduct, setIdProduct] = useState(0);
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const showModal = (data) => {
     if (data.id !== idProduct) {
@@ -32,11 +33,13 @@ export default function Product() {
     getProducts();
   }, []);
 
-  const getProducts = async () => {
-    const res = await coporationApi.getProducts();
+  const getProducts = async (condition) => {
+    const res = await coporationApi.getProducts(condition);
     if (res.data) {
       const data = res.data;
-      setProducts(buildData(data));
+      const builtData = buildData(data.products);
+      setProducts(builtData);
+      // setFilteredProducts(builtData);
     }
   };
 
@@ -64,6 +67,7 @@ export default function Product() {
         o.maintainer = maintainCenter?.name;
         o.maintainerId = maintainCenter?.id;
         o.state = statuses[data[i].status_id].content;
+        o.stateId = data[i].status_id;
       }
       result.push(o);
     }
@@ -89,68 +93,95 @@ export default function Product() {
         })
       ),
       filterSearch: true,
-      onFilter: () => {},
+      onFilter: (values, record) => {
+        return record.productLineId === values;
+      },
     },
     {
       title: "Phiên bản",
       dataIndex: "version",
       key: "version",
-      filters: [
-        { text: "Fac 1", value: "Fac 1" },
-        { text: "Fac 2", value: "Fac 2" },
-        { text: "Factory", value: "Factory" },
-      ],
+      filters: getUniqueArray(
+        products.map((product) => {
+          return {
+            text: product.version,
+            value: product.versionId,
+          };
+        })
+      ),
       filterSearch: true,
-      onFilter: () => {},
+      onFilter: (values, record) => {
+        return record.versionId === values;
+      },
     },
     {
       title: "Cơ sở sản xuất",
       dataIndex: "factory",
       key: "factory",
-      filters: [
-        { text: "Fac 1", value: "Fac 1" },
-        { text: "Fac 2", value: "Fac 2" },
-        { text: "Factory", value: "Factory" },
-      ],
+      filters: getUniqueArray(
+        products.map((product) => {
+          return {
+            text: product.factory,
+            value: product.factoryId,
+          };
+        })
+      ),
       filterSearch: true,
-      onFilter: () => {},
+      onFilter: (values, record) => {
+        return record.factoryId === values;
+      },
     },
     {
       title: "Đại lý phân phối",
       dataIndex: "store",
       key: "store",
-      filters: [
-        { text: "Fac 1", value: "Fac 1" },
-        { text: "Fac 2", value: "Fac 2" },
-        { text: "Factory", value: "Factory" },
-      ],
+      filters: getUniqueArray(
+        products.map((product) => {
+          return {
+            text: product.store,
+            value: product.storeId,
+          };
+        })
+      ),
       filterSearch: true,
-      onFilter: () => {},
+      onFilter: (values, record) => {
+        return record.storeId === values;
+      },
     },
     {
       title: "Trung tâm bảo hành",
       dataIndex: "maintainer",
       key: "maintainer",
-      filters: [
-        { text: "Fac 1", value: "Fac 1" },
-        { text: "Fac 2", value: "Fac 2" },
-        { text: "Factory", value: "Factory" },
-      ],
+      filters: getUniqueArray(
+        products.map((product) => {
+          return {
+            text: product.maintainer,
+            value: product.maintainerId,
+          };
+        })
+      ),
       filterSearch: true,
-      onFilter: () => {},
+      onFilter: (values, record) => {
+        return record.maintainerId === values;
+      },
     },
     {
       title: "Trạng thái",
       dataIndex: "state",
       key: "state",
       render: (state) => <Badge color="blue" text={state} />,
-      filters: [
-        { text: "Fac 1", value: "Fac 1" },
-        { text: "Fac 2", value: "Fac 2" },
-        { text: "Factory", value: "Factory" },
-      ],
+      filters: getUniqueArray(
+        products.map((product) => {
+          return {
+            text: product.state,
+            value: product.stateId,
+          };
+        })
+      ),
       filterSearch: true,
-      onFilter: () => {},
+      onFilter: (values, record) => {
+        return record.stateId === values;
+      },
     },
     {
       title: "Thao tác",

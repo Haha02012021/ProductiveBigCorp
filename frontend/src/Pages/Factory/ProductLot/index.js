@@ -124,7 +124,7 @@ export default function ProductLot() {
     };
     const res = await getBatchesByFactoryId(authUser.id, condition);
     if (res.success) {
-      setCreatedLotsSource(buildData(res.data));
+      setCreatedLotsSource(buildData(res.data.batches));
     }
   };
 
@@ -136,7 +136,7 @@ export default function ProductLot() {
     };
     const res = await getBatchesByFactoryId(authUser.id, condition);
     if (res.success) {
-      setSummoningLotsSource(buildData(res.data));
+      setSummoningLotsSource(buildData(res.data.batches));
     }
   };
 

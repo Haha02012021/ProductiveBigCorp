@@ -136,7 +136,7 @@ const TabProductWarranty = (props) => {
   const getWarranties = async () => {
     const res = await indexApi.getManagerByRole(3);
     if (res.data) {
-      setWarranties(buildDataModel(res.data));
+      setWarranties(buildDataModel(res.data.managers));
     } else {
       setWarranties([]);
     }

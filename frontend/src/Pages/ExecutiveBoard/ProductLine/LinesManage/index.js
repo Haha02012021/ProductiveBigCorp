@@ -1,4 +1,4 @@
-import { Form, message, Modal } from "antd";
+import { Form } from "antd";
 import { useContext, useEffect, useMemo, useState } from "react";
 import indexApi from "../../../../apis";
 import coporationApi from "../../../../apis/coporation";
@@ -10,6 +10,7 @@ import LineForm from "./LineForm";
 import ModalConfirmDelete from "./modalConfirmDelete";
 import { toast } from "react-toastify";
 import { ThemeContext } from "../../../../Provider/ThemeProvider";
+import axios from "axios";
 
 export default function LineManage() {
   const { isMobile } = useContext(ThemeContext);
@@ -21,6 +22,7 @@ export default function LineManage() {
   const [model, setModel] = useState({});
   const [form] = Form.useForm();
   const [change, setChange] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     getAllModels();
@@ -31,9 +33,10 @@ export default function LineManage() {
   }, [change]);
 
   const getAllModels = async () => {
-    const res = await indexApi.getAllModels();
+    const res = await indexApi.getAllModels(currentPage);
     if (res.success) {
-      const ds = res.data.map((model, index) => {
+      setCurrentPage(res.data.currentPage);
+      const ds = res.data.models.map((model, index) => {
         return {
           key: model.id,
           index: index + 1,
@@ -118,12 +121,59 @@ export default function LineManage() {
 
   const handleSave = async () => {
     form.submit();
-    const res = await coporationApi.addModel(form.getFieldsValue());
-    if (res.success) {
-      toast.success("Thêm dòng sản phẩm thành công!", 2);
-      setAddModalVisible(false);
+    console.log(form.getFieldsValue());
+    const data = form.getFieldsValue();
+
+    let check = true;
+    if (
+      data.colors === undefined ||
+      data.name === undefined ||
+      data.files === undefined
+    ) {
+      toast.error("Chưa chọn ảnh");
+      return;
+    }
+    const fileColors = data.colors.map((color) => {
+      if (color.file === undefined) check = false;
+      return color.file;
+    });
+
+    const fileId = data.colors.map((color) => color.id);
+    console.log();
+    console.log(fileColors);
+    console.log(data.files);
+    if (check && data.files.length > 0) {
+      let formData = new FormData();
+      fileColors.map((id) => {
+        formData.append("colors", id);
+        return id;
+      });
+      data.files.map((id) => {
+        formData.append("images", id);
+        return id;
+      });
+      formData.append("name", data.name);
+      fileId.map((id) => {
+        formData.append("color_id", id);
+        return id;
+      });
+      console.log(formData);
+      const res = await axios({
+        method: "POST",
+        url: "http://localhost:5000/coporation/newModel",
+        data: formData,
+        headers: {
+          "Content-Type": `multipart/form-data;`,
+        },
+      });
+      if (res.data.success) {
+        toast.success("Thêm dòng sản phẩm thành công!", 2);
+        setAddModalVisible(false);
+      } else {
+        toast.error("Dường như có lỗi gì đó!", 2);
+      }
     } else {
-      toast.error("Dường như có lỗi gì đó!", 2);
+      toast.error("Chưa chọn ảnh");
     }
   };
 

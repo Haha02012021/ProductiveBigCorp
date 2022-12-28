@@ -18,6 +18,7 @@ export default function VersionManage() {
   const [dataSource, setDataSource] = useState([]);
   const [errorPanelKey, setErrorPanelKey] = useState([]);
   const [versionId, setVersionId] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -55,7 +56,8 @@ export default function VersionManage() {
     const res = await indexApi.getAllVersions();
 
     if (res.success === true) {
-      const ds = res?.data.map((version, index) => {
+      setCurrentPage(res.data.currentPage);
+      const ds = res?.data.versions.map((version, index) => {
         return {
           key: index,
           index: index + 1,
