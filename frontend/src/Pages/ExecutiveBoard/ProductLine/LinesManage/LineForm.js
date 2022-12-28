@@ -20,32 +20,7 @@ export default function LineForm({ form, lineId }) {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
-  const [fileList, setFileList] = useState([
-    {
-      uid: "-1",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-    {
-      uid: "-2",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-    {
-      uid: "-3",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-    {
-      uid: "-4",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-  ]);
+  const [fileList, setFileList] = useState([]);
 
   useEffect(() => {
     if (lineId) {
@@ -73,6 +48,7 @@ export default function LineForm({ form, lineId }) {
       const dataColors = res.data.colors.map((color) => color.id);
       form.setFieldValue("name", res.data.name);
       form.setFieldValue("colors", dataColors);
+      form.setFieldValue("files", []);
     }
   };
 
@@ -88,8 +64,11 @@ export default function LineForm({ form, lineId }) {
   };
 
   const onChange = (value) => {
-    console.log(value);
     setSelectedColors(value);
+    form.setFieldValue(
+      "colors",
+      value.map((i) => colors[i])
+    );
   };
 
   const tagRender = (props) => {
@@ -121,10 +100,6 @@ export default function LineForm({ form, lineId }) {
     }
   };
 
-  const onClose = (value) => {
-    console.log(value);
-  };
-
   const uploadButton = (
     <div>
       <PlusOutlined />
@@ -137,6 +112,20 @@ export default function LineForm({ form, lineId }) {
       </div>
     </div>
   );
+
+  const changeSelectedColor = (file, value) => {
+    const imageColors = colors;
+    imageColors[value].file = file.file.originFileObj;
+    setAllColors(imageColors);
+    form.setFieldValue(
+      "colors",
+      selectedColors.map((value) => imageColors[value])
+    );
+  };
+
+  const onClose = (value) => {
+    setSelectedColors(selectedColors.filter((color) => color !== value));
+  };
 
   const renderSelectImage = useMemo(() => {
     if (selectedColors.length > 0) {
@@ -162,9 +151,8 @@ export default function LineForm({ form, lineId }) {
                   >
                     <Tag
                       color={colors[value].code}
-                      // onMouseDown={onPreventMouseDown}
                       closable={true}
-                      onClose={onClose}
+                      onClose={() => onClose(value)}
                       style={{
                         marginRight: 3,
                         color: invertHex(colors[value].code),
@@ -183,9 +171,9 @@ export default function LineForm({ form, lineId }) {
                   </Col>
                   <Col span={24}>
                     <Upload
-                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                       listType="picture"
                       maxCount={1}
+                      onChange={(file) => changeSelectedColor(file, value)}
                     >
                       <Button icon={<UploadOutlined />} style={{ width: 200 }}>
                         Upload
@@ -214,6 +202,7 @@ export default function LineForm({ form, lineId }) {
     });
 
   const handleCancel = () => setPreviewOpen(false);
+
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -224,7 +213,21 @@ export default function LineForm({ form, lineId }) {
       file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
     );
   };
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+
+  const handleChange = ({ fileList: newFileList }) => {
+    setFileList(
+      newFileList.map((file) => ({
+        ...file,
+        status: "done",
+        response: undefined,
+        error: undefined,
+      }))
+    );
+    form.setFieldValue(
+      "files",
+      newFileList.map((file) => file.originFileObj)
+    );
+  };
 
   return (
     <Form
@@ -288,11 +291,12 @@ export default function LineForm({ form, lineId }) {
           })}
         />
         {renderSelectImage}
-        <div style={{ paddingTop: 20 }}>
+      </Form.Item>
+      <Form.Item name="files">
+        <div>
           <Row style={{ padding: "10px 0 10px 0" }}>Up ảnh cho model</Row>
           <Row>
             <Upload
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
               listType="picture-card"
               fileList={fileList}
               onPreview={handlePreview}
