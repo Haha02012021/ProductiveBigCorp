@@ -95,7 +95,7 @@ export default function VersionManage() {
       key: "actions",
       fixed: "center",
       width: 236,
-      render: (text, record, ) => (
+      render: (text, record) => (
         <ActionsCell
           hasConfirm={false}
           onView={() => showModal(record)}
@@ -135,6 +135,7 @@ export default function VersionManage() {
     setAddModalVisible(true);
   };
   const handleSave = async () => {
+    form.submit();
     try {
       await form.validateFields();
       const values = form.getFieldsValue();
@@ -145,6 +146,13 @@ export default function VersionManage() {
       const noi_that = values["interior"];
       const an_toan = values["safety"];
       const i_activesense = values["i_activesense"];
+      const putData = values;
+      putData.size.kich_thuoc_tong_the =
+        kich_thuoc_khoi_luong.kich_thuoc_tong_the.length +
+        " x " +
+        kich_thuoc_khoi_luong.kich_thuoc_tong_the.width +
+        " x " +
+        kich_thuoc_khoi_luong.kich_thuoc_tong_the.height;
       const data = {
         ...{
           ...kich_thuoc_khoi_luong,
@@ -164,12 +172,25 @@ export default function VersionManage() {
         model_id: values.model_id,
         name: values.name,
       };
-      const res = await coporationApi.addVersion(data);
-      if (res.success) {
-        setAddModalVisible(false);
-        toast.success("Thêm phiên bản thành công!", 2);
-      } else {
-        toast.error("Dường như có lỗi gì đó!", 2);
+
+      if (editModalVisible === false && addModalVisible === true) {
+        const res = await coporationApi.addVersion(data);
+        if (res.success) {
+          setAddModalVisible(false);
+          toast.success("Thêm phiên bản thành công!", 2);
+        } else {
+          toast.error("Dường như có lỗi gì đó!", 2);
+        }
+      } else if (editModalVisible === true && addModalVisible === false) {
+        const res = await coporationApi.updateVersion(versionId, {
+          updateInfo: putData,
+        });
+        if (res.success) {
+          setEditModalVisible(false);
+          toast.success("Update thành công!", 2);
+        } else {
+          toast.error("Dường như có lỗi gì đó!", 2);
+        }
       }
     } catch (error) {
       setErrorPanelKey(error.errorFields.map(({ name }) => name[0]));
@@ -215,6 +236,7 @@ export default function VersionManage() {
           onCancel={() => setAddModalVisible(false)}
           title="Thêm phiên bản"
           width={isMobile ? "80%" : "52%"}
+          style={{ maxHeight: "100%", overflowY: "auto" }}
         >
           <VersionForm form={form} errorPanelKey={errorPanelKey} />
         </CustomModal>
