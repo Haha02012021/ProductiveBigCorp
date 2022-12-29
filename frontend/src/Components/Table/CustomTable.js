@@ -3,7 +3,7 @@ import { Table } from "antd";
 export default function CustomTable({
   dataSource,
   columns,
-  paginationProps = {},
+  paginationProps = { pageSizeOptions: [5, 10, 20] },
   rowSelection,
 }) {
   return (
