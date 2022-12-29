@@ -24,7 +24,7 @@ const {
 const { validateStore } = require("../Middlewares/roleValidator");
 const { checkIntArray } = require("../Validators/arrayValidator");
 const { finalCheck } = require("../Validators/checkErrors");
-const { checkSpecialCharacters } = require("../Validators/stringValidator");
+const { checkSpecialCharacters, checkPhone } = require("../Validators/stringValidator");
 
 router.post(
   "/warrantyRequest",
@@ -106,7 +106,7 @@ router.post(
   body("phone")
     .exists()
     .withMessage("need a phone number")
-    .custom(checkSpecialCharacters),
+    .custom(checkSpecialCharacters).custom(checkPhone),
   finalCheck,
   addCustomer
 );
