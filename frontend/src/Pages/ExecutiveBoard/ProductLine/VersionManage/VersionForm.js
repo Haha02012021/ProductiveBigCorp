@@ -89,11 +89,27 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
       {initialValues && (
         <Form
           labelCol={{ sm: 6, md: 4 }}
-          style={{ paddingTop: 24, paddingBottom: 24 }}
+          style={{ paddingTop: 24, paddingBottom: 24, overflowY: "auto" }}
           form={form}
           layout="vertical"
         >
-          <Form.Item label="Dòng sản phẩm" required name="model_id">
+          <Form.Item
+            label="Dòng sản phẩm"
+            required
+            name="model_id"
+            rules={[
+              { required: true, message: "Không được bỏ trống" },
+              {
+                type: "number",
+                min: 1,
+                max:
+                  allModels && allModels.length > 0
+                    ? allModels[allModels.length - 1].id
+                    : 10000,
+                message: "Giá trị không phù hợp",
+              },
+            ]}
+          >
             <Select
               placeholder="Chọn dòng sản phẩm"
               options={allModels.map((model) => {
@@ -104,7 +120,19 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
               })}
             />
           </Form.Item>
-          <Form.Item label="Phiên bản" required name="name">
+          <Form.Item
+            label="Phiên bản"
+            required
+            name="name"
+            rules={[
+              { required: true, message: "Không được bỏ trống" },
+              {
+                type: "string",
+                min: 1,
+                max: 200,
+              },
+            ]}
+          >
             <Input placeholder="Nhập tên phiên bản" />
           </Form.Item>
           <Form.Item label="Thông số" required>
@@ -124,31 +152,52 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                     <Form.Item
                       name={["size", "kich_thuoc_tong_the", "length"]}
                       required
-                      // rules={[
-                      //   { required: true, message: "Bạn phải nhập chiều dài!" },
-                      // ]}
+                      rules={[
+                        { required: true, message: "Không được bỏ trống" },
+                      ]}
                     >
                       <InputNumber
+                        formatter={(value) =>
+                          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        }
                         placeholder="Nhập chiều dài"
                         style={{ width: "100%" }}
+                        min={0}
+                        max={1000000}
                       />
                     </Form.Item>
                     <Form.Item
                       name={["size", "kich_thuoc_tong_the", "width"]}
                       required
+                      rules={[
+                        { required: true, message: "Không được bỏ trống" },
+                      ]}
                     >
                       <InputNumber
                         placeholder="Nhập chiều rộng"
                         style={{ width: "100%" }}
+                        formatter={(value) =>
+                          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        }
+                        max={1000000}
+                        min={0}
                       />
                     </Form.Item>
                     <Form.Item
                       name={["size", "kich_thuoc_tong_the", "height"]}
                       required
+                      rules={[
+                        { required: true, message: "Không được bỏ trống" },
+                      ]}
                     >
                       <InputNumber
                         placeholder="Nhập chiều cao"
                         style={{ width: "100%" }}
+                        formatter={(value) =>
+                          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        }
+                        max={1000000}
+                        min={0}
                       />
                     </Form.Item>
                   </Space>
@@ -158,10 +207,16 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                   label="Chiều dài cơ sở"
                   required
                   name={["size", "chieu_dai_co_so"]}
+                  rules={[{ required: true, message: "Không được bỏ trống" }]}
                 >
                   <InputNumber
                     placeholder="Nhập chiều dài cơ sở"
                     style={{ width: "100%" }}
+                    formatter={(value) =>
+                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }
+                    max={1000000}
+                    min={0}
                   />
                 </Form.Item>
                 <Form.Item
@@ -170,10 +225,13 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                   labelWrap
                   required
                   name={["size", "ban_kinh_quay_vong_toi_thieu"]}
+                  rules={[{ required: true, message: "Không được bỏ trống" }]}
                 >
                   <InputNumber
                     placeholder="Nhập bán kính"
                     style={{ width: "100%" }}
+                    max={1000000}
+                    min={0}
                   />
                 </Form.Item>
                 <Form.Item
@@ -182,10 +240,16 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                   labelWrap
                   required
                   name={["size", "khoang_sang_gam_xe"]}
+                  rules={[{ required: true, message: "Không được bỏ trống" }]}
                 >
                   <InputNumber
                     placeholder="Nhập khoảng sáng"
                     style={{ width: "100%" }}
+                    min={1}
+                    formatter={(value) =>
+                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }
+                    max={1000000}
                   />
                 </Form.Item>
                 <Form.Item
@@ -194,6 +258,7 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                   labelWrap
                   required
                   name={["size", "khoi_luong_khong_tai"]}
+                  rules={[{ required: true, message: "Không được bỏ trống" }]}
                 >
                   <InputNumber
                     placeholder="Nhập khối lượng"
@@ -206,10 +271,16 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                   labelWrap
                   required
                   name={["size", "khoi_luong_toan_tai"]}
+                  rules={[{ required: true, message: "Không được bỏ trống" }]}
                 >
                   <InputNumber
                     placeholder="Nhập khối lượng"
                     style={{ width: "100%" }}
+                    formatter={(value) =>
+                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }
+                    min={0}
+                    max={1000000}
                   />
                 </Form.Item>
                 <Form.Item
@@ -218,10 +289,16 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                   labelWrap
                   required
                   name={["size", "the_tich_khoang_hanh_ly"]}
+                  rules={[{ required: true, message: "Không được bỏ trống" }]}
                 >
                   <InputNumber
                     placeholder="Nhập thể tích"
                     style={{ width: "100%" }}
+                    min={0}
+                    max={1000000}
+                    formatter={(value) =>
+                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }
                   />
                 </Form.Item>
                 <Form.Item
@@ -230,10 +307,13 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                   labelWrap
                   required
                   name={["size", "dung_tich_thung_nhien_lieu"]}
+                  rules={[{ required: true, message: "Không được bỏ trống" }]}
                 >
                   <InputNumber
                     placeholder="Nhập dung tích"
                     style={{ width: "100%" }}
+                    min={0}
+                    max={1000000}
                   />
                 </Form.Item>
               </Collapse.Panel>
@@ -241,47 +321,59 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                 <SpecificationFormItem
                   label="Loại động cơ"
                   name={["engine", "loai_dong_co"]}
+                  isRule={true}
                 >
                   <Input placeholder="Nhập loại động cơ" />
                 </SpecificationFormItem>
                 <SpecificationFormItem
                   label="Hệ thống nhiên liệu"
                   name={["engine", "he_thong_nhien_lieu"]}
+                  isRule={true}
                 >
                   <Input placeholder="Nhập hệ thống nhiên liệu" />
                 </SpecificationFormItem>
                 <SpecificationFormItem
                   label="Dung tích xi lanh"
                   name={["engine", "dung_tich_xilanh"]}
+                  isRule={true}
                 >
                   <InputNumber
                     placeholder="Nhập dung tích"
                     style={{ width: "100%" }}
+                    min={0}
+                    max={1000000}
                   />
                 </SpecificationFormItem>
                 <SpecificationFormItem
                   label="Công suất tối đa"
                   name={["engine", "cong_suat_toi_da"]}
+                  isRule={true}
                 >
                   <InputNumber
                     placeholder="Nhập công suất"
                     style={{ width: "100%" }}
+                    min={0}
+                    max={1000000}
                   />
                 </SpecificationFormItem>
                 <SpecificationFormItem
                   label="Momen xoắn cực đại"
                   name={["engine", "momen_xoan_cuc_dai"]}
+                  isRule={true}
                 >
                   <InputNumber
                     placeholder="Nhập giá trị mô men xoắn"
                     style={{ width: "100%" }}
+                    min={0}
+                    max={1000000}
                   />
                 </SpecificationFormItem>
                 <SpecificationFormItem
                   label="Hộp số"
                   name={["engine", "hop_so"]}
+                  isRule={true}
                 >
-                  <Input placeholder="Nhập hộp số" />
+                  <Input placeholder="Nhập hộp số" min={0} max={1000000} />
                 </SpecificationFormItem>
                 <SpecificationFormItem
                   label="Chế độ thể thao"
@@ -298,6 +390,7 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                 <SpecificationFormItem
                   label="Hệ thống kiểm soát gia tốc (GVC)"
                   name={["engine", "GVC"]}
+                  isRule={true}
                 >
                   <Input placeholder="Nhập GVC" />
                 </SpecificationFormItem>
@@ -319,6 +412,7 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                 <SpecificationFormItem
                   label="Hệ thống treo trước"
                   name={["chassis", "he_thong_treo_truoc"]}
+                  isRule={true}
                 >
                   <Input placeholder="Nhập hệ thống" />
                 </SpecificationFormItem>
@@ -326,42 +420,49 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                 <SpecificationFormItem
                   label="Hệ thống treo sau"
                   name={["chassis", "he_thong_treo_sau"]}
+                  isRule={true}
                 >
                   <Input placeholder="Nhập hệ thống" />
                 </SpecificationFormItem>
                 <SpecificationFormItem
                   label="Hệ thống dẫn động"
                   name={["chassis", "he_thong_dan_dong"]}
+                  isRule={true}
                 >
                   <Input placeholder="Nhập hệ thống" />
                 </SpecificationFormItem>
                 <SpecificationFormItem
                   label="Hệ thống phanh trước"
                   name={["chassis", "he_thong_phanh_truoc"]}
+                  isRule={true}
                 >
                   <Input placeholder="Nhập hệ thống" />
                 </SpecificationFormItem>
                 <SpecificationFormItem
                   label="Hệ thống phanh sau"
                   name={["chassis", "he_thong_phanh_sau"]}
+                  isRule={true}
                 >
                   <Input placeholder="Nhập hệ thống" />
                 </SpecificationFormItem>
                 <SpecificationFormItem
                   label="Hệ thống trợ lực lái"
                   name={["chassis", "he_thong_tro_luc_lai"]}
+                  isRule={true}
                 >
                   <Input placeholder="Nhập hệ thống" />
                 </SpecificationFormItem>
                 <SpecificationFormItem
                   label="Kích thước lốp xe"
                   name={["chassis", "kich_thuoc_lop_xe"]}
+                  isRule={true}
                 >
                   <Input placeholder="Nhập hệ thống" />
                 </SpecificationFormItem>
                 <SpecificationFormItem
                   label="Đường kính lốp xe"
                   name={["chassis", "duong_kinh_mam_xe"]}
+                  isRule={true}
                 >
                   <Input placeholder="Nhập đường kính" />
                 </SpecificationFormItem>
@@ -370,12 +471,14 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                 <SpecificationFormItem
                   name={["exterior", "den_chieu_gan"]}
                   label="Đèn chiếu gần"
+                  isRule={true}
                 >
                   <Input placeholder="Nhập đèn" />
                 </SpecificationFormItem>
                 <SpecificationFormItem
                   name={["exterior", "den_chieu_xa"]}
                   label="Đèn chiếu xa"
+                  isRule={true}
                 >
                   <Input placeholder="Nhập đèn" />
                 </SpecificationFormItem>
@@ -487,6 +590,7 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                 <SpecificationFormItem
                   name={["interior", "chat_lieu_noi_that"]}
                   label="Chất liệu nội thất"
+                  isRule={true}
                 >
                   <Input placeholder="Nhập chất liệu" />
                 </SpecificationFormItem>
@@ -544,6 +648,7 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                 <SpecificationFormItem
                   name={["interior", "man_hinh_cam_ung"]}
                   label="Màn hình cảm ứng"
+                  isRule={true}
                 >
                   <Input placeholder="Nhập hệ thống" />
                 </SpecificationFormItem>
@@ -562,6 +667,7 @@ export default function VersionForm({ form, errorPanelKey, versionId }) {
                 <SpecificationFormItem
                   name={["interior", "so_loa"]}
                   label="Số loa"
+                  isRule={true}
                 >
                   <InputNumber
                     placeholder="Nhập số lượng"
@@ -1067,6 +1173,7 @@ function SpecificationFormItem({
   name,
   valuePropName,
   initialValue,
+  isRule = false,
 }) {
   return (
     <Form.Item
@@ -1076,6 +1183,11 @@ function SpecificationFormItem({
       name={[...name]}
       valuePropName={valuePropName}
       initialValue={initialValue}
+      rules={
+        isRule === true
+          ? [{ required: true, message: "Không được bỏ trống" }]
+          : []
+      }
     >
       {children}
     </Form.Item>
