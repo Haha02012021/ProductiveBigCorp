@@ -24,6 +24,8 @@ export default function Login() {
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   useEffect(() => {
     console.log(authUser);
     if (authUser) {
@@ -32,6 +34,7 @@ export default function Login() {
   }, [authUser, navigate]);
 
   const handleLogin = async (values) => {
+    setError("");
     try {
       setLoading(true);
       const data = await authApi.login(values);
@@ -65,10 +68,12 @@ export default function Login() {
         }, 2000);
       } else {
         console.log(data);
-        toast.error(data?.message, 2);
+        setError(data?.message);
+        toast.error(data?.message);
       }
     } catch (error) {
       setLoading(false);
+      setError("Tên tài khoản hoặc mật khẩu không đúng");
       toast.error(error.message, 2);
     }
   };
@@ -143,9 +148,11 @@ export default function Login() {
                       message: "Hãy nhập mật khẩu!",
                     },
                   ]}
+                  style={{ margin: 0 }}
                 >
                   <Input.Password placeholder="Nhập mật khẩu" />
                 </Form.Item>
+                <Row style={{ color: "red" }}>{error}</Row>
               </Space>
               <Space
                 direction="vertical"
