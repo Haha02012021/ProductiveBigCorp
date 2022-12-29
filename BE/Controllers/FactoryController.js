@@ -103,7 +103,7 @@ var requestSummon = async (req, res) => {
 
 var destroyProducts = async (req, res) => {
     try {
-        const check = await updateProducts({status_id: 15}, req.body.products);
+        const check = await updateProducts({status_id: 15}, {id: req.body.products});
         await addHistory(req.body.products, 15, 'đã bị tiêu hủy', req.params.factory_id);
         res.json({success: true, message: 'destroyed'});
     } catch (err) {
