@@ -75,11 +75,26 @@ export default function ProductImport() {
   };
 
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      setSelectedProducts(selectedRowKeys);
+    onChange: (selectedRowKeys, selectedRows) => {},
+    onSelect: (record, selected, selectedRows) => {
+      const exist = [...selectedProducts].find(
+        (product) => record.key === product
+      );
+      if (exist) {
+        setSelectedProducts(
+          [...selectedProducts].filter((product) => product !== record.key)
+        );
+      } else {
+        if (record.statusId === 14 || !record) {
+          setSelectedProducts((prev) => [...prev, record.key]);
+        }
+      }
     },
-    onSelect: (record, selected, selectedRows) => {},
-    onSelectAll: (selected, selectedRows, changeRows) => {},
+    onSelectAll: (selected, selectedRows, changeRows) => {
+      setSelectedProducts(
+        changeRows.filter((row) => row.statusId !== 15).map((row) => row.key)
+      );
+    },
     selectedRowKeys: selectedProducts,
   };
 
