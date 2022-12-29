@@ -58,6 +58,7 @@ export default function UnitManage() {
         o.account = data[i]?.account;
         o.password = data[i]?.password;
         o.place = data[i]?.place;
+        o.key = data[i]?.id;
       }
       result.push(o);
     }

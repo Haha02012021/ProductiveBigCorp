@@ -164,12 +164,17 @@ export default function Login() {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
+                    width: "100%",
                   }}
                 >
-                  <Col sx={24} md={10}>
+                  <Col sx={24} md={12}>
                     Chưa có tài khoản? <Link>Đăng ký!</Link>
                   </Col>
-                  <Col sx={24} md={10}>
+                  <Col
+                    sx={24}
+                    md={12}
+                    style={{ display: "flex", justifyContent: "right" }}
+                  >
                     <Link>Quên mật khẩu?</Link>
                   </Col>
                 </Row>
