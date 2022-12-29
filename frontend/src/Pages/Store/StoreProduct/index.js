@@ -354,9 +354,7 @@ const StoreProduct = () => {
         },
         role: 4,
       };
-
       const res = await indexApi.getRequestsByManagerId(id, condition);
-
       if (res.data && res.data.requests) {
         setProductMoving(buildDataRequest(res.data.requests));
       } else {

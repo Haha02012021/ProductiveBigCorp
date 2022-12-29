@@ -68,7 +68,7 @@ export default function LineManage() {
           <ActionsCell
             hasView={false}
             hasConfirm={false}
-            hasDelete={false}
+            hasEdit={false}
             onEdit={() => handleEditLine(productLineInfo)}
             onDelete={() => {
               setModel(productLineInfo);
@@ -155,12 +155,14 @@ export default function LineManage() {
         return id;
       });
       console.log(formData);
+      const token = JSON.parse(localStorage.getItem("accessToken"))?.value;
       const res = await axios({
         method: "POST",
         url: "http://localhost:5000/coporation/newModel",
         data: formData,
         headers: {
           "Content-Type": `multipart/form-data;`,
+          Authorization: `Bearer ${token}`,
         },
       });
       if (res.data.success) {

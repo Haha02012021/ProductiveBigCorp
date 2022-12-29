@@ -48,7 +48,7 @@ export default function UnitManage() {
   };
 
   const buildManageData = (data) => {
-    const result = new Array();
+    const result = [];
     for (let i = 0; i < data.length; i++) {
       const o = {};
       if (data[i]) {
@@ -102,6 +102,7 @@ export default function UnitManage() {
         <ActionsCell
           hasConfirm={false}
           hasView={false}
+          hasDelete={false}
           onEdit={() => handleEdit(record)}
         />
       ),
