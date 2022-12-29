@@ -74,10 +74,10 @@ var productsByStatus = async (manager_id, option, year, secondYear, role) => {
       statuses = [8, 9, 12]
     } else if (role == 4){
       statuses = [4, 5, 6, 11, 19]
-    } else if (role === 2) {
+    } else if (role == 2) {
       statuses = [1, 3, 14, 15, 16]
     }
-    
+
     if (option === "quarter" || option === "month") {
       data = await History.count({
         where: {
