@@ -16,6 +16,7 @@ var {
   findOneProduct,
   analizeProducts,
   getSold,
+  getSoldOrError,
 } = require("../Controllers/index");
 var { param, query, body, validationResult } = require("express-validator");
 
@@ -120,6 +121,6 @@ router.get(
 
 router.get("/analize/status/:manager_id", authenToken, analizeProducts);
 
-router.get("/analize/:manager_id", authenToken, getSold);
+router.get("/analize/:manager_id", authenToken, getSoldOrError);
 
 module.exports = router;
