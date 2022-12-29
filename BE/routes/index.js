@@ -120,7 +120,7 @@ router.get(
   findOneProduct
 );
 
-router.get("/analize/status/:manager_id", authenToken, analizeProducts);
+router.get("/analize/status/:manager_id", analizeProducts);
 
 router.get("/analize/:manager_id", authenToken, getSoldOrError);
 
