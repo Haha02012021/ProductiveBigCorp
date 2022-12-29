@@ -22,7 +22,7 @@ export default function MonthyAnalysis({ req }) {
     <AnalysisLineChart
       params={params}
       title={`Biểu đồ phân tích lượng sản phẩm lỗi theo các tháng năm ${req?.year}`}
-      titleY="Tháng"
+      titleX="Tháng"
     />
   );
 }
