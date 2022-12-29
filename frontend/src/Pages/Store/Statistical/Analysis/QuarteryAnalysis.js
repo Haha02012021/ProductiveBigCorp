@@ -1,55 +1,28 @@
-import QuarteryColumnChart from "../../../../Components/Chart/Column/QuarteryColumnChart";
+import { useContext, useEffect, useState } from "react";
+import AnalysisLineChart from "../../../../Components/Chart/Line/AnalysisLineChart";
+import { AuthContext } from "../../../../Provider/AuthProvider";
 
-const data = [
-  {
-    name: "Đã bán",
-    quarter: "Quý 1",
-    amount: 28.8,
-  },
-  {
-    name: "Đã bán",
-    quarter: "Quý 2",
-    amount: 29.8,
-  },
-  {
-    name: "Đã bán",
-    quarter: "Quý 3",
-    amount: 28.9,
-  },
-  {
-    name: "Đã bán",
-    quarter: "Quý 4",
-    amount: 38.8,
-  },
-  {
-    name: "Chưa bán",
-    quarter: "Quý 1",
-    amount: 28.9,
-  },
-  {
-    name: "Chưa bán",
-    quarter: "Quý 2",
-    amount: 30.8,
-  },
-  {
-    name: "Chưa bán",
-    quarter: "Quý 3",
-    amount: 28.0,
-  },
-  {
-    name: "Chưa bán",
-    quarter: "Quý 4",
-    amount: 28.8,
-  },
-];
+export default function MonthyAnalysis({ req }) {
+  const { authUser } = useContext(AuthContext);
+  const [params, setParams] = useState();
 
-export default function QuarteryAnalysis({ req }) {
+  useEffect(() => {
+    if (authUser && req) {
+      setParams({
+        managerId: authUser.id,
+        type: "sold",
+        option: "quarter",
+        year: req.year,
+      });
+    }
+  }, [authUser, req]);
+
   return (
-    <QuarteryColumnChart
-      title="Biểu đồ so sánh số lượng sản phẩm đã bán và chưa bán các quý năm 2010"
-      isGroup={false}
-      isStack={true}
-      data={data}
+    <AnalysisLineChart
+      params={params}
+      title={`Biểu đồ phân tích lượng sản phẩm tiêu thụ theo các quý năm ${req?.year}`}
+      endIndex={4}
+      titleX="Quý"
     />
   );
 }

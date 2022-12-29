@@ -46,6 +46,13 @@ const indexApi = {
       }`
     );
   },
+  analizeSoldErrorAmount(managerId, type, option, year, secondYear) {
+    return axios.get(
+      `/analize/${managerId}/?type=${type}&option=${option}&year=${year}&secondYear=${
+        secondYear || ""
+      }`
+    );
+  },
 };
 
 export default indexApi;
