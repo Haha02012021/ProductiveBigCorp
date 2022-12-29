@@ -6,12 +6,15 @@ export default function MonthyColumnChart({
   data,
   firstTitle = "Biểu đồ số liệu sản phẩm theo 6 tháng đầu năm 2010",
   lastTitle = "Biểu đồ số liệu sản phẩm theo 6 tháng cuối năm 2010",
+  title = "Biểu đồ số liệu sản phẩm năm 2010",
   isGroup = true,
   isStack = false,
 }) {
   const first6MonthsConfig = useMemo(() => {
     return {
-      data: data.slice(0, data.length / 2),
+      data: data.filter(
+        (status) => status.monthNumber >= 1 && status.monthNumber <= 6
+      ),
       isGroup,
       isStack,
       xField: "month",
@@ -40,15 +43,17 @@ export default function MonthyColumnChart({
         },
       ],
     };
-  }, []);
+  }, [data]);
 
   const last6MonthsConfig = useMemo(() => {
     return {
-      data: data.slice(data.length / 2, data.length),
+      data: data.filter(
+        (status) => status.monthNumber > 6 && status.monthNumber <= 12
+      ),
       isGroup,
       isStack,
-      xField: "MONTH(`createdAt`)",
-      yField: "count",
+      xField: "month",
+      yField: "amount",
       seriesField: "name",
 
       /** 设置颜色 */
@@ -73,25 +78,29 @@ export default function MonthyColumnChart({
         },
       ],
     };
-  }, []);
+  }, [data]);
   return (
     <Space
       direction="vertical"
       style={{ width: "100%", paddingTop: "40px", paddingBottom: "40px" }}
       size={[0, 40]}
     >
-      <ColumnChart
-        titleY="Số lượng sản phẩm"
-        titleX="Tháng"
-        title={firstTitle}
-        config={first6MonthsConfig}
-      />
-      <ColumnChart
-        titleY="Số lượng sản phẩm"
-        titleX="Tháng"
-        title={lastTitle}
-        config={last6MonthsConfig}
-      />
+      {first6MonthsConfig.data?.length > 0 && (
+        <ColumnChart
+          titleY="Số lượng sản phẩm"
+          titleX="Tháng"
+          title={last6MonthsConfig.data.length > 0 ? firstTitle : title}
+          config={first6MonthsConfig}
+        />
+      )}
+      {last6MonthsConfig.data?.length > 0 && (
+        <ColumnChart
+          titleY="Số lượng sản phẩm"
+          titleX="Tháng"
+          title={first6MonthsConfig.data.length > 0 ? lastTitle : title}
+          config={last6MonthsConfig}
+        />
+      )}
     </Space>
   );
 }

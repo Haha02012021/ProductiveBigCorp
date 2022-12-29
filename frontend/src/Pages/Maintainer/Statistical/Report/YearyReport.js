@@ -1,48 +1,48 @@
+import { useContext, useEffect, useState } from "react";
+import indexApi from "../../../../apis";
 import YearyColumnChart from "../../../../Components/Chart/Column/YearyColumnChart";
-
-const data = [
-  {
-    name: "Status 1",
-    year: "Năm 2010",
-    amount: 28.8,
-  },
-  {
-    name: "Status 1",
-    year: "Năm 2011",
-    amount: 29.8,
-  },
-  {
-    name: "Status 1",
-    year: "Năm 2012",
-    amount: 28.9,
-  },
-  {
-    name: "Status 1",
-    year: "Năm 2013",
-    amount: 38.8,
-  },
-  {
-    name: "Status 2",
-    year: "Năm 2010",
-    amount: 28.9,
-  },
-  {
-    name: "Status 2",
-    year: "Năm 2011",
-    amount: 30.8,
-  },
-  {
-    name: "Status 2",
-    year: "Năm 2012",
-    amount: 28.0,
-  },
-  {
-    name: "Status 2",
-    year: "Năm 2013",
-    amount: 28.8,
-  },
-];
+import { statuses } from "../../../../const";
+import { AuthContext } from "../../../../Provider/AuthProvider";
 
 export default function YearyReport({ req }) {
-  return <YearyColumnChart data={data} />;
+  const { authUser } = useContext(AuthContext);
+  const [data, setData] = useState();
+  useEffect(() => {
+    if (authUser && req) {
+      analize();
+    }
+  }, [authUser, req]);
+  const analize = async () => {
+    const res = await indexApi.analizeAmount(
+      authUser.id,
+      authUser.role,
+      "year",
+      req.year,
+      req.secondYear
+    );
+    if (res.success) {
+      setData(buildData(res.data));
+    }
+  };
+
+  const buildData = (data) => {
+    const builtData = data.map((status) => {
+      return {
+        year: "Năm " + status["YEAR(`createdAt`)"],
+        name: statuses[status.status_id].content,
+        amount: status.count,
+      };
+    });
+    return builtData;
+  };
+  return (
+    <>
+      {data && (
+        <YearyColumnChart
+          data={data}
+          title={`Biểu đồ số liệu sản phẩm từ năm ${req.year} đến năm ${req.secondYear}`}
+        />
+      )}
+    </>
+  );
 }

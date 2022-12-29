@@ -4,7 +4,7 @@ import { Button, Form, InputNumber, Typography } from "antd";
 export default function FromToYearSearch({ onFinish }) {
   return (
     <Form layout="inline" onFinish={onFinish}>
-      <Form.Item name="from" label="Năm">
+      <Form.Item name="year" label="Năm">
         <InputNumber />
       </Form.Item>
       <Typography.Text
@@ -17,7 +17,7 @@ export default function FromToYearSearch({ onFinish }) {
       >
         đến
       </Typography.Text>
-      <Form.Item name="to" label="Năm" style={{ marginRight: 0 }}>
+      <Form.Item name="secondYear" label="Năm" style={{ marginRight: 0 }}>
         <InputNumber />
       </Form.Item>
       <Button htmlType="submit" icon={<SearchOutlined />} type="primary" />

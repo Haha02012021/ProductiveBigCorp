@@ -1,48 +1,47 @@
+import { useContext, useEffect, useState } from "react";
+import indexApi from "../../../../apis";
 import QuarteryColumnChart from "../../../../Components/Chart/Column/QuarteryColumnChart";
-
-const data = [
-  {
-    name: "Status 1",
-    quarter: "Quý 1",
-    amount: 28.8,
-  },
-  {
-    name: "Status 1",
-    quarter: "Quý 2",
-    amount: 29.8,
-  },
-  {
-    name: "Status 1",
-    quarter: "Quý 3",
-    amount: 28.9,
-  },
-  {
-    name: "Status 1",
-    quarter: "Quý 4",
-    amount: 38.8,
-  },
-  {
-    name: "Status 2",
-    quarter: "Quý 1",
-    amount: 28.9,
-  },
-  {
-    name: "Status 2",
-    quarter: "Quý 2",
-    amount: 30.8,
-  },
-  {
-    name: "Status 2",
-    quarter: "Quý 3",
-    amount: 28.0,
-  },
-  {
-    name: "Status 2",
-    quarter: "Quý 4",
-    amount: 28.8,
-  },
-];
+import { statuses } from "../../../../const";
+import { AuthContext } from "../../../../Provider/AuthProvider";
 
 export default function QuarteryReport({ req }) {
-  return <QuarteryColumnChart data={data} />;
+  const { authUser } = useContext(AuthContext);
+  const [data, setData] = useState();
+  useEffect(() => {
+    if (authUser && req) {
+      analize();
+    }
+  }, [authUser, req]);
+  const analize = async () => {
+    const res = await indexApi.analizeAmount(
+      authUser.id,
+      authUser.role,
+      "quarter",
+      req.year
+    );
+    if (res.success) {
+      setData(buildData(res.data));
+    }
+  };
+
+  const buildData = (data) => {
+    const builtData = data.map((status) => {
+      return {
+        year: "Quý " + status["QUARTER(`createdAt`)"],
+        name: statuses[status.status_id].content,
+        amount: status.count,
+      };
+    });
+    return builtData;
+  };
+  return (
+    <>
+      {data && (
+        <QuarteryColumnChart
+          data={data}
+          title={`Biểu đồ số liệu sản phẩm theo quý năm ${req.year}`}
+        />
+      )}
+    </>
+  );
 }

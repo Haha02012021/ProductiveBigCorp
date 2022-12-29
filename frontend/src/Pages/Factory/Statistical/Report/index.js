@@ -10,6 +10,9 @@ import PageContent from "../../../../Components/PageContent";
 export default function Report() {
   const [currentTabKey, setCurrentTabKey] = useState(1);
   const [searchValue, setSearchValue] = useState();
+  const handleSearch = (values) => {
+    setSearchValue(values);
+  };
   const tabItems = useMemo(
     () => [
       {
@@ -28,12 +31,8 @@ export default function Report() {
         children: <YearyReport req={searchValue} />,
       },
     ],
-    []
+    [searchValue]
   );
-
-  const handleSearch = (values) => {
-    setSearchValue(values);
-  };
   return (
     <PageContent
       pageHeaderProps={{

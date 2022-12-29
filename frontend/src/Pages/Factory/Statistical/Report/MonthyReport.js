@@ -1,128 +1,50 @@
+import { useContext, useEffect, useState } from "react";
+import indexApi from "../../../../apis";
 import MonthyColumnChart from "../../../../Components/Chart/Column/MonthyColumnChart";
-
-const data = [
-  {
-    name: "London",
-    month: "Tháng 1",
-    amount: 18.9,
-  },
-  {
-    name: "London",
-    month: "Tháng 2",
-    amount: 28.8,
-  },
-  {
-    name: "London",
-    month: "Tháng 3",
-    amount: 39.3,
-  },
-  {
-    name: "London",
-    month: "Tháng 4",
-    amount: 81.4,
-  },
-  {
-    name: "London",
-    month: "Tháng 5",
-    amount: 47,
-  },
-  {
-    name: "London",
-    month: "Tháng 6",
-    amount: 20.3,
-  },
-  {
-    name: "Berlin",
-    month: "Tháng 1",
-    amount: 12.4,
-  },
-  {
-    name: "Berlin",
-    month: "Tháng 2",
-    amount: 23.2,
-  },
-  {
-    name: "Berlin",
-    month: "Tháng 3",
-    amount: 34.5,
-  },
-  {
-    name: "Berlin",
-    month: "Tháng 4",
-    amount: 99.7,
-  },
-  {
-    name: "Berlin",
-    month: "Tháng 5",
-    amount: 52.6,
-  },
-  {
-    name: "Berlin",
-    month: "Tháng 6",
-    amount: 35.5,
-  },
-  {
-    name: "London",
-    month: "Tháng 7",
-    amount: 18.9,
-  },
-  {
-    name: "London",
-    month: "Tháng 8",
-    amount: 28.8,
-  },
-  {
-    name: "London",
-    month: "Tháng 9",
-    amount: 39.3,
-  },
-  {
-    name: "London",
-    month: "Tháng 10",
-    amount: 81.4,
-  },
-  {
-    name: "London",
-    month: "Tháng 11",
-    amount: 47,
-  },
-  {
-    name: "London",
-    month: "Tháng 12",
-    amount: 20.3,
-  },
-  {
-    name: "Berlin",
-    month: "Tháng 7",
-    amount: 12.4,
-  },
-  {
-    name: "Berlin",
-    month: "Tháng 8",
-    amount: 23.2,
-  },
-  {
-    name: "Berlin",
-    month: "Tháng 9",
-    amount: 34.5,
-  },
-  {
-    name: "Berlin",
-    month: "Tháng 10",
-    amount: 99.7,
-  },
-  {
-    name: "Berlin",
-    month: "Tháng 11",
-    amount: 52.6,
-  },
-  {
-    name: "Berlin",
-    month: "Tháng 12",
-    amount: 35.5,
-  },
-];
+import { statuses } from "../../../../const";
+import { AuthContext } from "../../../../Provider/AuthProvider";
 
 export default function MonthyReport({ req }) {
-  return <MonthyColumnChart data={data} />;
+  const { authUser } = useContext(AuthContext);
+  const [data, setData] = useState();
+  useEffect(() => {
+    if (authUser && req) {
+      analize();
+    }
+  }, [authUser, req]);
+  const analize = async () => {
+    const res = await indexApi.analizeAmount(
+      authUser.id,
+      authUser.role,
+      "month",
+      req.year
+    );
+    if (res.success) {
+      setData(buildData(res.data));
+    }
+  };
+
+  const buildData = (data) => {
+    const builtData = data.map((status) => {
+      return {
+        month: "Tháng " + status["MONTH(`createdAt`)"],
+        monthNumber: status["MONTH(`createdAt`)"],
+        name: statuses[status.status_id].content,
+        amount: status.count,
+      };
+    });
+    return builtData;
+  };
+  return (
+    <>
+      {data && (
+        <MonthyColumnChart
+          data={data}
+          firstTitle={`Biểu đồ số liệu sản phẩm theo 6 tháng đầu năm ${req.year}`}
+          lastTitle={`Biểu đồ số liệu sản phẩm theo 6 tháng cuối năm ${req.year}`}
+          title={`Biểu đồ số liệu sản phẩm năm ${req.year}`}
+        />
+      )}
+    </>
+  );
 }
