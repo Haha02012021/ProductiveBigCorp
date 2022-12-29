@@ -69,7 +69,11 @@ var receiveWarranty = async (req, res) => {
   try {
     const products = await updateProducts(
       { status_id: 11 },
-      { id: req.body.products }
+      { id: req.body.products, isSold: 2 }
+    );
+    const notSoldProduct = await updateProducts(
+      { status_id: 4 },
+      { id: req.body.products, isSold: 0 }
     );
     const history = await addHistory(
       req.body.products,
@@ -80,7 +84,7 @@ var receiveWarranty = async (req, res) => {
     res.json({
       success: true,
       message: "request sent",
-      data: { products, history },
+      data: { products, history, notSoldProduct },
     });
   } catch (err) {
     res.status(500).json({
