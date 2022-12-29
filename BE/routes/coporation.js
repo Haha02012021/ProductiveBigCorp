@@ -35,6 +35,7 @@ const upload = multer({ storage: storage });
 
 router.post(
   "/addManager",
+  validateCoporation,
   body("name")
     .exists()
     .withMessage("need a name")
@@ -72,6 +73,7 @@ router.post(
 
 router.post(
   "/newModel",
+  validateCoporation,
   upload.fields([{ name: "colors" }, { name: "images" }]),
   //body('name').exists().withMessage('need a name').isString('must be a string'),
   //body('color_id').isArray().withMessage('must be an array').custom(checkIntArray),
@@ -81,17 +83,19 @@ router.post(
   createModel
 );
 
-router.put("/version/edit/:id", editVersion);
+router.put("/version/edit/:id", validateCoporation, editVersion);
 
 router.post(
   "/model/edit",
+  validateCoporation,
   upload.fields([{ name: "colors" }, { name: "images" }])
 );
 
-router.post("/newVersion", createVersion);
+router.post("/newVersion", validateCoporation, createVersion);
 
 router.post(
   "/products/all",
+  validateCoporation,
   body("condition")
     .optional({ checkFalsy: null })
     .isObject()
@@ -105,8 +109,8 @@ router.post(
   getAllProducts
 );
 
-router.delete("/model/:id", deleteModel);
+router.delete("/model/:id", validateCoporation, deleteModel);
 
-router.delete("/version/:id", deleteVersion);
+router.delete("/version/:id", validateCoporation, deleteVersion);
 
 module.exports = router;
