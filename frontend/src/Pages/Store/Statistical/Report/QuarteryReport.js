@@ -27,7 +27,7 @@ export default function QuarteryReport({ req }) {
   const buildData = (data) => {
     const builtData = data.map((status) => {
       return {
-        year: "Quý " + status["QUARTER(`createdAt`)"],
+        quarter: "Quý " + status["QUARTER(`createdAt`)"],
         name: statuses[status.status_id].content,
         amount: status.count,
       };

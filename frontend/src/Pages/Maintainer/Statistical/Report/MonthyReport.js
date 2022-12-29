@@ -27,7 +27,8 @@ export default function MonthyReport({ req }) {
   const buildData = (data) => {
     const builtData = data.map((status) => {
       return {
-        year: "Tháng " + status["MONTH(`createdAt`)"],
+        month: "Tháng " + status["MONTH(`createdAt`)"],
+        monthNumber: status["MONTH(`createdAt`)"],
         name: statuses[status.status_id].content,
         amount: status.count,
       };

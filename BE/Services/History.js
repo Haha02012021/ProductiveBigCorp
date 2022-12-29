@@ -68,6 +68,16 @@ var productsByStatus = async (manager_id, option, year, secondYear, role) => {
       throw "role 1 is not valid";
     }
     let data = null;
+    let statuses = null;
+
+    if(role == 3) {
+      statuses = [8, 9, 12]
+    } else if (role == 4){
+      statuses = [4, 5, 6, 11, 19]
+    } else if (role === 2) {
+      statuses = [1, 3, 14, 15, 16]
+    }
+    
     if (option === "quarter" || option === "month") {
       data = await History.count({
         where: {
@@ -78,12 +88,7 @@ var productsByStatus = async (manager_id, option, year, secondYear, role) => {
             ),
             { manager_id },
             {
-              status_id:
-                role === 3
-                  ? [8, 9, 12]
-                  : role === 4
-                  ? [4, 5, 6, 11, 19]
-                  : [1, 3, 14, 15, 16],
+              status_id: statuses,
             },
           ],
         },
@@ -114,12 +119,7 @@ var productsByStatus = async (manager_id, option, year, secondYear, role) => {
             ),
             { manager_id },
             {
-              status_id:
-                role === 3
-                  ? [8, 9, 12]
-                  : role === 4
-                  ? [4, 5, 6, 11, 19]
-                  : [1, 3, 14, 15, 16],
+              status_id: statuses,
             },
           ],
         },
