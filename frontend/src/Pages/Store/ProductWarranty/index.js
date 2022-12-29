@@ -151,15 +151,25 @@ const ProductWarranty = () => {
     }
   };
 
+  const handleSearch = (results) => {
+    if (results) {
+      setSelledProducts(results);
+    } else {
+      getProductsStore();
+    }
+  };
+
   const tabItems = [
     {
       label: `Sản phẩm đã bán`,
       key: "1",
       children: (
-        <CustomTable
-          dataSource={selledProducts}
-          columns={productSelledColumns}
-        />
+        <PageContent getSearchResults={handleSearch}>
+          <CustomTable
+            dataSource={selledProducts}
+            columns={productSelledColumns}
+          />
+        </PageContent>
       ),
     },
     {

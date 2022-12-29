@@ -317,6 +317,7 @@ export default function MaintainProduct() {
             </Button>
           ),
         }}
+        getSearchResults={handleSearchMaintainProductResults}
       >
         <CustomTable
           columns={columns.filter((column) => column.key !== "amount")}

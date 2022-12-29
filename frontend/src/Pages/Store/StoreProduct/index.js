@@ -99,7 +99,7 @@ const StoreProduct = () => {
       dataIndex: "actions",
       key: "actions",
       width: 80,
-      render: (text, record, ) => (
+      render: (text, record) => (
         <ActionsCell
           hasEdit={false}
           hasView={false}
@@ -188,7 +188,7 @@ const StoreProduct = () => {
       dataIndex: "actions",
       key: "actions",
       width: 80,
-      render: (text, record, ) => (
+      render: (text, record) => (
         <ActionsCell
           hasEdit={false}
           hasView={false}
@@ -244,7 +244,7 @@ const StoreProduct = () => {
       dataIndex: "actions",
       key: "actions",
       width: 80,
-      render: (text, record, ) => (
+      render: (text, record) => (
         <ActionsCell
           hasConfirm={false}
           hasDelete={false}
@@ -420,6 +420,27 @@ const StoreProduct = () => {
     return result;
   };
 
+  const handleSearch = (results) => {
+    switch (currentTab) {
+      case "2":
+        if (results) {
+          setProductMoving(results);
+        } else {
+          getProductMoving();
+        }
+        break;
+      case "3":
+        if (results) {
+          setProductStore(results);
+        } else {
+          getProductsStore();
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
   const tabItems = [
     {
       label: `Yêu cầu tới nhà máy`,
@@ -437,17 +458,21 @@ const StoreProduct = () => {
       label: `Sản phẩm đang vận chuyển`,
       key: "2",
       children: (
-        <CustomTable
-          dataSource={productMoving}
-          columns={movingProductColumns}
-        />
+        <PageContent getSearchResults={handleSearch}>
+          <CustomTable
+            dataSource={productMoving}
+            columns={movingProductColumns}
+          />
+        </PageContent>
       ),
     },
     {
       label: `Sản phẩm trong kho`,
       key: "3",
       children: (
-        <CustomTable dataSource={productStore} columns={productColumns} />
+        <PageContent getSearchResults={handleSearch}>
+          <CustomTable dataSource={productStore} columns={productColumns} />
+        </PageContent>
       ),
     },
     {
