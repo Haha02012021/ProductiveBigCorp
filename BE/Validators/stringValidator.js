@@ -8,6 +8,17 @@ const checkSpecialCharacters = (value) => {
     }
 }
 
+const checkPhone = (value) => {
+    const pattern= /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
+    const regex = new RegExp(pattern);
+    if(regex.test(value)) {
+        return Promise.reject('must be phone num');
+    } else {
+        return Promise.resolve('passed');
+    }
+}
+
 module.exports = {
     checkSpecialCharacters,
+    checkPhone,
 }

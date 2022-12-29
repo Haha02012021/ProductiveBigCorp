@@ -5,7 +5,7 @@ const { allColors } = require("../Services/Color");
 const { productInfo, findByUuid } = require("../Services/Product");
 const { getDetail } = require("../Services/Request");
 const { allStatuses } = require("../Services/Status");
-const { productsByStatus, getSoldInfo } = require("../Services/History");
+const { productsByStatus, getSoldOrErrorInfo } = require("../Services/History");
 
 var getVersionInfo = async (req, res) => {
   try {
@@ -259,14 +259,15 @@ var analizeProducts = async (req, res) => {
   }
 };
 
-var getSold = async (req, res) => {
+var getSoldOrError = async (req, res) => {
   try {
     console.log(req.query, req.params);
-    const data = await getSoldInfo(
+    const data = await getSoldOrErrorInfo(
       req.params.manager_id,
       req.query.option,
       req.query.year,
-      req.query.secondYear
+      req.query.secondYear,
+      req.query.type,
     );
     if (!data) {
       throw "error in services";
@@ -277,7 +278,7 @@ var getSold = async (req, res) => {
     res.status(500).json({
       error: err,
       success: false,
-      message: "error from get Sold",
+      message: "error from get Sold or error info",
     });
   }
 };
@@ -296,5 +297,5 @@ module.exports = {
   getAllStatuses,
   findOneProduct,
   analizeProducts,
-  getSold,
+  getSoldOrError,
 };

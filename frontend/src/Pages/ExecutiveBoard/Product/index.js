@@ -12,7 +12,6 @@ export default function Product() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idProduct, setIdProduct] = useState(0);
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const showModal = (data) => {
     if (data.id !== idProduct) {
@@ -44,8 +43,7 @@ export default function Product() {
   };
 
   const buildData = (data) => {
-    const result = new Array();
-    console.log(data);
+    const result = [];
     for (let i = 0; i < data.length; i++) {
       const o = {};
       const factory = data[i].managers.find((manager) => manager.role === "2");
@@ -189,7 +187,7 @@ export default function Product() {
       key: "actions",
       fixed: "center",
       width: 60,
-      render: (text, record, index) => (
+      render: (text, record, ) => (
         <ActionsCell
           hasEdit={false}
           hasDelete={false}
