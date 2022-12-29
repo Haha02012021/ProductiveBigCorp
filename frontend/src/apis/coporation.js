@@ -7,6 +7,10 @@ const coporationApi = {
   addVersion(versionInfo) {
     return axios.post("/coporation/newVersion", versionInfo);
   },
+  updateVersion(id, versionInfo) {
+    return axios.put(`/coporation/version/edit/${id}`, versionInfo);
+  },
+
   getProducts(data, page) {
     return axios.post(`/coporation/products/all?page=${page}`, data);
   },

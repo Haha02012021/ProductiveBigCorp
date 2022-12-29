@@ -5,7 +5,7 @@ const { allColors } = require("../Services/Color");
 const { productInfo, findByUuid } = require("../Services/Product");
 const { getDetail } = require("../Services/Request");
 const { allStatuses } = require("../Services/Status");
-const { productsByStatus, getSoldOrErrorInfo } = require("../Services/History");
+const { productsByStatus, getSoldOrErrorInfo, getAllSoldOrErrorInfoOfManagerByModel } = require("../Services/History");
 
 var getVersionInfo = async (req, res) => {
   try {
@@ -269,8 +269,29 @@ var getSoldOrError = async (req, res) => {
       req.query.secondYear,
       req.query.type,
     );
-    if (!data) {
-      throw "error in services";
+    if (!data || data.length === 0) {
+      throw "error in services or product not found";
+    } else {
+      res.json({ success: true, message: "analized", data });
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err,
+      success: false,
+      message: "error from get Sold or error info",
+    });
+  }
+};
+
+var getSoldOrErrorByModel = async (req, res) => {
+  try {
+    console.log(req.query, req.params);
+    const data = await getAllSoldOrErrorInfoOfManagerByModel(
+      req.params.manager_id,
+      req.query.type,
+    );
+    if (!data || data.length === 0) {
+      throw "error in services or products not found";
     } else {
       res.json({ success: true, message: "analized", data });
     }
@@ -298,4 +319,5 @@ module.exports = {
   findOneProduct,
   analizeProducts,
   getSoldOrError,
+  getSoldOrErrorByModel,
 };
