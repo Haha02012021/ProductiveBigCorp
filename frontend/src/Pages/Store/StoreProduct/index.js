@@ -354,11 +354,23 @@ const StoreProduct = () => {
         },
         role: 4,
       };
+
+      const summonMoving = {
+        condition: {
+          isSold: 0,
+          status_id: 10,
+        },
+      };
       const res = await indexApi.getRequestsByManagerId(id, condition);
+      const res2 = await indexApi.getProductsByManagerId(
+        authUser.id,
+        summonMoving
+      );
+      if (res2.data && res2.data.products) {
+        setProductMoving([...buildData(res2.data.products)]);
+      }
       if (res.data && res.data.requests) {
         setProductMoving(buildDataRequest(res.data.requests));
-      } else {
-        setProductMoving([]);
       }
     } catch (error) {
       setProductMoving([]);
