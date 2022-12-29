@@ -9,6 +9,7 @@ const {
   receiveBrokenProducts,
   acceptRequest,
   requestSummon,
+  destroyProducts,
 } = require("../Controllers/FactoryController");
 
 const { validateFactory } = require("../Middlewares/roleValidator");
@@ -78,5 +79,7 @@ router.post(
   finalCheck,
   requestSummon
 );
+
+router.delete('/products/delete/:factory_id', destroyProducts);
 
 module.exports = router;
