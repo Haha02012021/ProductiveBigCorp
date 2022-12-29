@@ -133,14 +133,14 @@ var productsByStatus = async (manager_id, option, year, secondYear, role) => {
   }
 };
 
-var getSoldInfo = async (manager_id, option, year, secondYear) => {
+var getSoldOrErrorInfo = async (manager_id, option, year, secondYear, type) => {
   try {
     let data = null;
     if (option === "quarter" || option === "month") {
       data = await sequelize.query(
-        `SELECT count(*) as count, ${option}(histories.createdAt) as soldAt 
+        `SELECT count(*) as count, ${option}(histories.createdAt) as time 
                 FROM histories inner join manager_product on histories.product_id = manager_product.product_id 
-                WHERE manager_product.manager_id = $1 and status_id = 5 and year(histories.createdAt) = $2 group by ${option}(histories.createdAt)
+                WHERE manager_product.manager_id = $1 and status_id = ${type === 'sold' ? 5 : 12} and year(histories.createdAt) = $2 group by ${option}(histories.createdAt)
                 order by ${option}(histories.createdAt) ASC
                 `,
         {
@@ -153,13 +153,51 @@ var getSoldInfo = async (manager_id, option, year, secondYear) => {
         throw "invalid secondYear";
       }
       data = await sequelize.query(
-        `SELECT count(*) as count, ${option}(histories.createdAt) as soldAt
+        `SELECT count(*) as count, ${option}(histories.createdAt) as time
                 FROM histories inner join manager_product on histories.product_id = manager_product.product_id 
-                WHERE manager_product.manager_id = $1 and status_id = 5 and year(histories.createdAt) >= $2 and year(histories.createdAt) <= $3 group by ${option}(histories.createdAt)
+                WHERE manager_product.manager_id = $1 and status_id = ${type === 'sold' ? 5 : 12} and year(histories.createdAt) >= $2 and year(histories.createdAt) <= $3 group by ${option}(histories.createdAt)
                 order by ${option}(histories.createdAt) ASC
                 `,
         {
           bind: [manager_id, year, secondYear],
+          type: QueryTypes.SELECT,
+        }
+      );
+    }
+    return data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+var getAllSoldOrErrorInfo = async (option, year, secondYear, type) => {
+  try {
+    let data = null;
+    if (option === "quarter" || option === "month") {
+      data = await sequelize.query(
+        `SELECT count(*) as count, ${option}(histories.createdAt) as time 
+                FROM histories
+                WHERE status_id = ${type === 'sold' ? 5 : 12} and year(histories.createdAt) = $1 group by ${option}(histories.createdAt)
+                order by ${option}(histories.createdAt) ASC
+                `,
+        {
+          bind: [year],
+          type: QueryTypes.SELECT,
+        }
+      );
+    } else if (option === "year") {
+      if (!secondYear) {
+        throw "invalid secondYear";
+      }
+      data = await sequelize.query(
+        `SELECT count(*) as count, ${option}(histories.createdAt) as time
+                FROM histories
+                WHERE status_id = ${type === 'sold' ? 5 : 12} and year(histories.createdAt) >= $1 and year(histories.createdAt) <= $2 group by ${option}(histories.createdAt)
+                order by ${option}(histories.createdAt) ASC
+                `,
+        {
+          bind: [year, secondYear],
           type: QueryTypes.SELECT,
         }
       );
@@ -176,5 +214,6 @@ module.exports = {
   addOneHistory,
   getHistoryOfProduct,
   productsByStatus,
-  getSoldInfo,
+  getSoldOrErrorInfo,
+  getAllSoldOrErrorInfo,
 };

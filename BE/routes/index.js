@@ -120,6 +120,6 @@ router.get(
 
 router.get("/analize/status/:manager_id", authenToken, analizeProducts);
 
-router.get("/analize/sold/:manager_id", authenToken, getSold);
+router.get("/analize/:manager_id", authenToken, getSold);
 
 module.exports = router;
