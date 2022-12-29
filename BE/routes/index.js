@@ -15,35 +15,60 @@ var {
   getAllStatuses,
   findOneProduct,
   analizeProducts,
-  getSold
+  getSold,
 } = require("../Controllers/index");
 var { param, query, body, validationResult } = require("express-validator");
 
 const { authenToken } = require("../Middlewares/roleValidator");
 const { finalCheck } = require("../Validators/checkErrors");
 
-router.get("/version/:id", param('id').exists().withMessage('need an id').isInt().withMessage('must be integer'),
-finalCheck,
-getVersionInfo);
+router.get(
+  "/version/:id",
+  authenToken,
+  param("id")
+    .exists()
+    .withMessage("need an id")
+    .isInt()
+    .withMessage("must be integer"),
+  finalCheck,
+  getVersionInfo
+);
 
-router.get("/model/:id", param('id').exists().withMessage('need an id').isInt().withMessage('must be integer'),
-finalCheck,
-getModelInfo);
+router.get(
+  "/model/:id",
+  authenToken,
+  param("id")
+    .exists()
+    .withMessage("need an id")
+    .isInt()
+    .withMessage("must be integer"),
+  finalCheck,
+  getModelInfo
+);
 
-router.post("/products/manager/:manager_id", getAllProducts);
+router.post("/products/manager/:manager_id", authenToken, getAllProducts);
 
-router.get("/versions/all", getAllVersions);
+router.get("/versions/all", authenToken, getAllVersions);
 
-router.get("/models/all", getAllModels);
+router.get("/models/all", authenToken, getAllModels);
 
-router.get("/colors/all", getAllColors);
+router.get("/colors/all", authenToken, getAllColors);
 
-router.get("/product/detail/:id", param('id').exists().withMessage('need an id').isInt().withMessage('must be integer'),
-finalCheck,
-getProductInfo);
+router.get(
+  "/product/detail/:id",
+  authenToken,
+  param("id")
+    .exists()
+    .withMessage("need an id")
+    .isInt()
+    .withMessage("must be integer"),
+  finalCheck,
+  getProductInfo
+);
 
 router.get(
   "/managers/all",
+  authenToken,
   query("role")
     .exists()
     .withMessage("need a role")
@@ -57,22 +82,44 @@ router.get(
   getAllManagers
 );
 
-router.get("/request/:id", param('id').exists().withMessage('need an id').isInt().withMessage('must be integer'),
-finalCheck,
-getRequestInfo);
+router.get(
+  "/request/:id",
+  authenToken,
+  param("id")
+    .exists()
+    .withMessage("need an id")
+    .isInt()
+    .withMessage("must be integer"),
+  finalCheck,
+  getRequestInfo
+);
 
-router.post("/requests/all/:manager_id", body('condition').optional({checkFalsy: null}).isObject().withMessage('must be an object'),
-finalCheck,
-getAllRequests);
+router.post(
+  "/requests/all/:manager_id",
+  authenToken,
+  body("condition")
+    .optional({ checkFalsy: null })
+    .isObject()
+    .withMessage("must be an object"),
+  finalCheck,
+  getAllRequests
+);
 
-router.get("/statuses/all", getAllStatuses);
+router.get("/statuses/all", authenToken, getAllStatuses);
 
-router.get('/product/:uuid', param('uuid').exists().withMessage('need a uuid').isUUID().withMessage('must be a uuid'),
-finalCheck,
-findOneProduct);
+router.get(
+  "/product/:uuid",
+  param("uuid")
+    .exists()
+    .withMessage("need a uuid")
+    .isUUID()
+    .withMessage("must be a uuid"),
+  finalCheck,
+  findOneProduct
+);
 
-router.get("/analize/status/:manager_id", analizeProducts);
+router.get("/analize/status/:manager_id", authenToken, analizeProducts);
 
-router.get("/analize/sold/:manager_id", getSold);
+router.get("/analize/sold/:manager_id", authenToken, getSold);
 
 module.exports = router;
