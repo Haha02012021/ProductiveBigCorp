@@ -29,9 +29,7 @@ router.post(
   createProducts
 );
 
-router.post("/batches/:factory_id", 
-validateFactory, 
-getBatches);
+router.post("/batches/:factory_id", validateFactory, getBatches);
 
 router.post(
   "/receiveBrokenProducts",
@@ -80,6 +78,6 @@ router.post(
   requestSummon
 );
 
-router.delete('/products/delete/:factory_id', destroyProducts);
+router.post("/products/delete/:factory_id", destroyProducts);
 
 module.exports = router;

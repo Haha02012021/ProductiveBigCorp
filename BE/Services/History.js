@@ -70,14 +70,14 @@ var productsByStatus = async (manager_id, option, year, secondYear, role) => {
     let data = null;
     let statuses = null;
 
-    if(role == 3) {
-      statuses = [8, 9, 12]
-    } else if (role == 4){
-      statuses = [4, 5, 6, 11, 19]
-    } else if (role === 2) {
-      statuses = [1, 3, 14, 15, 16]
+    if (role == 3) {
+      statuses = [8, 9, 12];
+    } else if (role == 4) {
+      statuses = [4, 5, 6, 11, 19];
+    } else if (role == 2) {
+      statuses = [1, 3, 14, 15, 16];
     }
-    
+
     if (option === "quarter" || option === "month") {
       data = await History.count({
         where: {
@@ -140,7 +140,9 @@ var getSoldOrErrorInfo = async (manager_id, option, year, secondYear, type) => {
       data = await sequelize.query(
         `SELECT count(*) as count, ${option}(histories.createdAt) as time 
                 FROM histories inner join manager_product on histories.product_id = manager_product.product_id 
-                WHERE manager_product.manager_id = $1 and status_id = ${type === 'sold' ? 5 : 12} and year(histories.createdAt) = $2 group by ${option}(histories.createdAt)
+                WHERE manager_product.manager_id = $1 and status_id = ${
+                  type === "sold" ? 5 : 12
+                } and year(histories.createdAt) = $2 group by ${option}(histories.createdAt)
                 order by ${option}(histories.createdAt) ASC
                 `,
         {
@@ -155,7 +157,9 @@ var getSoldOrErrorInfo = async (manager_id, option, year, secondYear, type) => {
       data = await sequelize.query(
         `SELECT count(*) as count, ${option}(histories.createdAt) as time
                 FROM histories inner join manager_product on histories.product_id = manager_product.product_id 
-                WHERE manager_product.manager_id = $1 and status_id = ${type === 'sold' ? 5 : 12} and year(histories.createdAt) >= $2 and year(histories.createdAt) <= $3 group by ${option}(histories.createdAt)
+                WHERE manager_product.manager_id = $1 and status_id = ${
+                  type === "sold" ? 5 : 12
+                } and year(histories.createdAt) >= $2 and year(histories.createdAt) <= $3 group by ${option}(histories.createdAt)
                 order by ${option}(histories.createdAt) ASC
                 `,
         {
@@ -178,7 +182,9 @@ var getAllSoldOrErrorInfo = async (option, year, secondYear, type) => {
       data = await sequelize.query(
         `SELECT count(*) as count, ${option}(histories.createdAt) as time 
                 FROM histories
-                WHERE status_id = ${type === 'sold' ? 5 : 12} and year(histories.createdAt) = $1 group by ${option}(histories.createdAt)
+                WHERE status_id = ${
+                  type === "sold" ? 5 : 12
+                } and year(histories.createdAt) = $1 group by ${option}(histories.createdAt)
                 order by ${option}(histories.createdAt) ASC
                 `,
         {
@@ -193,7 +199,9 @@ var getAllSoldOrErrorInfo = async (option, year, secondYear, type) => {
       data = await sequelize.query(
         `SELECT count(*) as count, ${option}(histories.createdAt) as time
                 FROM histories
-                WHERE status_id = ${type === 'sold' ? 5 : 12} and year(histories.createdAt) >= $1 and year(histories.createdAt) <= $2 group by ${option}(histories.createdAt)
+                WHERE status_id = ${
+                  type === "sold" ? 5 : 12
+                } and year(histories.createdAt) >= $1 and year(histories.createdAt) <= $2 group by ${option}(histories.createdAt)
                 order by ${option}(histories.createdAt) ASC
                 `,
         {
@@ -212,15 +220,17 @@ var getAllSoldOrErrorInfo = async (option, year, secondYear, type) => {
 var getAllSoldOrErrorInfoByModel = async (type) => {
   try {
     const data = await sequelize.query(
-        `SELECT count(*) as count, models.name as name 
+      `SELECT count(*) as count, models.name as name 
                 FROM histories inner join products on histories.product_id = products.id inner join models on products.model_id = models.id
-                WHERE histories.status_id = ${type === 'sold' ? 5 : 12} group by models.id
+                WHERE histories.status_id = ${
+                  type === "sold" ? 5 : 12
+                } group by models.id
                 order by models.id ASC
                 `,
-        {
-          type: QueryTypes.SELECT,
-        }
-      );
+      {
+        type: QueryTypes.SELECT,
+      }
+    );
     //console.log(data);
     //console.log(typeof data)
     return data;
@@ -233,17 +243,19 @@ var getAllSoldOrErrorInfoByModel = async (type) => {
 var getAllSoldOrErrorInfoOfManagerByModel = async (manager_id, type) => {
   try {
     const data = await sequelize.query(
-        `SELECT count(*) as count, models.name as name 
+      `SELECT count(*) as count, models.name as name 
                 FROM manager_product inner join histories on manager_product.product_id = histories.product_id
                 inner join products on histories.product_id = products.id inner join models on products.model_id = models.id
-                WHERE histories.status_id = ${type === 'sold' ? 5 : 12} and manager_product.manager_id = $1 group by models.id
+                WHERE histories.status_id = ${
+                  type === "sold" ? 5 : 12
+                } and manager_product.manager_id = $1 group by models.id
                 order by models.id ASC
                 `,
-        {
-          bind: [manager_id],
-          type: QueryTypes.SELECT,
-        }
-      );
+      {
+        bind: [manager_id],
+        type: QueryTypes.SELECT,
+      }
+    );
     //console.log(data);
     //console.log(typeof data)
     return data;

@@ -52,6 +52,7 @@ export default function ProductImport() {
           hasView={false}
           onConfirm={() => handleConfirm(record)}
           onDelete={() => handleDestroy(record)}
+          deleteText="Tiêu hủy"
         />
       ),
     },
@@ -75,10 +76,11 @@ export default function ProductImport() {
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      setSelectedProducts(selectedRows.map((row) => row.key));
+      setSelectedProducts(selectedRowKeys);
     },
     onSelect: (record, selected, selectedRows) => {},
     onSelectAll: (selected, selectedRows, changeRows) => {},
+    selectedRowKeys: selectedProducts,
   };
 
   const handleConfirmAll = () => {
@@ -128,6 +130,7 @@ export default function ProductImport() {
 
           if (res.success) {
             toast.success("Đã tiêu hủy các sản phẩm", 2);
+            setSelectedProducts([]);
             getDestroyedProducts();
           }
         } catch (error) {
@@ -302,10 +305,9 @@ export default function ProductImport() {
       onOk: async () => {
         try {
           const res = await deleteProducts(authUser.id, req);
-
           if (res.success) {
             toast.success("Đã tiêu hủy sản phẩm", 2);
-            getBrokenProducts();
+            setSelectedProducts([]);
             getDestroyedProducts();
           }
         } catch (error) {
