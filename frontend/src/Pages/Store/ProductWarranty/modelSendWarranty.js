@@ -85,14 +85,18 @@ const ModelSendWarranty = (props) => {
             {product?.model?.name}
           </Col>
 
-          <Row>
-            <BoldText>Cơ sở sản xuất: </BoldText>
-            <DesText>
-              {" " + product && product.managers && product.managers.length > 0
-                ? product?.managers[0]?.name
-                : null}
-            </DesText>
-          </Row>
+          <Col span={24}>
+            <Row>
+              <BoldText>Cơ sở sản xuất: </BoldText>
+              <DesText>
+                {" " + product &&
+                product.managers &&
+                product.managers.length > 0
+                  ? product?.managers[0]?.name
+                  : null}
+              </DesText>
+            </Row>
+          </Col>
 
           <Row>
             <BoldText>Mã UUID:</BoldText>
