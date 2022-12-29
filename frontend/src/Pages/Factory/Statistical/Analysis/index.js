@@ -9,7 +9,10 @@ import YearyAnalysis from "./YearyAnalysis";
 
 export default function Analysis() {
   const [currentTabKey, setCurrentTabKey] = useState(1);
-  const [searchValue, setSearchValue] = useState();
+  const [searchValue, setSearchValue] = useState({
+    year: new Date().getFullYear(),
+    secondYear: new Date().getFullYear(),
+  });
   const tabItems = useMemo(
     () => [
       {

@@ -3,7 +3,14 @@ import { Button, Form, InputNumber, Typography } from "antd";
 
 export default function FromToYearSearch({ onFinish }) {
   return (
-    <Form layout="inline" onFinish={onFinish}>
+    <Form
+      layout="inline"
+      onFinish={onFinish}
+      initialValues={{
+        year: new Date().getFullYear(),
+        secondYear: new Date().getFullYear(),
+      }}
+    >
       <Form.Item name="year" label="Năm">
         <InputNumber />
       </Form.Item>

@@ -3,9 +3,13 @@ import { Button, Form, InputNumber } from "antd";
 
 export default function YearSearch({ onFinish }) {
   return (
-    <Form layout="inline" onFinish={onFinish}>
+    <Form
+      layout="inline"
+      onFinish={onFinish}
+      initialValues={{ year: new Date().getFullYear() }}
+    >
       <Form.Item name="year" label="Năm" style={{ marginRight: 0 }}>
-        <InputNumber />
+        <InputNumber placeholder="Nhập năm" />
       </Form.Item>
       <Button htmlType="submit" icon={<SearchOutlined />} type="primary" />
     </Form>

@@ -9,7 +9,10 @@ import PageContent from "../../../../Components/PageContent";
 
 export default function Report() {
   const [currentTabKey, setCurrentTabKey] = useState(1);
-  const [searchValue, setSearchValue] = useState();
+  const [searchValue, setSearchValue] = useState({
+    year: new Date().getFullYear(),
+    secondYear: new Date().getFullYear(),
+  });
   const handleSearch = (values) => {
     setSearchValue(values);
   };
