@@ -113,6 +113,7 @@ const TabProductMoving = (props) => {
   }, [onChange]);
 
   const getMovingProductsStore = async () => {
+    let productData = [];
     try {
       const res = await indexApi.getProductsByManagerId(authUser.id, {
         condition: {
@@ -120,23 +121,27 @@ const TabProductMoving = (props) => {
           status_id: 10,
         },
       });
+
+      if (res.data && res.data.products) {
+        productData = [...buildData(res.data.products)];
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    try {
       const res2 = await indexApi.getProductsByManagerId(authUser.id, {
         condition: {
           isSold: 0,
           status_id: 10,
         },
       });
-      let productData = [];
-      if (res.data && res.data.products) {
-        productData = [...buildData(res.data.products)];
-      }
       if (res2.data && res2.data.products) {
         productData = [...productData, ...buildData(res2.data.products)];
       }
-      setMaintainedProducts(productData);
-    } catch {
-      setMaintainedProducts([]);
+    } catch (error) {
+      console.error(error);
     }
+    setMaintainedProducts(productData);
   };
 
   const acceptProduct = async () => {

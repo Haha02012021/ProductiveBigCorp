@@ -94,7 +94,7 @@ const ProductDetail = ({ product = {}, isProduct = true }) => {
 
           <Row>
             <BoldText>Mã UUID:</BoldText>
-            <DesText>{" " + product?.uuid}</DesText>
+            <Row>{" " + product?.uuid}</Row>
           </Row>
 
           <Row>
