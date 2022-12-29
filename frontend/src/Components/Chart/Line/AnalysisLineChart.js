@@ -19,27 +19,31 @@ export default function AnalysisLineChart({
   }, [params]);
 
   const analizeErrorSoldAmount = async () => {
-    if (params.role === "1") {
-      const res = await coporationApi.analizeErrorSoldAmount(
-        params.type,
-        params.option,
-        params.year,
-        params.secondYear
-      );
-      if (res.success) {
-        setData(buildData(res.data));
+    try {
+      if (params.role === "1") {
+        const res = await coporationApi.analizeErrorSoldAmount(
+          params.type,
+          params.option,
+          params.year,
+          params.secondYear
+        );
+        if (res.success) {
+          setData(buildData(res.data));
+        }
+      } else {
+        const res = await indexApi.analizeSoldErrorAmount(
+          params.managerId,
+          params.type,
+          params.option,
+          params.year,
+          params.secondYear
+        );
+        if (res.success) {
+          setData(buildData(res.data));
+        }
       }
-    } else {
-      const res = await indexApi.analizeSoldErrorAmount(
-        params.managerId,
-        params.type,
-        params.option,
-        params.year,
-        params.secondYear
-      );
-      if (res.success) {
-        setData(buildData(res.data));
-      }
+    } catch (error) {
+      setData([]);
     }
   };
 
@@ -67,9 +71,18 @@ export default function AnalysisLineChart({
   };
   return (
     <>
-      {data && (
-        <LineChart data={data} title={title} titleX={titleX} titleY={titleY} />
-      )}
+      {data ? (
+        data.length > 0 ? (
+          <LineChart
+            data={data}
+            title={title}
+            titleX={titleX}
+            titleY={titleY}
+          />
+        ) : (
+          <div>Chưa có sản phẩm</div>
+        )
+      ) : null}
     </>
   );
 }

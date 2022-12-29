@@ -80,7 +80,7 @@ export default function TransportForm({ form }) {
         rules={[
           { required: true, message: "Không được bỏ trống" },
           {
-            type: "number",
+            type: "array",
             min: 1,
             message: "Giá trị không phù hợp",
           },

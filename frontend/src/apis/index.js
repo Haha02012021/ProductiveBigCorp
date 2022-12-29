@@ -1,60 +1,60 @@
-import axios from "./axios";
+import instance from "./axios";
 
 const indexApi = {
   getAllModels(page) {
-    return axios.get(`/models/all/?page=${page || ""}`);
+    return instance.get(`/models/all/?page=${page || ""}`);
   },
   getAllVersions(page) {
-    return axios.get(`/versions/all/?page=${page || ""}`);
+    return instance.get(`/versions/all/?page=${page || ""}`);
   },
   getModelById(modelId) {
-    return axios.get(`/model/${modelId}`);
+    return instance.get(`/model/${modelId}`);
   },
   getProductById(productId) {
-    return axios.get(`/product/detail/${productId}`);
+    return instance.get(`/product/detail/${productId}`);
   },
   getProductsByManagerId(managerId, condition) {
-    return axios.post(`/products/manager/${managerId}`, condition);
+    return instance.post(`/products/manager/${managerId}`, condition);
   },
   getAllColors() {
-    return axios.get("/colors/all");
+    return instance.get("/colors/all");
   },
   getVersionById(id) {
-    return axios.get(`/version/${id}`);
+    return instance.get(`/version/${id}`);
   },
   getAllStatuses() {
-    return axios.get("/statuses/all");
+    return instance.get("/statuses/all");
   },
 
   getManagerByRole(roleId) {
-    return axios.get(`/managers/all?role=${roleId}`);
+    return instance.get(`/managers/all?role=${roleId}`);
   },
 
   getRequestsByManagerId(id, data, page) {
-    return axios.post(`/requests/all/${id}?page=${page || ""}`, data);
+    return instance.post(`/requests/all/${id}?page=${page || ""}`, data);
   },
   getRequestById(id) {
-    return axios.get(`/request/${id}`);
+    return instance.get(`/request/${id}`);
   },
   getProductByUuid(uuid) {
-    return axios.get(`/product/${uuid}`);
+    return instance.get(`/product/${uuid}`);
   },
   analizeAmount(managerId, role, option, year, secondYear) {
-    return axios.get(
+    return instance.get(
       `/analize/status/${managerId}/?role=${role}&option=${option}&year=${year}&secondYear=${
         secondYear || ""
       }`
     );
   },
   analizeSoldErrorAmount(managerId, type, option, year, secondYear) {
-    return axios.get(
+    return instance.get(
       `/analize/${managerId}/?type=${type}&option=${option}&year=${year}&secondYear=${
         secondYear || ""
       }`
     );
   },
   analizeErrorRateByModel(managerId) {
-    return axios.get(`analize/model/${managerId}/?type=error`);
+    return instance.get(`analize/model/${managerId}/?type=error`);
   },
 };
 

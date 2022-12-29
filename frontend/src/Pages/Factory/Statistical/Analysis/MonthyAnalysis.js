@@ -21,7 +21,8 @@ export default function MonthyAnalysis({ req }) {
     <AnalysisLineChart
       params={params}
       title={`Biểu đồ phân tích lượng sản phẩm tiêu thụ theo các tháng năm ${req?.year}`}
-      titleY="Tháng"
+      titleY="Số lượng sản phẩm"
+      titleX="Tháng"
     />
   );
 }
