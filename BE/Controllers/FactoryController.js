@@ -188,11 +188,13 @@ var destroyProducts = async (req, res) => {
     );
     res.json({ success: true, message: "destroyed" });
   } catch (err) {
-    res.status(500).json({
-      error: err,
-      success: false,
-      message: "error from destroying products",
-    });
+    res
+      .status(500)
+      .json({
+        error: err,
+        success: false,
+        message: "error from destroying products",
+      });
   }
 };
 
