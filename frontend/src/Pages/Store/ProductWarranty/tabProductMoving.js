@@ -61,7 +61,7 @@ const TabProductMoving = (props) => {
       dataIndex: "actions",
       key: "actions",
       width: 100,
-      render: (text, record, ) => (
+      render: (text, record) => (
         <ActionsCell
           hasDelete={false}
           hasEdit={false}
@@ -109,20 +109,31 @@ const TabProductMoving = (props) => {
   };
 
   useEffect(() => {
-    getMovingProductsStore({
-      condition: {
-        isSold: 2,
-        status_id: 10,
-      },
-    });
+    getMovingProductsStore();
   }, [onChange]);
 
-  const getMovingProductsStore = async (condition) => {
+  const getMovingProductsStore = async () => {
     try {
-      const res = await indexApi.getProductsByManagerId(authUser.id, condition);
+      const res = await indexApi.getProductsByManagerId(authUser.id, {
+        condition: {
+          isSold: 2,
+          status_id: 10,
+        },
+      });
+      const res2 = await indexApi.getProductsByManagerId(authUser.id, {
+        condition: {
+          isSold: 0,
+          status_id: 10,
+        },
+      });
+      let productData = [];
       if (res.data && res.data.products) {
-        setMaintainedProducts(buildData(res.data.products));
+        productData = [...buildData(res.data.products)];
       }
+      if (res2.data && res2.data.products) {
+        productData = [...productData, ...buildData(res2.data.products)];
+      }
+      setMaintainedProducts(productData);
     } catch {
       setMaintainedProducts([]);
     }
