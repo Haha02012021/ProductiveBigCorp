@@ -54,24 +54,24 @@ const ModelSendWarranty = (props) => {
       centered={true}
     >
       <hr style={{ margin: 0, color: "gray" }} />
-      <Col span={12} style={{ paddingTop: 20 }}>
+      <Col span={24} style={{ paddingTop: 20 }}>
         <BoldText style={{ textTransform: "uppercase" }}>
           Thông tin Sản phẩm
         </BoldText>
-        <Col style={{ marginLeft: 5 }}>
-          <Row
+        <Row style={{ marginLeft: 5 }}>
+          <Col
             style={{
               fontWeight: "bold",
               textTransform: "uppercase",
               fontSize: "14px",
               paddingBottom: "0",
               marginBottom: "0px",
-              height: "17px",
             }}
+            span={24}
           >
             {product?.version?.name}
-          </Row>
-          <Row
+          </Col>
+          <Col
             style={{
               fontSize: "12px",
               paddingBottom: "0",
@@ -80,33 +80,42 @@ const ModelSendWarranty = (props) => {
               color: "gray",
               textTransform: "capitalize",
             }}
+            span={24}
           >
             {product?.model?.name}
-          </Row>
+          </Col>
 
-          <Row>
-            <BoldText>Cơ sở sản xuất: </BoldText>
-            <DesText>
-              {" " + product && product.managers && product.managers.length > 0
-                ? product?.managers[0]?.name
-                : null}
-            </DesText>
-          </Row>
+          <Col span={24}>
+            <Row>
+              <BoldText>Cơ sở sản xuất: </BoldText>
+              <DesText>
+                {" " + product &&
+                product.managers &&
+                product.managers.length > 0
+                  ? product?.managers[0]?.name
+                  : null}
+              </DesText>
+            </Row>
+          </Col>
 
           <Row>
             <BoldText>Mã UUID:</BoldText>
             <DesText>{" " + product?.uuid}</DesText>
           </Row>
 
-          <Row>
-            <BoldText>Thời gian bảo hành:</BoldText>
-            <DesText>{" " + product?.maintain_month + " Tháng"}</DesText>
-          </Row>
-          <Row>
-            <BoldText>Trạng thái: </BoldText>
-            <DesText>{" " + product?.status?.context}</DesText>
-          </Row>
-        </Col>
+          <Col span={24}>
+            <Row>
+              <BoldText>Thời gian bảo hành:</BoldText>
+              <DesText>{" " + product?.maintain_month + " Tháng"}</DesText>
+            </Row>
+          </Col>
+          <Col span={24}>
+            <Row>
+              <BoldText>Trạng thái: </BoldText>
+              <DesText>{" " + product?.status?.context}</DesText>
+            </Row>
+          </Col>
+        </Row>
       </Col>
       <Row gutter={[8, 8]} style={{ paddingTop: 20 }}>
         <BoldText style={{ textTransform: "uppercase" }}>

@@ -1,5 +1,5 @@
 import { Form } from "antd";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import indexApi from "../../../../apis";
 import coporationApi from "../../../../apis/coporation";
 import CustomModal from "../../../../Components/CustomModal";
@@ -9,11 +9,9 @@ import CustomTable from "../../../../Components/Table/CustomTable";
 import LineForm from "./LineForm";
 import ModalConfirmDelete from "./modalConfirmDelete";
 import { toast } from "react-toastify";
-import { ThemeContext } from "../../../../Provider/ThemeProvider";
 import axios from "axios";
 
 export default function LineManage() {
-  const { isMobile } = useContext(ThemeContext);
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [selectedLineId, setSelectedLineId] = useState();
@@ -67,11 +65,12 @@ export default function LineManage() {
         dataIndex: "actions",
         key: "actions",
         fixed: "center",
-        width: 130,
+        width: 80,
         render: (productLineInfo) => (
           <ActionsCell
             hasView={false}
             hasConfirm={false}
+            hasDelete={false}
             onEdit={() => handleEditLine(productLineInfo)}
             onDelete={() => {
               setModel(productLineInfo);

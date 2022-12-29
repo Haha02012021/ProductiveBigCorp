@@ -1,10 +1,20 @@
-import React, {useContext, useEffect, useMemo, useState} from "react";
-import {Button, Col, ConfigProvider, Form, InputNumber, Modal, Radio, Row, Select} from "antd";
-import {DeleteOutlined} from "@ant-design/icons";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import {
+  Button,
+  Col,
+  ConfigProvider,
+  Form,
+  InputNumber,
+  Modal,
+  Radio,
+  Row,
+  Select,
+} from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import indexApi from "../../../apis";
-import {sendRequest} from "../../../apis/store";
-import {AuthContext} from "../../../Provider/AuthProvider";
-import {toast} from "react-toastify";
+import { sendRequest } from "../../../apis/store";
+import { AuthContext } from "../../../Provider/AuthProvider";
+import { toast } from "react-toastify";
 
 const ModalRequest = (props) => {
   const [versions, setVersions] = useState([]);
@@ -139,31 +149,31 @@ const ModalRequest = (props) => {
   const renderRequest = useMemo(() => {
     return requests.map((request, index) => {
       return (
-          <Row
-              key={index}
-              style={{
-                backgroundColor: `${index % 2 === 0 ? "#ececec" : "#faf9f9"}`,
-                padding: "5px 0 5px 10px",
-              }}
-          >
-            <Col span={7}>
-              <div>Model: {request.model_id}</div>
-            </Col>
-            <Col span={7}>
-              <div>Version: {request.version_id}</div>
-            </Col>
-            <Col span={4}>
-              <div>Color: {request.color_id}</div>
-            </Col>
-            <Col span={4}>
-              <div>Amount: {request.amount}</div>
-            </Col>
-            <Col span={2}>
-              <div className="hoverRed" onClick={() => deleteRequest(index)}>
-                <DeleteOutlined/>
-              </div>
-            </Col>
-          </Row>
+        <Row
+          key={index}
+          style={{
+            backgroundColor: `${index % 2 === 0 ? "#ececec" : "#faf9f9"}`,
+            padding: "5px 0 5px 10px",
+          }}
+        >
+          <Col span={7}>
+            <div>Model: {request.model_id}</div>
+          </Col>
+          <Col span={7}>
+            <div>Version: {request.version_id}</div>
+          </Col>
+          <Col span={4}>
+            <div>Color: {request.color_id}</div>
+          </Col>
+          <Col span={4}>
+            <div>Amount: {request.amount}</div>
+          </Col>
+          <Col span={2}>
+            <div className="hoverRed" onClick={() => deleteRequest(index)}>
+              <DeleteOutlined />
+            </div>
+          </Col>
+        </Row>
       );
     });
   }, [changeRequest]);
@@ -259,7 +269,7 @@ const ModalRequest = (props) => {
             </Form.Item>
           </Col>
 
-          <Col span={8}>
+          <Col md={8} xs={12}>
             <Form.Item
               label={"Factory: "}
               required
@@ -298,7 +308,7 @@ const ModalRequest = (props) => {
             </Form.Item>
           </Col>
 
-          <Col span={4}>
+          <Col md={4} xs={12}>
             <Form.Item
               label={"Số lượng: "}
               name="amount"
@@ -322,7 +332,7 @@ const ModalRequest = (props) => {
             </Form.Item>
           </Col>
 
-          <Col>
+          <Col md={12} xs={12}>
             <Form.Item
               label={"Màu: "}
               required
@@ -361,7 +371,11 @@ const ModalRequest = (props) => {
             </Form.Item>
           </Col>
 
-          <Col style={{ display: "flex", alignItems: "flex-end" }}>
+          <Col
+            style={{ display: "flex", alignItems: "flex-end" }}
+            md={24}
+            xs={24}
+          >
             <Form.Item>
               <Button
                 type="primary"
