@@ -24,7 +24,7 @@ export default function UnitManage() {
     getFactories();
     getStore();
     getWarranties();
-  }, []);
+  }, [addModalVisible, editModalVisible]);
 
   const getFactories = async () => {
     const res = await indexApi.getManagerByRole(2);

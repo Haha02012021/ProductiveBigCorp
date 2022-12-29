@@ -20,7 +20,6 @@ export default function LineManage() {
   const [model, setModel] = useState({});
   const [form] = Form.useForm();
   const [change, setChange] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     getAllModels();
@@ -31,9 +30,8 @@ export default function LineManage() {
   }, [change]);
 
   const getAllModels = async () => {
-    const res = await indexApi.getAllModels(currentPage);
+    const res = await indexApi.getAllModels();
     if (res.success) {
-      setCurrentPage(res.data.currentPage);
       const ds = res.data.models.map((model, index) => {
         return {
           key: model.id,
