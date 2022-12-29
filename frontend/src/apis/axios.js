@@ -6,6 +6,10 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
+    const token = JSON.parse(localStorage.getItem("accessToken"))?.value;
+    if (token) {
+      config.headers.Authorization = "Bearer " + token;
+    }
     return config;
   },
   (error) => {
@@ -18,7 +22,8 @@ instance.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    return Promise.reject(error.response.data);
+    if (error.response?.data) return Promise.reject();
+    else return error;
   }
 );
 

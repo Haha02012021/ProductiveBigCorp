@@ -47,8 +47,8 @@ export default function MonthyColumnChart({
       data: data.slice(data.length / 2, data.length),
       isGroup,
       isStack,
-      xField: "month",
-      yField: "amount",
+      xField: "MONTH(`createdAt`)",
+      yField: "count",
       seriesField: "name",
 
       /** 设置颜色 */

@@ -39,6 +39,13 @@ const indexApi = {
   getProductByUuid(uuid) {
     return axios.get(`/product/${uuid}`);
   },
+  analizeAmount(managerId, role, option, year, secondYear) {
+    return axios.get(
+      `/analize/status/${managerId}/?role=${role}&option=${option}&year=${year}&secondYear=${
+        secondYear || ""
+      }`
+    );
+  },
 };
 
 export default indexApi;
