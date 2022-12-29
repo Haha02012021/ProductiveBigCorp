@@ -27,6 +27,10 @@ const requestSummon = (batchId, factoryId, data) => {
   );
 };
 
+const deleteProducts = (factoryId, data) => {
+  return instance.delete(`/factory/products/delete/${factoryId}`, data);
+};
+
 export {
   getBatchesByFactoryId,
   addNewProducts,
@@ -34,4 +38,5 @@ export {
   acceptRequest,
   receiveBrokenProducts,
   requestSummon,
+  deleteProducts,
 };

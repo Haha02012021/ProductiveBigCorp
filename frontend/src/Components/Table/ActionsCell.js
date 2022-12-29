@@ -6,6 +6,7 @@ export default function ActionsCell({
   hasEdit = true,
   hasDelete = true,
   hasConfirm = true,
+  hasDisabled = false,
   onView,
   onEdit,
   onDelete,
@@ -14,6 +15,7 @@ export default function ActionsCell({
   editText = "Sửa",
   deleteText = "Xóa",
   confirmText = "Xác nhận",
+  disabledText = "Đã hủy",
 }) {
   return (
     <Space split={<Divider type="vertical" />} size>
@@ -39,6 +41,11 @@ export default function ActionsCell({
       {hasConfirm && (
         <StyledButton type="primary" onClick={onConfirm}>
           {confirmText}
+        </StyledButton>
+      )}
+      {hasDisabled && (
+        <StyledButton type="primary" disabled>
+          {disabledText}
         </StyledButton>
       )}
     </Space>

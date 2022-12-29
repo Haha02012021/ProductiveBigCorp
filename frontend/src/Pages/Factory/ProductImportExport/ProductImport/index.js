@@ -2,7 +2,10 @@ import { Button, message, Modal, Tabs } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import indexApi from "../../../../apis";
-import { receiveBrokenProducts } from "../../../../apis/factory";
+import {
+  deleteProducts,
+  receiveBrokenProducts,
+} from "../../../../apis/factory";
 import PageContent from "../../../../Components/PageContent";
 import ActionsCell from "../../../../Components/Table/ActionsCell";
 import CustomTable from "../../../../Components/Table/CustomTable";
@@ -44,6 +47,7 @@ export default function ProductImport() {
         <ActionsCell
           hasDelete={record.statusId === 14}
           hasConfirm={record.statusId === 13}
+          hasDisabled={record.statusId === 15}
           hasEdit={false}
           hasView={false}
           onConfirm={() => handleConfirm(record)}
@@ -109,7 +113,6 @@ export default function ProductImport() {
   const handleDestroyAll = () => {
     const req = {
       products: selectedProducts,
-      factory_id: authUser.id,
     };
 
     Modal.confirm({
@@ -121,15 +124,14 @@ export default function ProductImport() {
       onCancel: () => {},
       onOk: async () => {
         try {
-          const res = await receiveBrokenProducts(req);
+          const res = await deleteProducts(authUser.id, req);
 
           if (res.success) {
             toast.success("Đã tiêu hủy các sản phẩm", 2);
-            getBrokenProducts();
             getDestroyedProducts();
           }
         } catch (error) {
-          toast.error(error.message, 2);
+          toast.error(error?.message, 2);
         }
       },
     });
@@ -288,7 +290,6 @@ export default function ProductImport() {
   const handleDestroy = (data) => {
     const req = {
       products: [data.key],
-      factory_id: authUser.id,
     };
 
     Modal.confirm({
@@ -300,7 +301,7 @@ export default function ProductImport() {
       onCancel: () => {},
       onOk: async () => {
         try {
-          const res = await receiveBrokenProducts(req);
+          const res = await deleteProducts(authUser.id, req);
 
           if (res.success) {
             toast.success("Đã tiêu hủy sản phẩm", 2);

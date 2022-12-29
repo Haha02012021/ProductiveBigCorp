@@ -47,16 +47,15 @@ export default function PageContent({
             marginBottom: "16px",
           }}
         >
-          {searchBarExtraAction && (
-            <Col sx={24} md={8}>
-              <Input.Search
-                onSearch={onSearch || handleSearch}
-                placeholder={searchPlaceholder}
-                style={{ width: "100%" }}
-                allowClear
-              />
-            </Col>
-          )}
+          {searchBarExtraAction}
+          <Col sx={24} md={8}>
+            <Input.Search
+              onSearch={onSearch || handleSearch}
+              placeholder={searchPlaceholder}
+              style={{ width: "100%" }}
+              allowClear
+            />
+          </Col>
         </Row>
       )}
       {children}
