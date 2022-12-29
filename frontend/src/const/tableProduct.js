@@ -138,7 +138,7 @@ export const historyColumns = [
 ];
 
 export const buildData = (data) => {
-  const result = new Array();
+  const result = [];
   for (let i = 0; i < data.length; i++) {
     const o = {};
     if (data[i]) {
@@ -146,9 +146,16 @@ export const buildData = (data) => {
       o.key = i;
       o.code = data[i]?.id;
       o.version = data[i]?.version?.name;
+      o.versionId = data[i]?.version?.id;
+      o.model = data[i]?.model?.name;
+      o.modelId = data[i]?.model?.id;
       o.color = data[i]?.color?.name;
+      o.colorId = data[i]?.color?.id;
       o.factory = data[i]?.managers[0]?.name;
-      o.price = data[i]?.version?.price + " VND";
+      o.factoryId = data[i]?.managers[0]?.id;
+      o.price =
+        `${data[i]?.version?.price}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+        " VND";
       o.status = data[i]?.status?.context;
     }
     result.push(o);

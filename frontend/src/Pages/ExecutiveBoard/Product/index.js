@@ -60,7 +60,7 @@ export default function Product() {
         o.productLineId = data[i].model.id;
         o.factory = factory?.name;
         o.factoryId = factory?.id;
-        o.store = store?.name;
+        o.store = store && store.name ? store.name : "Chưa phân phối";
         o.storeId = store?.id;
         o.maintainer = maintainCenter?.name;
         o.maintainerId = maintainCenter?.id;
@@ -147,23 +147,6 @@ export default function Product() {
       },
     },
     {
-      title: "Trung tâm bảo hành",
-      dataIndex: "maintainer",
-      key: "maintainer",
-      filters: getUniqueArray(
-        products.map((product) => {
-          return {
-            text: product.maintainer,
-            value: product.maintainerId,
-          };
-        })
-      ),
-      filterSearch: true,
-      onFilter: (values, record) => {
-        return record.maintainerId === values;
-      },
-    },
-    {
       title: "Trạng thái",
       dataIndex: "state",
       key: "state",
@@ -187,7 +170,7 @@ export default function Product() {
       key: "actions",
       fixed: "center",
       width: 60,
-      render: (text, record, ) => (
+      render: (text, record) => (
         <ActionsCell
           hasEdit={false}
           hasDelete={false}
