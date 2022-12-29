@@ -37,7 +37,9 @@ export default function PageHeader({
           align="center"
         >
           <ArrowLeftOutlined size={16} onClick={handleBack} />
-          <p style={{ fontSize: 20, fontWeight: 600 }}>{title}</p>
+          <p style={{ fontSize: 20, fontWeight: 600, marginLeft: 8 }}>
+            {title}
+          </p>
         </Col>
         <Col>
           {hasAction && !customAction && (

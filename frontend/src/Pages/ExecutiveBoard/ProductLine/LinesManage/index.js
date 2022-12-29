@@ -195,6 +195,7 @@ export default function LineManage() {
           title: "Quản lý dòng sản phẩm",
           onAdd: () => handleAddLine(),
         }}
+        showSearch={false}
       >
         <CustomTable dataSource={dataSource} columns={columns} />
       </PageContent>

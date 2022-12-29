@@ -203,6 +203,7 @@ export default function VersionManage() {
           title: "Quản lý phiên bản",
           onAdd: () => handleAddVer(),
         }}
+        showSearch={false}
       >
         <CustomTable columns={columns} dataSource={dataSource} />
       </PageContent>
