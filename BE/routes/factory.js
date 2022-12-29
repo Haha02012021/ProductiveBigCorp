@@ -28,7 +28,9 @@ router.post(
   createProducts
 );
 
-router.post("/batches/:factory_id", validateFactory, getBatches);
+router.post("/batches/:factory_id", 
+validateFactory, 
+getBatches);
 
 router.post(
   "/receiveBrokenProducts",

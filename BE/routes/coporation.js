@@ -12,6 +12,7 @@ const {
   deleteVersion,
   editVersion,
   allSoldOrError,
+  allSoldOrErrorByModel,
 } = require("../Controllers/CoporationController");
 
 const { validateCoporation } = require("../Middlewares/roleValidator");
@@ -114,6 +115,8 @@ router.delete("/model/:id", validateCoporation, deleteModel);
 
 router.delete("/version/:id", validateCoporation, deleteVersion);
 
-router.get('/analize/', allSoldOrError);
+router.get('/analize/', validateCoporation, allSoldOrError);
+
+router.get('/analize/model', validateCoporation, allSoldOrErrorByModel);
 
 module.exports = router;
