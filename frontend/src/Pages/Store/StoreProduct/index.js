@@ -13,6 +13,7 @@ import moment from "moment";
 import ModalConfirm from "./modalConfirm";
 import { completeProduct, deleteRequest } from "../../../apis/store";
 import { toast } from "react-toastify";
+import getUniqueArray from "../../../utils/getUniqueArray";
 
 const StoreProduct = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,6 +30,14 @@ const StoreProduct = () => {
   const [idProductSell, setIdProductSell] = useState(0);
   const [selled, setSelled] = useState(false);
 
+  const buildDataFilter = (arr, ob) => {
+    return arr.map((product) => {
+      return {
+        text: product[ob?.text],
+        value: product[ob?.value],
+      };
+    });
+  };
   const requestProductColumns = [
     {
       title: "Mã",
@@ -38,22 +47,92 @@ const StoreProduct = () => {
       height: 56,
       align: "center",
     },
+    {
+      title: "Model",
+      dataIndex: "model",
+      key: "model",
+      height: 56,
+      width: 130,
+      align: "center",
+      filters: getUniqueArray(
+        currentTab === "1"
+          ? buildDataFilter(requests, { text: "model", value: "modelId" })
+          : currentTab === "2"
+          ? buildDataFilter(productMoving, { text: "model", value: "modelId" })
+          : currentTab === "3"
+          ? buildDataFilter(productStore, { text: "model", value: "modelId" })
+          : currentTab === "4"
+          ? buildDataFilter(refuseProducts, { text: "model", value: "modelId" })
+          : []
+      ),
+      filterSearch: true,
+      onFilter: (values, record) => {
+        return record.modelId === values;
+      },
+    },
 
     {
       title: "Phiên bản",
       dataIndex: "version",
       key: "version",
-      width: 182,
       height: 56,
       align: "center",
+      filters: getUniqueArray(
+        currentTab === "1"
+          ? buildDataFilter(requests, { text: "version", value: "versionId" })
+          : currentTab === "2"
+          ? buildDataFilter(productMoving, {
+              text: "version",
+              value: "versionId",
+            })
+          : currentTab === "3"
+          ? buildDataFilter(productStore, {
+              text: "version",
+              value: "versionId",
+            })
+          : currentTab === "4"
+          ? buildDataFilter(refuseProducts, {
+              text: "version",
+              value: "versionId",
+            })
+          : []
+      ),
+      filterSearch: true,
+      onFilter: (values, record) => {
+        return record.versionId === values;
+      },
     },
     {
       title: "Cơ sở sản xuất",
       dataIndex: "factory",
       key: "factory",
-      width: 140,
+      width: 120,
       height: 56,
       align: "center",
+      filters: getUniqueArray(
+        currentTab === "1"
+          ? buildDataFilter(requests, { text: "factory", value: "factoryId" })
+          : currentTab === "2"
+          ? buildDataFilter(productMoving, {
+              text: "factory",
+              value: "factoryId",
+            })
+          : currentTab === "3"
+          ? buildDataFilter(productStore, {
+              text: "factory",
+              value: "factoryId",
+            })
+          : currentTab === "4"
+          ? buildDataFilter(refuseProducts, {
+              text: "factory",
+              value: "factoryId",
+            })
+          : []
+      ),
+      filterSearch: true,
+      onFilter: (values, record) => {
+        return record.colorId === values;
+      },
     },
     {
       title: "Số lượng",
@@ -66,8 +145,22 @@ const StoreProduct = () => {
       title: "Màu",
       dataIndex: "color",
       key: "color",
-      width: 50,
       align: "center",
+      filters: getUniqueArray(
+        currentTab === "1"
+          ? buildDataFilter(requests, { text: "color", value: "colorId" })
+          : currentTab === "2"
+          ? buildDataFilter(productMoving, { text: "color", value: "colorId" })
+          : currentTab === "3"
+          ? buildDataFilter(productStore, { text: "color", value: "colorId" })
+          : currentTab === "4"
+          ? buildDataFilter(refuseProducts, { text: "color", value: "colorId" })
+          : []
+      ),
+      filterSearch: true,
+      onFilter: (values, record) => {
+        return record.colorId === values;
+      },
     },
     {
       title: "Giá",
@@ -78,7 +171,7 @@ const StoreProduct = () => {
     },
     {
       title: "Trạng thấi",
-      dataIndex: "progress",
+      dataIndex: currentTab === "3" ? "status" : "progress",
       key: "progress",
       width: 104,
     },
@@ -98,156 +191,22 @@ const StoreProduct = () => {
       title: "Thao tác",
       dataIndex: "actions",
       key: "actions",
-      width: 80,
-      render: (text, record) => (
+      width: 30,
+      render: (text, record, index) => (
         <ActionsCell
-          hasEdit={false}
-          hasView={false}
-          hasConfirm={false}
-          onDelete={async () => {
-            if (record.progress === "Chờ xác nhận") {
-              const res = await deleteRequest(record.id);
-              if (res.success === true) {
-                setAddRequest(!addRequest);
-                setSelled(!selled);
-                toast.success(res.message);
-              } else {
-                toast.error(res.message);
-              }
-            } else {
-              toast.error("Không được phép xóa");
-            }
+          hasEdit={currentTab === "3" ? true : false}
+          hasView={currentTab === "3" ? true : false}
+          hasConfirm={currentTab === "2" ? true : false}
+          editText={"Bán"}
+          confirmText={"Đã Nhận"}
+          hasDelete={currentTab === "1" || currentTab === "4" ? true : false}
+          onDelete={() => {
+            deleteRequestClick(record);
           }}
-        />
-      ),
-    },
-  ];
-
-  const movingProductColumns = [
-    {
-      title: "Mã",
-      dataIndex: "code",
-      key: "code",
-      width: 100,
-      height: 56,
-      align: "center",
-    },
-
-    {
-      title: "Phiên bản",
-      dataIndex: "version",
-      key: "version",
-      width: 182,
-      height: 56,
-      align: "center",
-    },
-    {
-      title: "Cơ sở sản xuất",
-      dataIndex: "factory",
-      key: "factory",
-      width: 140,
-      height: 56,
-      align: "center",
-    },
-    {
-      title: "Số lượng",
-      dataIndex: "amount",
-      key: "amount",
-      width: 50,
-      align: "center",
-    },
-    {
-      title: "Màu",
-      dataIndex: "color",
-      key: "color",
-      width: 50,
-      align: "center",
-    },
-    {
-      title: "Giá",
-      dataIndex: "price",
-      key: "price",
-      width: 182,
-      align: "center",
-    },
-    {
-      title: "Trạng thấi",
-      dataIndex: "progress",
-      key: "progress",
-      width: 104,
-    },
-    {
-      title: "Thời gian yêu cầu",
-      dataIndex: "time",
-      key: "time",
-      with: 100,
-      align: "center",
-    },
-    {
-      title: "Thao tác",
-      dataIndex: "actions",
-      key: "actions",
-      width: 80,
-      render: (text, record) => (
-        <ActionsCell
-          hasEdit={false}
-          hasView={false}
-          hasDelete={false}
           onConfirm={() => {
             setIsModalConfirm(true);
             setIdProduct(record.id);
           }}
-        />
-      ),
-    },
-  ];
-
-  const productColumns = [
-    {
-      title: "Mã",
-      dataIndex: "code",
-      key: "code",
-      width: 64,
-      height: 56,
-    },
-    {
-      title: "Phiên bản",
-      dataIndex: "version",
-      key: "version",
-    },
-    {
-      title: "Màu sản phẩm",
-      dataIndex: "color",
-      key: "color",
-      width: 150,
-      height: 56,
-    },
-    {
-      title: "Cơ sở sản xuất",
-      dataIndex: "factory",
-      key: "factory",
-      width: 150,
-    },
-    {
-      title: "Giá",
-      dataIndex: "price",
-      key: "price",
-    },
-    {
-      title: "Trạng thấi",
-      dataIndex: "status",
-      key: "status",
-      width: 104,
-    },
-    {
-      title: "Thao tác",
-      dataIndex: "actions",
-      key: "actions",
-      width: 80,
-      render: (text, record) => (
-        <ActionsCell
-          hasConfirm={false}
-          hasDelete={false}
           onView={() => showModal(record)}
           onEdit={() => {
             if (record.id !== idProductSell) {
@@ -261,6 +220,23 @@ const StoreProduct = () => {
       ),
     },
   ];
+
+  const deleteRequestClick = async (record) => {
+    console.log(record);
+    console.log(record.progress);
+    if (record.progress === "Chờ xác nhận" || record.progress === "Đã hủy") {
+      const res = await deleteRequest(record.id);
+      if (res.success === true) {
+        setAddRequest(!addRequest);
+        setSelled(!selled);
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+    } else {
+      toast.error("Không được phép xóa");
+    }
+  };
 
   const showModal = (data) => {
     if (data.id !== idProduct) {
@@ -398,10 +374,16 @@ const StoreProduct = () => {
         o.key = i;
         o.code = data[i]?.id;
         o.version = data[i]?.version?.name;
+        o.versionId = data[i]?.verionId;
         o.model = data[i]?.model?.name;
+        o.modelId = data[i]?.model?.id;
         o.color = data[i]?.color?.name;
+        o.colorId = data[i]?.color?.id;
         o.factory = data[i]?.factory?.name;
-        o.price = data[i]?.version?.price + " VND";
+        o.factoryId = data[i]?.factory?.id;
+        o.price =
+          `${data[i]?.version?.price}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+          " VND";
         o.status = data[i]?.status?.context;
         o.amount = data[i]?.amount;
         o.time = moment(data[i]?.createdAt).calendar();
@@ -461,7 +443,9 @@ const StoreProduct = () => {
         <PageContent getSearchResults={handleSearch}>
           <CustomTable
             dataSource={productMoving}
-            columns={movingProductColumns}
+            columns={requestProductColumns.filter((request) => {
+              return request.key !== "reason";
+            })}
           />
         </PageContent>
       ),
@@ -471,7 +455,17 @@ const StoreProduct = () => {
       key: "3",
       children: (
         <PageContent getSearchResults={handleSearch}>
-          <CustomTable dataSource={productStore} columns={productColumns} />
+          <CustomTable
+            dataSource={productStore}
+            columns={requestProductColumns.filter((request) => {
+              return (
+                request.key !== "progress" &&
+                request.key !== "reason" &&
+                request.key !== "time" &&
+                request.key !== "amount"
+              );
+            })}
+          />
         </PageContent>
       ),
     },
@@ -481,7 +475,9 @@ const StoreProduct = () => {
       children: (
         <CustomTable
           dataSource={refuseProducts}
-          columns={requestProductColumns}
+          columns={requestProductColumns.filter((request) => {
+            return request.key !== "progress" && request.key !== "time";
+          })}
         />
       ),
     },
