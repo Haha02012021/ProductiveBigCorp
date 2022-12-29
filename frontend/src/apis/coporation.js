@@ -23,6 +23,13 @@ const coporationApi = {
   deleteVersion(versionId) {
     return axios.delete(`/coporation/version/${versionId}`);
   },
+  analizeErrorSoldAmount(type, option, year, secondYear) {
+    return axios.get(
+      `/coporation/analize/?type=${type}&option=${option}&year=${year}&secondYear=${
+        secondYear || ""
+      }`
+    );
+  },
 };
 
 export default coporationApi;

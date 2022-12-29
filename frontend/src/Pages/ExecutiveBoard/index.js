@@ -5,6 +5,8 @@ import VersionManage from "./ProductLine/VersionManage";
 import Product from "./Product";
 import UnitManage from "./UnitManage";
 import ExecutiveBoardLayout from "../../Layouts/ExecutiveBoardLayout";
+import Analysis from "./Statistical/Analysis";
+import ErrorRate from "./Statistical/ErrorRate";
 
 const ExecutiveBoard = () => {
   return (
@@ -14,6 +16,8 @@ const ExecutiveBoard = () => {
         <Route path="product-line/lines-manage" element={<LineManage />} />
         <Route path="product-line/version-manage" element={<VersionManage />} />
         <Route path="product" element={<Product />} />
+        <Route path="statistical/analysis" element={<Analysis />} />
+        <Route path="statistical/error" element={<ErrorRate />} />
       </Route>
     </Routes>
   );

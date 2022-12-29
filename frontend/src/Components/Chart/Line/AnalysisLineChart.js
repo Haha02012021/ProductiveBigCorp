@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import indexApi from "../../../apis";
+import coporationApi from "../../../apis/coporation";
 import LineChart from "../LineChart";
 
 export default function AnalysisLineChart({
@@ -18,18 +19,27 @@ export default function AnalysisLineChart({
   }, [params]);
 
   const analizeErrorSoldAmount = async () => {
-    const res = await indexApi.analizeSoldErrorAmount(
-      params.managerId,
-      params.type,
-      params.option,
-      params.year,
-      params.secondYear
-    );
-
-    console.log(res);
-
-    if (res.success) {
-      setData(buildData(res.data));
+    if (params.role === "1") {
+      const res = await coporationApi.analizeErrorSoldAmount(
+        params.type,
+        params.option,
+        params.year,
+        params.secondYear
+      );
+      if (res.success) {
+        setData(buildData(res.data));
+      }
+    } else {
+      const res = await indexApi.analizeSoldErrorAmount(
+        params.managerId,
+        params.type,
+        params.option,
+        params.year,
+        params.secondYear
+      );
+      if (res.success) {
+        setData(buildData(res.data));
+      }
     }
   };
 
@@ -53,8 +63,6 @@ export default function AnalysisLineChart({
       }
       i++;
     }
-
-    console.log(builtData);
     return builtData;
   };
   return (

@@ -7,7 +7,7 @@ import MonthyAnalysis from "./MonthyAnalysis";
 import QuarteryAnalysis from "./QuarteryAnalysis";
 import YearyAnalysis from "./YearyAnalysis";
 
-export default function Analysis() {
+export default function ErrorRate() {
   const [currentTabKey, setCurrentTabKey] = useState(1);
   const [searchValue, setSearchValue] = useState();
   const tabItems = useMemo(
@@ -28,7 +28,7 @@ export default function Analysis() {
         children: <YearyAnalysis req={searchValue} />,
       },
     ],
-    []
+    [searchValue]
   );
   const handleSearch = (values) => {
     setSearchValue(values);

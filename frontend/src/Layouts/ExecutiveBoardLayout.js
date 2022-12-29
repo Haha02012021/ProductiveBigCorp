@@ -37,6 +37,25 @@ const menuItems = [
     children: null,
     label: "Quản lý đơn vị",
   },
+  {
+    key: "statistical",
+    icon: <SettingOutlined />,
+    label: "Thống kê sản phẩm toàn quốc",
+    children: [
+      {
+        key: "analysis",
+        icon: null,
+        children: null,
+        label: "Phân tích số lượng tiêu thụ",
+      },
+      {
+        key: "error",
+        icon: null,
+        children: null,
+        label: "Phân tích số lượng lỗi",
+      },
+    ],
+  },
 ];
 export default function ExecutiveBoardLayout({ pageHeaderProps }) {
   const { authUser } = useContext(AuthContext);

@@ -28,7 +28,7 @@ export default function Analysis() {
         children: <YearyAnalysis req={searchValue} />,
       },
     ],
-    []
+    [searchValue]
   );
   const handleSearch = (values) => {
     setSearchValue(values);
