@@ -53,6 +53,9 @@ const indexApi = {
       }`
     );
   },
+  analizeErrorRateByModel(managerId) {
+    return axios.get(`analize/model/${managerId}/?type=error`);
+  },
 };
 
 export default indexApi;
