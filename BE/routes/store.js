@@ -7,18 +7,19 @@ var jwt = require("jsonwebtoken");
 const { route } = require(".");
 
 const {
-  requestWarranty, 
-  sendToWarranty, 
-  receiveWarranty, 
-  getCustomer, 
-  sell, 
-  addCustomer, 
-  createRequest, 
-  deleteRequest, 
+  requestWarranty,
+  sendToWarranty,
+  receiveWarranty,
+  getCustomer,
+  sell,
+  addCustomer,
+  createRequest,
+  deleteRequest,
   completeRequest,
   sendBackToCustomer,
   receiveFromCustomer,
-  compensate} = require('../Controllers/StoreController');
+  compensate,
+} = require("../Controllers/StoreController");
 
 const { validateStore } = require("../Middlewares/roleValidator");
 const { checkIntArray } = require("../Validators/arrayValidator");
@@ -27,6 +28,7 @@ const { checkSpecialCharacters } = require("../Validators/stringValidator");
 
 router.post(
   "/warrantyRequest",
+  validateStore,
   body("product_id")
     .exists()
     .withMessage("need a product_id")
@@ -48,6 +50,7 @@ router.post(
 
 router.post(
   "/sendToWarranty",
+  validateStore,
   body("store_id")
     .exists()
     .withMessage("need a store_id")
@@ -65,6 +68,7 @@ router.post(
 
 router.post(
   "/warrantyReceive",
+  validateStore,
   body("store_id")
     .exists()
     .withMessage("need a store_id")
@@ -77,6 +81,7 @@ router.post(
 
 router.post(
   "/customer/search",
+  validateStore,
   body("phoneNum")
     .exists()
     .withMessage("need a phone number")
@@ -87,6 +92,7 @@ router.post(
 
 router.post(
   "/customer/new",
+  validateStore,
   body("email").isEmail().withMessage("must be an email"),
   body("name")
     .exists()
@@ -107,6 +113,7 @@ router.post(
 
 router.post(
   "/sell",
+  validateStore,
   body("store_id")
     .exists()
     .withMessage("need a store_id")
@@ -123,6 +130,7 @@ router.post(
 
 router.post(
   "/request/new",
+  validateStore,
   body("factory_id")
     .exists()
     .withMessage("need a factory_id")
@@ -153,6 +161,7 @@ router.post(
 
 router.delete(
   "/request/delete/:id",
+  validateStore,
   param("id")
     .exists()
     .withMessage("need a id")
@@ -164,6 +173,7 @@ router.delete(
 
 router.get(
   "/request/complete/:id/:store_id",
+  validateStore,
   param("id")
     .exists()
     .withMessage("need a id")
@@ -173,12 +183,21 @@ router.get(
   completeRequest
 );
 
-router.get("/customer/sendBack/:product_id/:store_id", sendBackToCustomer);
+router.get(
+  "/customer/sendBack/:product_id/:store_id",
+  validateStore,
+  sendBackToCustomer
+);
 
-router.get("/customer/receive/:product_id/:store_id", receiveFromCustomer);
+router.get(
+  "/customer/receive/:product_id/:store_id",
+  validateStore,
+  receiveFromCustomer
+);
 
 router.get(
   "/customer/compensate/:product_id/:store_id/:customer_id",
+  validateStore,
   compensate
 );
 

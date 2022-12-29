@@ -264,7 +264,7 @@ var receiveFromCustomer = async (req, res) => {
 
 var compensate = async (req, res) => {
   try {
-    const product = await updateOneProduct({isSold: 1, isCompensate: 1, soldAt: new Date(), status_id: 5, customer_id: req.params.customer_id}, req.params.product_id);
+    const product = await updateOneProduct({isSold: 1, isCompensate: 1, soldAt: new Date(), status_id: 19, customer_id: req.params.customer_id}, req.params.product_id);
     //const check = await deleteOneRelation(req.params.id, req.params.warranty_id);
     if(!product) {
       res.json({ success: false, message: "can not update compensate to product" });

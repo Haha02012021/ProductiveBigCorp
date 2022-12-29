@@ -18,7 +18,7 @@ export default function ModalViewProduct(props) {
   const [version, setVersion] = useState({});
   const [colors, setColors] = useState([]);
   const [idColor, setIdColor] = useState(0);
-  const onChange = (key) => {};
+  const onChange = () => {};
 
   useEffect(() => {
     if (props.idVersion) {
@@ -37,7 +37,7 @@ export default function ModalViewProduct(props) {
   };
 
   const buildDataVersion = (data) => {
-    const arr = new Array();
+    const arr = [];
     if (Object.keys(data).length < 4) return [];
     for (let i = 2; i < Object.keys(data).length - 2; i++) {
       const o = {};
@@ -112,14 +112,24 @@ export default function ModalViewProduct(props) {
           {
             title: listTable[i].title,
             dataIndex: "name",
-            width: "35%",
-            fixed: true,
+            width: "45%",
+            ellipsis: true,
+            render: (address) => (
+              <Tooltip placement="topLeft" title={address}>
+                {address}
+              </Tooltip>
+            ),
           },
           {
             title: "",
             dataIndex: "value",
             height: 34,
-            minWidth: 200,
+            ellipsis: "showTitle",
+            render: (address) => (
+              <Tooltip placement="topLeft" title={address}>
+                {address}
+              </Tooltip>
+            ),
           },
         ];
       }
@@ -212,7 +222,7 @@ export default function ModalViewProduct(props) {
           style={{ display: "flex", flexDirection: "column", width: "100%" }}
         >
           <BoldText style={{ marginTop: 10 }}>Thông số kỹ thuật</BoldText>
-          <Col span={24} style={{ width: "100%", overflowX: "auto" }}>
+          <Col span={24}>
             {listTable.map((table, index) => {
               return Object.keys(table.columns).length > 0 ? (
                 <TableHidenRow

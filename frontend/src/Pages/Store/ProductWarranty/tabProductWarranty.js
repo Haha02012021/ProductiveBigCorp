@@ -22,7 +22,7 @@ const TabProductWarranty = (props) => {
       title: "Mã",
       dataIndex: "code",
       key: "code",
-      width: 100,
+      width: 70,
       height: 56,
       align: "center",
     },
@@ -30,6 +30,7 @@ const TabProductWarranty = (props) => {
       title: "Phiên bản",
       dataIndex: "version",
       key: "version",
+      minWidth: 200,
     },
     {
       title: "Lỗi cần xử lý",
@@ -62,7 +63,7 @@ const TabProductWarranty = (props) => {
       dataIndex: "actions",
       key: "actions",
       width: 80,
-      render: (text, record, ) => (
+      render: (text, record) => (
         <ActionsCell
           hasDelete={false}
           hasConfirm={false}

@@ -1,11 +1,11 @@
 const { getInfo, getAllVers } = require("../Services/Version");
 const { info, getAll } = require("../Services/Model");
-const { getProducts, allManagers, getRequests} = require("../Services/User");
+const { getProducts, allManagers, getRequests } = require("../Services/User");
 const { allColors } = require("../Services/Color");
 const { productInfo, findByUuid } = require("../Services/Product");
 const { getDetail } = require("../Services/Request");
 const { allStatuses } = require("../Services/Status");
-const { productsByStatus } = require("../Services/History");
+const { productsByStatus, getSoldInfo } = require("../Services/History");
 
 var getVersionInfo = async (req, res) => {
   try {
@@ -64,7 +64,7 @@ var getAllProducts = async (req, res) => {
     const products = await getProducts(
       req.params.manager_id,
       req.body.condition,
-      req.body.page,
+      req.body.page
     );
     if (!products) {
       res.status(404).json({ success: false, message: "products not found" });
@@ -238,7 +238,13 @@ var findOneProduct = async (req, res) => {
 var analizeProducts = async (req, res) => {
   try {
     console.log(req.params.manager_id);
-    const data = await productsByStatus(req.params.manager_id, req.query.option, req.query.year, req.query.secondYear);
+    const data = await productsByStatus(
+      req.params.manager_id,
+      req.query.option,
+      req.query.year,
+      req.query.secondYear,
+      req.query.role
+    );
     if (!data) {
       res.json({ success: false, message: "data not returned" });
     } else {
@@ -249,6 +255,29 @@ var analizeProducts = async (req, res) => {
       error: err,
       success: false,
       message: "error from analize products",
+    });
+  }
+};
+
+var getSold = async (req, res) => {
+  try {
+    console.log(req.query, req.params);
+    const data = await getSoldInfo(
+      req.params.manager_id,
+      req.query.option,
+      req.query.year,
+      req.query.secondYear
+    );
+    if (!data) {
+      throw "error in services";
+    } else {
+      res.json({ success: true, message: "analized", data });
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err,
+      success: false,
+      message: "error from get Sold",
     });
   }
 };
@@ -267,4 +296,5 @@ module.exports = {
   getAllStatuses,
   findOneProduct,
   analizeProducts,
+  getSold,
 };

@@ -114,7 +114,6 @@ export default function LineForm({ form, lineId }) {
   );
 
   const changeSelectedColor = (file, value) => {
-    console.log(file);
     if (file.fileList && file.fileList.length > 0) {
       file.fileList[0].status = "done";
     }

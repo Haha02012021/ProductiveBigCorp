@@ -1,4 +1,4 @@
-import { Input, message, Space, Row, Col } from "antd";
+import { Input, message, Row, Col } from "antd";
 import PageHeader from "./PageHeader";
 import indexApi from "../apis/index";
 
@@ -29,14 +29,14 @@ export default function PageContent({
   return (
     <>
       {pageHeaderProps && (
-        <Space direction="vertical" style={{ width: "100%" }}>
+        <Row direction="vertical" style={{ width: "100%" }}>
           <PageHeader
             title={pageHeaderProps?.title}
             hasAction={pageHeaderProps?.hasAction}
             onAdd={pageHeaderProps?.onAdd}
             customAction={pageHeaderProps?.customAction}
           />
-        </Space>
+        </Row>
       )}
       {showSearch && (
         <Row
@@ -47,15 +47,16 @@ export default function PageContent({
             marginBottom: "16px",
           }}
         >
-          {searchBarExtraAction}
-          <Col sx={24} md={8}>
-            <Input.Search
-              onSearch={onSearch || handleSearch}
-              placeholder={searchPlaceholder}
-              style={{ width: "100%" }}
-              allowClear
-            />
-          </Col>
+          {searchBarExtraAction && (
+            <Col sx={24} md={8}>
+              <Input.Search
+                onSearch={onSearch || handleSearch}
+                placeholder={searchPlaceholder}
+                style={{ width: "100%" }}
+                allowClear
+              />
+            </Col>
+          )}
         </Row>
       )}
       {children}
