@@ -15,13 +15,14 @@ var {
   getAllStatuses,
   findOneProduct,
   analizeProducts,
-  getSold,
+  getSoldOrErrorByModel,
   getSoldOrError,
 } = require("../Controllers/index");
 var { param, query, body, validationResult } = require("express-validator");
 
 const { authenToken } = require("../Middlewares/roleValidator");
 const { finalCheck } = require("../Validators/checkErrors");
+const { route } = require("./coporation");
 
 router.get(
   "/version/:id",
@@ -122,5 +123,7 @@ router.get(
 router.get("/analize/status/:manager_id", authenToken, analizeProducts);
 
 router.get("/analize/:manager_id", authenToken, getSoldOrError);
+
+router.get("/analize/model/:manager_id", authenToken, getSoldOrErrorByModel);
 
 module.exports = router;

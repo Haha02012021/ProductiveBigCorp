@@ -2,7 +2,7 @@ const { createManager } = require("../Services/User");
 const { addModel, remove } = require("../Services/Model");
 const { addVersion, removeVersion, editVer } = require("../Services/Version");
 const { allProducts } = require("../Services/Product");
-const { getAllSoldOrErrorInfo } = require("../Services/History");
+const { getAllSoldOrErrorInfo, getAllSoldOrErrorInfoByModel } = require("../Services/History");
 
 var addManager = async (req, res) => {
   try {
@@ -154,6 +154,26 @@ const allSoldOrError = async (req, res) => {
   }
 }
 
+const allSoldOrErrorByModel = async (req, res) => {
+  try {
+    console.log(req.query);
+    const data = await getAllSoldOrErrorInfoByModel(
+      req.query.type,
+    );
+    console.log(data);
+    if (data.length === 0 || !data) {
+      throw "error in services";
+    } else {
+      console.log(data);
+      res.json({ success: true, message: "analized", data});
+    }
+  } catch (err) {
+    res
+      .status(500)
+      .json({ success: false, message: "error from getting error or sold info", error: err });
+  }
+}
+
 module.exports = {
   addManager,
   createModel,
@@ -163,4 +183,5 @@ module.exports = {
   deleteVersion,
   editVersion,
   allSoldOrError,
+  allSoldOrErrorByModel,
 };

@@ -209,6 +209,50 @@ var getAllSoldOrErrorInfo = async (option, year, secondYear, type) => {
   }
 };
 
+var getAllSoldOrErrorInfoByModel = async (type) => {
+  try {
+    const data = await sequelize.query(
+        `SELECT count(*) as count, models.name as name 
+                FROM histories inner join products on histories.product_id = products.id inner join models on products.model_id = models.id
+                WHERE histories.status_id = ${type === 'sold' ? 5 : 12} group by models.id
+                order by models.id ASC
+                `,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+    //console.log(data);
+    //console.log(typeof data)
+    return data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+var getAllSoldOrErrorInfoOfManagerByModel = async (manager_id, type) => {
+  try {
+    const data = await sequelize.query(
+        `SELECT count(*) as count, models.name as name 
+                FROM manager_product inner join histories on manager_product.product_id = histories.product_id
+                inner join products on histories.product_id = products.id inner join models on products.model_id = models.id
+                WHERE histories.status_id = ${type === 'sold' ? 5 : 12} and manager_product.manager_id = $1 group by models.id
+                order by models.id ASC
+                `,
+        {
+          bind: [manager_id],
+          type: QueryTypes.SELECT,
+        }
+      );
+    //console.log(data);
+    //console.log(typeof data)
+    return data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
 module.exports = {
   addHistory,
   addOneHistory,
@@ -216,4 +260,6 @@ module.exports = {
   productsByStatus,
   getSoldOrErrorInfo,
   getAllSoldOrErrorInfo,
+  getAllSoldOrErrorInfoByModel,
+  getAllSoldOrErrorInfoOfManagerByModel,
 };
