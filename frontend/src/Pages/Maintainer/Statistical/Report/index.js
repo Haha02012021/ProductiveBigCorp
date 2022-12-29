@@ -13,6 +13,9 @@ export default function Report() {
     year: new Date().getFullYear(),
     secondYear: new Date().getFullYear(),
   });
+  const handleSearch = (values) => {
+    setSearchValue(values);
+  };
   const tabItems = useMemo(
     () => [
       {
@@ -33,10 +36,6 @@ export default function Report() {
     ],
     [searchValue]
   );
-
-  const handleSearch = (values) => {
-    setSearchValue(values);
-  };
   return (
     <PageContent
       pageHeaderProps={{
