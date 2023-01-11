@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  mysql:
+    volumes:
+      - db:/var/lib/mysql
+    image: mysql:latest
+    container_name: mysqlContainer
+    restart: unless-stopped
+    environment: 
+      MYSQL_ROOT_PASSWORD: bach1912
+      MYSQL_DATABASE: btl
+    ports:
+      - "9906:3306"
+    networks: 
+      - btlWeb
+  api:
+    volumes:
+      - ./BE/:/server
+    build:
+      dockerfile: Dockerfile
+      context: "./BE"
+    depends_on:
+      - mysql
+    ports: 
+     - "5000:5000"
+    restart: unless-stopped
+    container_name: nodejs
+    stdin_open: true
+    tty: true
+    networks: 
+      - btlWeb
+    environment:
+      MYSQL_HOST_IP: mysql
+  client:
+    volumes:
+      - ./frontend:/app
+    stdin_open: true
+    container_name: reactFrontend
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    build:
+      dockerfile: Dockerfile
+      context: ./frontend
+    ports: 
+     - "3000:3000"
+    networks: 
+      - btlWeb
+
+volumes:
+  db:
+  frontend:
+  BE:
+
+networks:
+  btlWeb:
